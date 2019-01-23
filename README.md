@@ -2,8 +2,48 @@
 Gold Team repository
 
 # File Structure
-frontend
-=======
+Starter App
+├───backend
+│   ├───chatter
+│   └───django_project
+└───frontend
+    ├───app
+    │   └───src
+    │       ├───androidTest
+    │       │   └───java
+    │       │       └───com
+    │       │           └───tiberiuvilcu
+    │       │               └───chatter
+    │       ├───main
+    │       │   ├───java
+    │       │   │   └───com
+    │       │   │       └───tiberiuvilcu
+    │       │   │           └───chatter
+    │       │   └───res
+    │       │       ├───layout
+    │       │       ├───mipmap-hdpi
+    │       │       ├───mipmap-mdpi
+    │       │       ├───mipmap-xhdpi
+    │       │       ├───mipmap-xxhdpi
+    │       │       ├───mipmap-xxxhdpi
+    │       │       └───values
+    │       └───test
+    │           └───java
+    │               └───com
+    │                   └───tiberiuvilcu
+    │                       └───chatter
+    ├───build
+    │   └───intermediates
+    │       └───lint-cache
+    │           ├───maven.google
+    │           │   └───com
+    │           │       └───android
+    │           │           └───support
+    │           │               └───constraint
+    │           └───sdk-registry.xml
+    └───gradle
+        └───wrapper
+
 Frontend
 Project setup
 1. “Start a new Android Studio Project”
@@ -42,4 +82,3 @@ Setting up a data base
 4. \dt (list tables)
 5. Use SQL commands from here to do what you need
 6. Control+D to exit
->>>>>>> 0bf611ac3b972c97ea36b2e4daf66f0a385559b6
