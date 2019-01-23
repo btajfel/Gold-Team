@@ -1,49 +1,6 @@
 # Gold-Team
 Gold Team repository
 
-# File Structure
-Starter App
-├───backend
-│   ├───chatter
-│   └───django_project
-└───frontend
-    ├───app
-    │   └───src
-    │       ├───androidTest
-    │       │   └───java
-    │       │       └───com
-    │       │           └───tiberiuvilcu
-    │       │               └───chatter
-    │       ├───main
-    │       │   ├───java
-    │       │   │   └───com
-    │       │   │       └───tiberiuvilcu
-    │       │   │           └───chatter
-    │       │   └───res
-    │       │       ├───layout
-    │       │       ├───mipmap-hdpi
-    │       │       ├───mipmap-mdpi
-    │       │       ├───mipmap-xhdpi
-    │       │       ├───mipmap-xxhdpi
-    │       │       ├───mipmap-xxxhdpi
-    │       │       └───values
-    │       └───test
-    │           └───java
-    │               └───com
-    │                   └───tiberiuvilcu
-    │                       └───chatter
-    ├───build
-    │   └───intermediates
-    │       └───lint-cache
-    │           ├───maven.google
-    │           │   └───com
-    │           │       └───android
-    │           │           └───support
-    │           │               └───constraint
-    │           └───sdk-registry.xml
-    └───gradle
-        └───wrapper
-
 Frontend
 Project setup
 1. “Start a new Android Studio Project”
@@ -82,3 +39,116 @@ Setting up a data base
 4. \dt (list tables)
 5. Use SQL commands from here to do what you need
 6. Control+D to exit
+
+# File Structure
+    Starter App
+    ├───backend
+    │   │   manage.py
+    │   │
+    │   ├───chatter
+    │   │       admin.py
+    │   │       models.py
+    │   │       tests.py
+    │   │       views.py
+    │   │
+    │   └───django_project
+    │           settings.py
+    │           settings.py.orig
+    │           urls.py
+    │           wsgi.py
+    │
+    └───frontend
+        │   build.gradle
+        │   frontend.iml
+        │   gradle.properties
+        │   gradlew
+        │   gradlew.bat
+        │   local.properties
+        │   settings.gradle
+        │
+        ├───app
+        │   │   .gitignore
+        │   │   app.iml
+        │   │   build.gradle
+        │   │   proguard-rules.pro
+        │   │
+        │   └───src
+        │       ├───androidTest
+        │       │   └───java
+        │       │       └───com
+        │       │           └───tiberiuvilcu
+        │       │               └───chatter
+        │       │                       ExampleInstrumentedTest.java
+        │       │
+        │       ├───main
+        │       │   │   AndroidManifest.xml
+        │       │   │
+        │       │   ├───java
+        │       │   │   └───com
+        │       │   │       └───tiberiuvilcu
+        │       │   │           └───chatter
+        │       │   │                   Chatt.java
+        │       │   │                   ChattAdapter.java
+        │       │   │                   PostActivity.java
+        │       │   │                   TimelineActivity.java
+        │       │   │
+        │       │   └───res
+        │       │       ├───layout
+        │       │       │       activity_post.xml
+        │       │       │       activity_timeline.xml
+        │       │       │       chatt_item.xml
+        │       │       │
+        │       │       ├───mipmap-hdpi
+        │       │       │       ic_launcher.png
+        │       │       │       ic_launcher_round.png
+        │       │       │
+        │       │       ├───mipmap-mdpi
+        │       │       │       ic_launcher.png
+        │       │       │       ic_launcher_round.png
+        │       │       │
+        │       │       ├───mipmap-xhdpi
+        │       │       │       ic_launcher.png
+        │       │       │       ic_launcher_round.png
+        │       │       │
+        │       │       ├───mipmap-xxhdpi
+        │       │       │       ic_launcher.png
+        │       │       │       ic_launcher_round.png
+        │       │       │
+        │       │       ├───mipmap-xxxhdpi
+        │       │       │       ic_launcher.png
+        │       │       │       ic_launcher_round.png
+        │       │       │
+        │       │       └───values
+        │       │               colors.xml
+        │       │               strings.xml
+        │       │               styles.xml
+        │       │
+        │       └───test
+        │           └───java
+        │               └───com
+        │                   └───tiberiuvilcu
+        │                       └───chatter
+        │                               ExampleUnitTest.java
+        │
+        ├───build
+        │   └───intermediates
+        │       └───lint-cache
+        │           ├───maven.google
+        │           │   │   master-index.xml
+        │           │   │
+        │           │   └───com
+        │           │       └───android
+        │           │           └───support
+        │           │               │   group-index.xml
+        │           │               │
+        │           │               └───constraint
+        │           │                       group-index.xml
+        │           │
+        │           └───sdk-registry.xml
+        │                   sdk-registry.xml
+        │
+        └───gradle
+            └───wrapper
+                    gradle-wrapper.jar
+                    gradle-wrapper.properties
+
