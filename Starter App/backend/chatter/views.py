@@ -2,6 +2,7 @@ from django.shortcuts import render
 from django.http import JsonResponse, HttpResponse
 from django.db import connection
 import json
+from django.views.decorators.csrf import csrf_exempt
 
 def getchatts(request):
 	if request.method != 'GET':
@@ -13,7 +14,7 @@ def getchatts(request):
 	response['chatts'] = rows
 	return JsonResponse(response)
 
-
+@csrf_exempt
 def adduser(request):
 	if request.method != 'POST':
 		return HttpResponse(status=404)
@@ -26,7 +27,7 @@ def adduser(request):
 				   '(%s, %s, %s);', (username, name, email))
 	return JsonResponse({})
 
-
+@csrf_exempt
 def addchatt(request):
 	if request.method != 'POST':
 		return HttpResponse(status=404)
