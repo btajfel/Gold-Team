@@ -50,7 +50,7 @@ public class TimelineActivity extends AppCompatActivity {
     private void refreshTimeline() {
         chattAdapter.clear();
         RequestQueue queue = Volley.newRequestQueue(this);
-        final String url = "http://159.89.181.188/getchatts/";
+        final String url = "http://167.99.122.101/getchatts/";
 
         JsonObjectRequest getRequest = new JsonObjectRequest(Request.Method.GET, url, null,
                 new Response.Listener<JSONObject>()
