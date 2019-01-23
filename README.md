@@ -2,47 +2,47 @@
 Gold Team repository
 
 # File Structure
-Starter App
-├───backend
-│   ├───chatter
-│   └───django_project
-└───frontend
-    ├───app
-    │   └───src
-    │       ├───androidTest
-    │       │   └───java
-    │       │       └───com
-    │       │           └───tiberiuvilcu
-    │       │               └───chatter
-    │       ├───main
-    │       │   ├───java
-    │       │   │   └───com
-    │       │   │       └───tiberiuvilcu
-    │       │   │           └───chatter
-    │       │   └───res
-    │       │       ├───layout
-    │       │       ├───mipmap-hdpi
-    │       │       ├───mipmap-mdpi
-    │       │       ├───mipmap-xhdpi
-    │       │       ├───mipmap-xxhdpi
-    │       │       ├───mipmap-xxxhdpi
-    │       │       └───values
-    │       └───test
-    │           └───java
-    │               └───com
-    │                   └───tiberiuvilcu
-    │                       └───chatter
-    ├───build
-    │   └───intermediates
-    │       └───lint-cache
-    │           ├───maven.google
-    │           │   └───com
-    │           │       └───android
-    │           │           └───support
-    │           │               └───constraint
-    │           └───sdk-registry.xml
-    └───gradle
-        └───wrapper
+    Starter App
+    ├───backend
+    │   ├───chatter
+    │   └───django_project
+    └───frontend
+        ├───app
+        │   └───src
+        │       ├───androidTest
+        │       │   └───java
+        │       │       └───com
+        │       │           └───tiberiuvilcu
+        │       │               └───chatter
+        │       ├───main
+        │       │   ├───java
+        │       │   │   └───com
+        │       │   │       └───tiberiuvilcu
+        │       │   │           └───chatter
+        │       │   └───res
+        │       │       ├───layout
+        │       │       ├───mipmap-hdpi
+        │       │       ├───mipmap-mdpi
+        │       │       ├───mipmap-xhdpi
+        │       │       ├───mipmap-xxhdpi
+        │       │       ├───mipmap-xxxhdpi
+        │       │       └───values
+        │       └───test
+        │           └───java
+        │               └───com
+        │                   └───tiberiuvilcu
+        │                       └───chatter
+        ├───build
+        │   └───intermediates
+        │       └───lint-cache
+        │           ├───maven.google
+        │           │   └───com
+        │           │       └───android
+        │           │           └───support
+        │           │               └───constraint
+        │           └───sdk-registry.xml
+        └───gradle
+            └───wrapper
 
 Frontend
 Project setup
