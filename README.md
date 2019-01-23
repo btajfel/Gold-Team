@@ -3,21 +3,21 @@ Gold Team repository
 
 Frontend
 Project setup
-1.“Start a new Android Studio Project”
-2.Set the application name, domain, and location (domain like example.com)
-3.Select phone and tablet (only) and API version 17
-4.Add an empty activity
-5.Pick a good activity name and title
-6.Make sure it generates a layout and has backwards compatibility
+1. “Start a new Android Studio Project”
+2. Set the application name, domain, and location (domain like example.com)
+3. Select phone and tablet (only) and API version 17
+4. Add an empty activity
+5. Pick a good activity name and title
+6. Make sure it generates a layout and has backwards compatibility
 
 Running on an Android emulator
-1.Hit the green play button
-2.Create New Virtual Device
-3.Pick a device and system image (Nexus 5X and O x86 are good)
-4.Give it a name and leave the default settings
-5.Use same selection for future launches and hit OK
-6.Use yellow lightning icon in Android Studio to quickly rebuild and refresh app
-7.Close emulator entirely with Cmd+Q
+1. Hit the green play button
+2. Create New Virtual Device
+3. Pick a device and system image (Nexus 5X and O x86 are good)
+4. Give it a name and leave the default settings
+5. Use same selection for future launches and hit OK
+6. Use yellow lightning icon in Android Studio to quickly rebuild and refresh app
+7. Close emulator entirely with Cmd+Q
 
 Backend
 Creating a Droplet
