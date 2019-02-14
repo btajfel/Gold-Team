@@ -19,18 +19,21 @@ Running on an Android emulator
 6. Use yellow lightning icon in Android Studio to quickly rebuild and refresh app
 7. Close emulator entirely with Cmd+Q
 
+
+
 Backend
 Creating a Droplet
 Use these options
   Django 1.8.7 on 16.04
   $5 per month size (free with student developer pack)
   New York datacenter 1 or 3
-  
+
 Accessing the droplet
 1. IP address, username and password are emailed to you
 2. ssh root@[IP]
 3. Change default password upon login
 4. Can access IP address’s webpage in browser
+
 
 Setting up a data base
 1. sudo -u postgres psql (use PSQL as user postgres)
@@ -40,6 +43,7 @@ Setting up a data base
 5. Use SQL commands from here to do what you need
 6. Control+D to exit
 
+//TODO: set up new skeletal app
 # File Structure
     Starter App
     ├───backend
