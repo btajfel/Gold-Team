@@ -1,3 +1,21 @@
+
+
+.metadata
+.metadata/*
+.project
+node_modules/**/*
+.expo/*
+npm-debug.*
+*.jks
+*.p12
+*.key
+*.mobileprovision
+.idea/*
+app.json
+package.json
+
+
+
 # OSX
 #
 .DS_Store
@@ -21,8 +39,7 @@ DerivedData
 *.ipa
 *.xcuserstate
 project.xcworkspace
-app.json
-package.json
+
 
 # Android/IntelliJ
 #
