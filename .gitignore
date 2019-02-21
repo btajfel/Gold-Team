@@ -1,3 +1,5 @@
+
+
 .metadata
 .metadata/*
 .project
@@ -9,6 +11,10 @@ npm-debug.*
 *.key
 *.mobileprovision
 .idea/*
+app.json
+package.json
+
+
 
 # OSX
 #
@@ -33,6 +39,7 @@ DerivedData
 *.ipa
 *.xcuserstate
 project.xcworkspace
+
 
 # Android/IntelliJ
 #
