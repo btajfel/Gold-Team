@@ -1,21 +1,3 @@
-
-
-.metadata
-.metadata/*
-.project
-node_modules/**/*
-.expo/*
-npm-debug.*
-*.jks
-*.p12
-*.key
-*.mobileprovision
-.idea/*
-app.json
-package.json
-
-
-
 # OSX
 #
 .DS_Store
@@ -40,7 +22,6 @@ DerivedData
 *.xcuserstate
 project.xcworkspace
 
-
 # Android/IntelliJ
 #
 build/
@@ -54,6 +35,16 @@ local.properties
 node_modules/
 npm-debug.log
 yarn-error.log
+
+# Python
+*.pyc
+__pycache__/
+*.egg-info*
+dist/
+env/
+venv/
+venv3/
+.venv/
 
 # BUCK
 buck-out/
