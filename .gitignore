@@ -1,9 +1,9 @@
-
+package-lock.json
 
 .metadata
 .metadata/*
 .project
-# node_modules/**/*
+node_modules/**/*
 .expo/*
 npm-debug.*
 *.jks
@@ -51,7 +51,7 @@ local.properties
 
 # node.js
 #
-# node_modules/
+node_modules/
 npm-debug.log
 yarn-error.log
 
