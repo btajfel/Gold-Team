@@ -3,12 +3,17 @@ Gold Team repository
 
 Frontend
 Project setup
-1. “Start a new Android Studio Project”
-2. Set the application name, domain, and location (domain like example.com)
-3. Select phone and tablet (only) and API version 17
-4. Add an empty activity
-5. Pick a good activity name and title
-6. Make sure it generates a layout and has backwards compatibility
+1. Download all the React Native dependencies, following the Getting Started Tutorial at https://facebook.github.io/react-native/docs/getting-started.html
+2. Clone the GoldTeam repository from GitHub onto your local machine.
+3. Make sure you're in the directory with the GoldTeam folder and run the following command:
+```
+react-native init GoldTeam
+```
+4. Make sure you have Xcode downloaded on your computer and run the following commands:
+```
+cd GoldTeam
+react-native run-ios
+```
 
 Running on an Android emulator
 1. Hit the green play button
