@@ -1,67 +1,67 @@
 import React from 'react';
-import {Platform, Button, StyleSheet, Text, View} from 'react-native';
+import {Alert, Platform, Flatlist, Button, StyleSheet, Text, View} from 'react-native';
 import Contacts from 'react-native-unified-contacts';
 
-/*
-Contacts.getAll((err, contacts) => {
-  if (err) {
-    throw err;
-  }
-  else{
-    console.log("no contacts");
-  }
-})
-*/
-/*
-Contacts.userCanAccessContacts( (userCanAccessContacts) => {
-  if (userCanAccessContacts) {
-    console.log("User has access to Contacts!");
 
-Contacts.getAll((err, contacts) => {
-  if (err) {
-    throw err;
-  }
-  else{
-    console.log("no contacts");
-  }
-})
+export default class FriendScreen extends React.Component {
+  state = {
+    contact: []
+  };
 
-  }
-  else {
-    console.log("User DOES NOT have access to Contacts!");
-    alertUserToAllowAccessToContacts()
-  }
-});
+  componentDidMount(){
+  this.getContacts();
+};
 
-function alertUserToAllowAccessToContacts() {
+alertUserToAllowAccessToContacts() {
   Alert.alert(
     "Can't Access Your Contacts",
     "Click on Open Settings and allow ntwrk to access your Contacts.\n" +
     "\n" +
     "Then come back!",
     [
-      {text: 'Open Settings', onPress: () => Contacts.openPrivacySettings() },
-      {text: "Later"}
+    {text: 'Open Settings', onPress: () => Contacts.openPrivacySettings() },
+    {text: "Later"}
     ]
-  )
-}
-*/
+    )
+};
 
+getContacts(){
+  Contacts.checkPermission((error, res) => {
+    if (res === 'authorized'){
+     Contacts.getAll((err, contact) => {
+      if (err) {
+        throw err;
+      }
+      else{
+        this.setState({contact});
+      }
+    })
+   }
+ })
+};
 
-export default class FriendScreen extends React.Component {
-	static navigationOptions = {
-		title: 'FriendScreen'
-	};
-  render() {
-    var {navigate} = this.props.navigation;
-    return (
-      <View style={styles.container}>
-        <Text>My Friends</Text>
-      </View>
+static navigationOptions = {
+  title: 'FriendScreen'
+};
+renderItem({item, index}) {
+  const number = item.phoneNumber.map((val, key) => {if(key === 0) return val.number});
+  return(
+    <View> 
+    <Text> {item.givenName} {item.familyName} {number} </Text>
+    </View>
     );
-  }
+};
+render() {
+  var {navigate} = this.props.navigation;
+  return (
+    <Flatlist
+    data = {this.state.contact}
+    renderItem = {(a) => this.renderItem(a)}
+    keyExtractor = {(item, index) => index.toString()}
+    />
+    );
+};
 }
-
 
 const styles = StyleSheet.create({
   container: {

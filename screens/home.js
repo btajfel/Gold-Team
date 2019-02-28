@@ -1,8 +1,6 @@
 import React from 'react';
 import {Platform, Button, StyleSheet, Text, View} from 'react-native';
 
-
-
 export default class HomeScreen extends React.Component {
 	static navigationOptions = {
 		title: 'HomeScreen',
@@ -11,19 +9,19 @@ export default class HomeScreen extends React.Component {
     var {navigate} = this.props.navigation;
     return (
       <View style={styles.container}>
-        <Text style={styles.welcome}>CrewCam</Text>
-        <View style={styles.buttonContainer}>
-          <Button
-           onPress={() => navigate('Record')}
-            title="Create New Video" />
-        </View>
-        <View style={styles.buttonContainer}>
-          <Button
-            onPress={() => navigate('Library')}
-            title="My Videos" />
-        </View>
+      <Text style={styles.welcome}>CrewCam</Text>
+      <View style={styles.buttonContainer}>
+      <Button
+      onPress={() => navigate('Record')}
+      title="Create New Video" />
       </View>
-    );
+      <View style={styles.buttonContainer}>
+      <Button
+      onPress={() => navigate('Library')}
+      title="My Videos" />
+      </View>
+      </View>
+      );
   }
 }
 

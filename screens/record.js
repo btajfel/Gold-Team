@@ -3,7 +3,6 @@ import {Platform, Button, StyleSheet, Text, View} from 'react-native';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 
 
-
 export default class RecordScreen extends React.Component {
   static navigationOptions = {
     title: 'RecordScreen'
@@ -30,7 +29,6 @@ export default class RecordScreen extends React.Component {
   }
 }
 
-
 const styles = StyleSheet.create({
   container: {
     flex: 1,
@@ -52,5 +50,4 @@ const styles = StyleSheet.create({
     position: 'absolute',
     bottom: 15
   } 
-
 });
