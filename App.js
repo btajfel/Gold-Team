@@ -25,7 +25,10 @@ const Navigation = createStackNavigator(
     Friends: {screen: friends},
   },
   {
-    initialRouteName: "Home"
+    initialRouteName: "Record",
+    navigationOptions: {
+        gesturesEnabled: true,
+    }
   }
 );
 
