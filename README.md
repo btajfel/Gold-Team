@@ -9,17 +9,15 @@
 ```
 react-native init GoldTeam
 ```
-4. Run the app on a simulator
+4. Run the app on a simulator. Make sure you have Xcode/AndroidStudio downloaded on your computer and run the following commands:
 
 #### iOS
-Make sure you have Xcode downloaded on your computer and run the following commands:
 ```
 cd GoldTeam
 react-native run-ios
 ```
 
 #### Android
-Make sure you have AndroidStudio downloaded on your computer and run the following commands:
 ```
 cd GoldTeam
 react-native run-android
