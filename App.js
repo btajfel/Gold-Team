@@ -33,5 +33,3 @@ const Navigation = createStackNavigator(
 );
 
 export default createAppContainer(Navigation);
-
-

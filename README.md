@@ -14,52 +14,100 @@
 #### iOS
 
 ```
-    cd GoldTeam
-    react-native run-ios
+cd GoldTeam
+react-native run-ios
 ```
 
 #### Android
 
 ```
-    cd GoldTeam
-    react-native run-android
+cd GoldTeam
+react-native run-android
 ```
 
 ## Backend
-### Creating a Droplet
-Use these options
-  Django 1.8.7 on 16.04
-  $5 per month size (free with student developer pack)
-  New York datacenter 1 or 3
+### Setting up Flask app
+1. Create and activate virtual environment
+    ```
+    cd GoldTeam
+    python3 -m venv env
+    source env/bin/activate
+    ```
+\* Mac users run following to be safe:
+    ```
+    cd GoldTeam
+    /usr/local/bin/python3 -m venv env
+    source env/bin/activate
+    ```
+2. Install flask app onto virtual environment
+    ```
+    pip install -e .
+    ```
 
-### Accessing the droplet
-1. IP address, username and password are emailed to you
-2. ssh root@[IP]
-3. Change default password upon login
-4. Can access IP address’s webpage in browser
+### Run Flask app
 
+```
+cd GoldTeam
+chmod +x bin/camcrew_run
+./bin/camcrew_run
+```
 
-### Setting up a data base
-1. sudo -u postgres psql (use PSQL as user postgres)
-2. \connect django (connect to the database)
-3. GRANT ALL PRIVILEGES ON ALL TABLES IN SCHEMA public TO django;
-4. \dt (list tables)
-5. Use SQL commands from here to do what you need
-6. Control+D to exit
+### Database setup
+1. Run the following to create a new database from scratch
+    ```
+    ./bin/camcrew_db create
+    ```
+2. Run the following to destroy the database
+    ```
+    ./bin/camcrew_db destroy
+    ```
+3. Run the following to reset the database with the default data
+    ```
+    ./bin/camcrew_db reset
+    ```
+4. Run the following to output all the database data
+    ```
+    ./bin/camcrew_db dump
+    ```
 
 ## File Structure
+\* Run following command
+```
+tree --matchdirs -I 'node_modules|ios|android|camcrew.egg-info|env|node_modules'
+```
+
     GoldTeam
     ├── App.js
     ├── README.md
     ├── __tests__
     │   └── App.js
     ├── app.json
+    ├── bin
+    │   ├── camcrew_db
+    │   └── camcrew_run
+    ├── camcrew
+    │   ├── __init__.py
+    │   ├── __pycache__
+    │   │   ├── __init__.cpython-37.pyc
+    │   │   └── config.cpython-37.pyc
+    │   ├── config.py
+    │   └── model.py
     ├── index.js
     ├── package-lock.json
     ├── package.json
-    └── screens
-        ├── friends.js
-        ├── home.js
-        ├── library.js
-        └── record.js
+    ├── screens
+    │   ├── friends.js
+    │   ├── home.js
+    │   ├── library.js
+    │   └── record.js
+    ├── setup.py
+    ├── sql
+    │   ├── data.sql
+    │   ├── schema.sql
+    │   └── uploads
+    │       └── test.MOV
+    └── var
+        ├── camcrew.sqlite3
+        └── uploads
+            └── test.MOV
 

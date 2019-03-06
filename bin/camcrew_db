@@ -51,40 +51,14 @@ case $1 in
     ;;
 
   "dump")
-    echo "+ sqlite3 -batch -line var/camcrew.sqlite3 'SELECT * FROM comments'"
-    sqlite3 -batch -line var/camcrew.sqlite3 'SELECT * FROM comments'
-    echo "+ sqlite3 -batch -line var/camcrew.sqlite3 'SELECT * FROM following'"
-    sqlite3 -batch -line var/camcrew.sqlite3 'SELECT * FROM following'
-    echo "+ sqlite3 -batch -line var/camcrew.sqlite3 'SELECT * FROM likes'"
-    sqlite3 -batch -line var/camcrew.sqlite3 'SELECT * FROM likes'
-    echo "+ sqlite3 -batch -line var/camcrew.sqlite3 'SELECT * FROM posts'"
-    sqlite3 -batch -line var/camcrew.sqlite3 'SELECT * FROM posts'
+    echo "+ sqlite3 -batch -line var/camcrew.sqlite3 'SELECT * FROM friends'"
+    sqlite3 -batch -line var/camcrew.sqlite3 'SELECT * FROM friends'
+    echo "+ sqlite3 -batch -line var/camcrew.sqlite3 'SELECT * FROM creators'"
+    sqlite3 -batch -line var/camcrew.sqlite3 'SELECT * FROM creators'
+    echo "+ sqlite3 -batch -line var/camcrew.sqlite3 'SELECT * FROM projects'"
+    sqlite3 -batch -line var/camcrew.sqlite3 'SELECT * FROM projects'
     echo "+ sqlite3 -batch -line var/camcrew.sqlite3 'SELECT * FROM users'"
     sqlite3 -batch -line var/camcrew.sqlite3 'SELECT * FROM users'
-    ;;
-
-  "random")
-    SHUF=shuf
-    # If shuf is not on this machine, try to use gshuf instead
-    if ! type shuf 2> /dev/null; then
-      SHUF=gshuf
-    fi
-    DB_FILENAME=var/camcrew.sqlite3
-    FILENAMES="122a7d27ca1d7420a1072f695d9290fad4501a41.jpg
-               ad7790405c539894d25ab8dcf0b79eed3341e109.jpg
-               9887e06812ef434d291e4936417d125cd594b38a.jpg
-               2ec7cf8ae158b3b1f40065abfb33e81143707842.jpg"
-    for i in `seq 1 100`; do
-      # echo $FILENAMES      print string
-      # shuf -n1             select one random line from multiline input
-      # awk '{$1=$1;print}'  trim leading and trailing whitespace
-
-      # Use '${SHUF}' instead of 'shuf'
-      FILENAME=`echo "$FILENAMES" | ${SHUF} -n1 | awk '{$1=$1;print}'`
-      OWNER="awdeorio"
-      CREATED=`date '+%Y-%m-%d %H:%M:%S'`
-      sqlite3 -echo -batch ${DB_FILENAME} "INSERT INTO posts(filename, owner, created) VALUES('${FILENAME}','${OWNER}', '${CREATED}');"
-    done
     ;;
   *)
     usage
