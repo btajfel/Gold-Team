@@ -6,22 +6,22 @@
 1. Download all the React Native dependencies, following the Getting Started Tutorial at https://facebook.github.io/react-native/docs/getting-started.html
 2. Clone the GoldTeam repository from GitHub onto your local machine.
 3. Make sure you're in the directory with the GoldTeam folder and run the following command:
-```
-react-native init GoldTeam
-```
+    ```
+    react-native init GoldTeam
+    ```
 4. Run the app on a simulator. Make sure you have Xcode/AndroidStudio downloaded on your computer and run the following commands:
 
 #### iOS
-```
-cd GoldTeam
-react-native run-ios
-```
+    ```
+    cd GoldTeam
+    react-native run-ios
+    ```
 
 #### Android
-```
-cd GoldTeam
-react-native run-android
-```
+    ```
+    cd GoldTeam
+    react-native run-android
+    ```
 
 ## Backend
 ### Creating a Droplet
