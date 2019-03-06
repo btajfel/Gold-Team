@@ -12,16 +12,18 @@
 4. Run the app on a simulator. Make sure you have Xcode/AndroidStudio downloaded on your computer and run the following commands:
 
 #### iOS
-    ```
+
+```
     cd GoldTeam
     react-native run-ios
-    ```
+```
 
 #### Android
-    ```
+
+```
     cd GoldTeam
     react-native run-android
-    ```
+```
 
 ## Backend
 ### Creating a Droplet
