@@ -9,9 +9,9 @@
 !app.json
 !screens/
 !__tests__/
-!camcrew/
+!camcrew/*
 camcrew/__pycache__
-!sql/
-!var/
-!bin/
+!sql/*
+!bin/*
+!setup.py
 !README.md

@@ -1,0 +1,18 @@
+#!/bin/bash
+# camcrew_run
+
+# Stop on errors
+set -e
+
+# Call camcrew_db create
+if [ ! -f var/camcrew.sqlite3 ]; then
+  ./bin/camcrew_db create
+fi
+
+# Set environment variables
+export FLASK_DEBUG=True
+export FLASK_APP=camcrew
+export CAMCREW_SETTINGS=config.py
+
+# Run development server
+flask run --host 0.0.0.0 --port 8000
