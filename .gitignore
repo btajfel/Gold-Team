@@ -11,6 +11,7 @@
 !__tests__/
 !*/sql/*
 !bin/*
+!api/*
 !camcrew/*
 camcrew/__pycache__
 !setup.py
