@@ -23,7 +23,6 @@ const Navigator = SwipeNavigator({
 
   friends: {
     screen: friends,
-    color: '#64B5F6',
     type: 'over',
   },
 
