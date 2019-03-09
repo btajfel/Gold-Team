@@ -2,11 +2,21 @@ import React from 'react';
 import {Platform, Button, StyleSheet, Text, View} from 'react-native';
 
 export default class HomeScreen extends React.Component {
-	static navigationOptions = {
-		title: 'HomeScreen',
-	};
+	  componentDidMount() {
+    const { nav } = this.props;
+
+    nav.onNavigateShouldAllow(() => {
+       return true;
+    });
+  }
+
+  componentWillUnmount() {
+    this.props.nav.cleanUp()
+  }
+
+
+
   render() {
-    var {navigate} = this.props.navigation;
     return (
       <View style={styles.container}>
       <Text style={styles.welcome}>CrewCam</Text>

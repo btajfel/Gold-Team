@@ -12,6 +12,8 @@
     "react-native": "0.58.5",
     "react-native-contacts": "^3.1.4",
     "react-native-ionicons": "^4.5.5",
+    "react-native-permissions": "^2.0.0-alpha.1",
+    "react-native-swipe-navigation": "^1.0.0-beta",
     "react-native-unified-contacts": "^1.6.2",
     "react-native-vector-icons": "^6.3.0",
     "react-navigation": "^3.3.0"

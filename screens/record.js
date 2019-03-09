@@ -4,12 +4,19 @@ import Ionicons from 'react-native-vector-icons/Ionicons';
 
 
 export default class RecordScreen extends React.Component {
-  static navigationOptions = {
-    title: 'RecordScreen'
-  };
+    componentDidMount() {
+    const { nav } = this.props;
+
+    nav.onNavigateShouldAllow(() => {
+       return true;
+    });
+  }
+
+  componentWillUnmount() {
+    this.props.nav.cleanUp()
+  }
 
   render() {
-    var {navigate} = this.props.navigation;
     return (
       <View style={styles.container}>
         <Text>RecordScreen</Text>

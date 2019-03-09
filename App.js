@@ -9,29 +9,31 @@
 
 import React from 'react';
 import {Platform, Text, View} from 'react-native';
-import {createAppContainer, createStackNavigator, StackNavigator} from 'react-navigation';
+import SwipeNavigator from 'react-native-swipe-navigation'
 import friends from './screens/friends'
-import home from './screens/home'
 import library from './screens/library'
 import record from './screens/record'
 
-
-
-const Navigation = createStackNavigator(
-  {
-    Home: {screen: home},
-    Record: {screen: record},
-    Library: {screen: library},
-    Friends: {screen: friends},
+const Navigator = SwipeNavigator({
+  record: {
+    screen: record,
+    left: 'friends',
+    right: 'library',
   },
-  {
-    initialRouteName: "Record",
-    navigationOptions: {
-        gesturesEnabled: true,
-    }
-  }
-);
 
-export default createAppContainer(Navigation);
+  friends: {
+    screen: friends,
+    color: '#64B5F6',
+    type: 'over',
+  },
+
+  library: {
+    screen: library,
+    type: 'over',
+  }
+})
+
+export default Navigator
+
 
 

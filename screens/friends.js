@@ -1,26 +1,37 @@
 import React from 'react';
-import {Alert, Platform, Flatlist, Button, StyleSheet, Text, View} from 'react-native';
-import Contacts from 'react-native-unified-contacts';
+import {Alert, Platform, Linking, Button, StyleSheet, Text, View, ScrollView} from 'react-native';
+import Contacts from 'react-native-contacts';
+import {Permissions, openSettings} from 'react-native-permissions';
 
 
 export default class FriendScreen extends React.Component {
-  state = {
-    contact: []
-  };
+    
+  myContacts = [];
 
-  componentDidMount(){
-  this.getContacts();
-};
+    componentDidMount() {
+    const { nav } = this.props;
+
+    nav.onNavigateShouldAllow(() => {
+       return true;
+    });
+
+    this.getContacts();
+  }
+
+  componentWillUnmount() {
+    this.props.nav.cleanUp()
+  }
+
 
 alertUserToAllowAccessToContacts() {
   Alert.alert(
     "Can't Access Your Contacts",
-    "Click on Open Settings and allow ntwrk to access your Contacts.\n" +
+    "Click on Open Settings and allow CrewCam to access your Contacts.\n" +
     "\n" +
     "Then come back!",
     [
-    {text: 'Open Settings', onPress: () => Contacts.openPrivacySettings() },
-    {text: "Later"}
+    {text: "Later", style: 'cancel'},
+    {text: 'Open Settings', onPress: () => Permissions.openSettings() }
     ]
     )
 };
@@ -28,34 +39,46 @@ alertUserToAllowAccessToContacts() {
 getContacts(){
   Contacts.checkPermission((error, res) => {
     if (res === 'authorized'){
-     Contacts.getAll((err, contact) => {
+     Contacts.getAll((err, contacts) => {
       if (err) {
         throw err;
       }
       else{
-        this.setState({contact});
+        contacts = contacts.map((user) => {
+
+        this.myContacts.push({
+          fullName: user.givenName + ' ' + user.familyName,
+          phoneNumber: user.phoneNumbers[0]
+        })
+
+
+        })
+
+        console.log(this.myContacts);
       }
     })
+   }
+   else{
+    this.alertUserToAllowAccessToContacts();
    }
  })
 };
 
-static navigationOptions = {
-  title: 'FriendScreen'
-};
+
 renderItem({item, index}) {
   const number = item.phoneNumber.map((val, key) => {if(key === 0) return val.number});
   return(
     <View> 
-    <Text> {item.givenName} {item.familyName} {number} </Text>
+    <Text> {item.fullName} {number} </Text>
     </View>
     );
 };
+
+
 render() {
-  var {navigate} = this.props.navigation;
   return (
-    <Flatlist
-    data = {this.state.contact}
+    <ScrollView
+    data = {this.myContacts}
     renderItem = {(a) => this.renderItem(a)}
     keyExtractor = {(item, index) => index.toString()}
     />
