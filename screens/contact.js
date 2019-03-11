@@ -20,7 +20,7 @@ componentDidMount() {
   }
 
   componentWillUnmount() {
-    this.props.nav.cleanUp()
+    this.props.nav.cleanUp();
   }
 
     state = {
@@ -61,10 +61,8 @@ componentDidMount() {
      )
 }
 
-render(){
 	const row = this.renderItem(this.props.data);
 	return(
 		{row}
 		);
-}
 };
