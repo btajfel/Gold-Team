@@ -1,6 +1,5 @@
 import React from 'react';
 import {Alert, Platform, Flatlist, Button, StyleSheet, Text, View} from 'react-native';
-import Contacts from 'react-native-unified-contacts';
 
 
 export default class FriendScreen extends React.Component {
