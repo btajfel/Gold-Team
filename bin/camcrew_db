@@ -1,0 +1,67 @@
+#!/bin/bash
+# camcrew_db
+
+# Stop on errors, print command
+set -e
+# set -x
+
+# Sanity check command line options
+usage() {
+  echo "Usage: $0 (create|destroy|reset|dump)"
+}
+
+if [ $# -ne 1 ]; then
+  usage
+  exit 1
+fi
+
+# Parse argument.  $1 is the first argument
+case $1 in
+  "create")
+    if [ -f var/camcrew.sqlite3 ]; then
+      echo "Error: database already exists"
+      exit 1
+    fi
+    mkdir -p var/uploads
+    sqlite3 var/camcrew.sqlite3 < sql/schema.sql
+    sqlite3 var/camcrew.sqlite3 < sql/data.sql
+    cp sql/uploads/* var/uploads/
+    echo "+ mkdir -p var/uploads
++ sqlite3 var/camcrew.sqlite3 < sql/schema.sql
++ sqlite3 var/camcrew.sqlite3 < sql/data.sql
++ cp sql/uploads/* var/uploads/"
+    ;;
+
+  "destroy")
+    rm -rf var/camcrew.sqlite3 var/uploads
+    echo "+ rm -rf var/camcrew.sqlite3 var/uploads"
+    ;;
+
+  "reset")
+    rm -rf var/camcrew.sqlite3 var/uploads
+    mkdir -p var/uploads
+    sqlite3 var/camcrew.sqlite3 < sql/schema.sql
+    sqlite3 var/camcrew.sqlite3 < sql/data.sql
+    cp sql/uploads/* var/uploads/
+    echo "+ rm -rf var/camcrew.sqlite3 var/uploads
++ mkdir -p var/uploads
++ sqlite3 var/camcrew.sqlite3 < sql/schema.sql
++ sqlite3 var/camcrew.sqlite3 < sql/data.sql
++ cp sql/uploads/* var/uploads/"
+    ;;
+
+  "dump")
+    echo "+ sqlite3 -batch -line var/camcrew.sqlite3 'SELECT * FROM friends'"
+    sqlite3 -batch -line var/camcrew.sqlite3 'SELECT * FROM friends'
+    echo "+ sqlite3 -batch -line var/camcrew.sqlite3 'SELECT * FROM creators'"
+    sqlite3 -batch -line var/camcrew.sqlite3 'SELECT * FROM creators'
+    echo "+ sqlite3 -batch -line var/camcrew.sqlite3 'SELECT * FROM projects'"
+    sqlite3 -batch -line var/camcrew.sqlite3 'SELECT * FROM projects'
+    echo "+ sqlite3 -batch -line var/camcrew.sqlite3 'SELECT * FROM users'"
+    sqlite3 -batch -line var/camcrew.sqlite3 'SELECT * FROM users'
+    ;;
+  *)
+    usage
+    exit 1
+    ;;
+esac
