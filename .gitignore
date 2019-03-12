@@ -4,3 +4,4 @@ android/
 env/
 var/
 */__pycache__/*
+.expo/
