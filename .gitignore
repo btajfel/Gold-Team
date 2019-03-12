@@ -2,3 +2,5 @@ node_modules/
 ios/
 android/
 env/
+var/
+*/__pycache__/*
