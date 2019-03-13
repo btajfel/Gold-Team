@@ -28,7 +28,7 @@ export default class GalleryScreen extends React.Component {
     }
     this.setState({ selected });
   };
-
+// CHANGE THIS FUNCTION
   saveToGallery = async () => {
     const photos = this.state.selected;
 
@@ -56,7 +56,7 @@ export default class GalleryScreen extends React.Component {
       uri={`${PHOTOS_DIR}/${fileName}`}
       onSelectionToggle={this.toggleSelection}
     />;
-
+// here!!!!!!!!
   render() {
     return (
       <View style={styles.container}>
@@ -64,7 +64,7 @@ export default class GalleryScreen extends React.Component {
           <TouchableOpacity style={styles.button} onPress={this.props.onPress}>
             <MaterialIcons name="arrow-back" size={25} color="white" />
           </TouchableOpacity>
-          <TouchableOpacity style={styles.button} onPress={this.saveToGallery}>
+          <TouchableOpacity style={styles.button} onPress={this.saveToGallery}> 
             <Text style={styles.whiteText}>Save selected to gallery</Text>
           </TouchableOpacity>
         </View>
