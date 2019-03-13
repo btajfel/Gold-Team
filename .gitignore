@@ -5,3 +5,4 @@ env/
 var/
 */__pycache__/*
 .expo/
+.DS_Store
