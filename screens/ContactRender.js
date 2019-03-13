@@ -1,70 +1,60 @@
-import React from 'react';
-import {StyleSheet, Text, View, Button} from 'react-native';
-import {ListItem, List, Icon} from 'react-native-elements';
-import Ionicons from 'react-native-vector-icons/Ionicons';
+
+    
+import React, { PureComponent } from 'react'
+import { StyleSheet, View, Alert, TouchableOpacity, Image, TouchableHighlight } from 'react-native'
+import { Button, ListItem, Left, Right, Body, Thumbnail, Text, Icon } from 'native-base'
 
 
-  const button = {
+ const button = {
     off: 'ios-checkbox-outline',
     on: 'ios-checkbox'
   };
 
-export default class ContactRender extends React.Component {
+export default class ContactRender extends PureComponent {
+  constructor(props) {
+    super(props)
 
-componentDidMount() {
-    const { nav } = this.props;
-
-    nav.onNavigateShouldAllow(() => {
-       return true;
-    });
-  }
-
-  componentWillUnmount() {
-    this.props.nav.cleanUp();
-  }
-
-    state = {
-        inviteIcon: 'off'
+    this.state = {
+      inviteIcon: 'off'
     };
+  }
 
-
-
- _onPressButton = (item) => {
-   //console.log(item);
-
+    
+  onPressItem = (type, item) => {
     this.setState({ inviteIcon: this.state.inviteIcon === 'off' ? 'on' : 'off'});
-    /*
-    this.state.inviteList.push({
-      id: item.phoneNumber
-    })
-    */
+  };
+
+
+  render() {
+    const invButton = button[this.state.inviteIcon]
+    const rowData = this.props.item
+    return (
+      <ListItem>
+        <Body style={{ borderBottomWidth: 0 }}>
+          <Text>{rowData.name.first} {rowData.name.last}</Text>
+          <Text note>{rowData.cell}</Text>
+        </Body>
+        <Right style={{ borderBottomWidth: 0 }}>
+          <View style={styles.rightBtn}>
+            <Button
+              small
+              transparent
+              title="view"
+              onPress={() => this.onPressItem('invite', rowData.cell)}
+              style={styles.rightBtn}
+            >
+              <Icon name={invButton} style={styles.rightBtnIcon} />
+            </Button>
+          </View>
+        </Right>
+      </ListItem>
+    )
+  }
 }
 
- renderItem = ({item}) => {
-  const iname = button[this.state.inviteIcon];
-  console.log(iname);
-    return(
-        <View>
-        <ListItem
-        title = {item.fullName} 
-        subtitle = {item.phoneNumber}
-        onPress={() => { console.log(item.fullName) } }
-        key={item}
-        rightIcon={
-            <Ionicons
-            onPress = {() => this._onPressButton(item)}
-            name = {iname}
-         />
-     }
-     />
-     </View>
-     )
-}
-
-render(){
-	const row = this.renderItem(this.props.data);
-	return(
-		{row}
-		);
-}
-};
+const styles = StyleSheet.create({
+    rightBtn: {
+    margin: 0,
+    padding: 5
+  }
+});

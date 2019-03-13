@@ -1,6 +1,10 @@
 import React, { Component } from 'react';
-import { View, Text, FlatList, ActivityIndicator } from 'react-native';
+import { Alert, View, Text, FlatList, ActivityIndicator } from 'react-native';
 import { ListItem, SearchBar } from 'react-native-elements';
+import ContactRender from './ContactRender'
+
+
+
 
 export default class SearchScreen extends Component {
   constructor(props) {
@@ -10,6 +14,7 @@ export default class SearchScreen extends Component {
       loading: false,
       data: [],
       error: null,
+      invite:[]
     };
 
     this.arrayholder = [];
@@ -81,6 +86,7 @@ export default class SearchScreen extends Component {
     );
   };
 
+
   render() {
     if (this.state.loading) {
       return (
@@ -94,16 +100,12 @@ export default class SearchScreen extends Component {
         <FlatList
           data={this.state.data}
           renderItem={({ item }) => (
-            <ListItem
-              roundAvatar
-              leftAvatar={{ source: { uri: item.picture.thumbnail } }}
-              title={`${item.name.first} ${item.name.last}`}
-              subtitle={item.cell}
-            />
+            <ContactRender item={item}/>
           )}
-          keyExtractor={item => item.cell}
+          keyExtractor={item => item.email}
           ItemSeparatorComponent={this.renderSeparator}
           ListHeaderComponent={this.renderHeader}
+          refreshableMode="advanced"
         />
       </View>
     );
