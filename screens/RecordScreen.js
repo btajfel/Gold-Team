@@ -145,7 +145,6 @@ export default class CameraScreen extends React.Component {
         });
         this.setState({ newPhotos: true });
       }
-      
     }
   };
 
