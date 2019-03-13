@@ -1,6 +1,6 @@
 import React from 'react';
-import { Image, StyleSheet, View, TouchableOpacity, Text } from 'react-native';
-import { FaceDetector } from 'expo';
+import { StyleSheet, View, TouchableOpacity, Text } from 'react-native';
+import { Video, FaceDetector } from 'expo';
 import { Ionicons } from '@expo/vector-icons';
 
 const pictureSize = 150;
@@ -108,14 +108,12 @@ export default class Photo extends React.Component {
           onPress={this.toggleSelection}
           activeOpacity={1}
         >
-          <Image
+          <Video
             style={styles.picture}
             source={{ uri }}
+            useNativeControls
           />
           {this.state.selected && <Ionicons name="md-checkmark-circle" size={30} color="#4630EB" />}
-          <View style={styles.facesContainer}>
-            {this.renderFaces()}
-          </View>
         </TouchableOpacity>
       );
   };
@@ -128,7 +126,6 @@ const styles = StyleSheet.create({
     right: 0,
     left: 0,
     top: 0,
-    resizeMode: 'contain',
   },
   pictureWrapper: {
     width: pictureSize,

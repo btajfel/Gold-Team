@@ -9,6 +9,7 @@ import {
   Slider,
   Platform
 } from 'react-native';
+import GalleryScreen from './GalleryScreen';
 import isIPhoneX from 'react-native-is-iphonex';
 
 import { 
@@ -70,12 +71,19 @@ export default class CameraScreen extends React.Component {
     pictureSize: undefined,
     pictureSizes: [],
     pictureSizeId: 0,
+    recording: false,
+    recordingIcon: 'ios-radio-button-off',
+    recordingColor: 'white',
+    showGallery: false,
     showMoreOptions: false,
   };
 
   async componentWillMount() {
-    const { status } = await Permissions.askAsync(Permissions.CAMERA);
-    this.setState({ permissionsGranted: status === 'granted' });
+    const { status } = await Permissions.askAsync(Permissions.CAMERA)
+    if (status === 'granted'){
+      const { status } = await Permissions.askAsync(Permissions.AUDIO_RECORDING);
+      this.setState({ permissionsGranted: status === 'granted' });
+    }
   }
 
   componentDidMount() {
@@ -88,6 +96,8 @@ export default class CameraScreen extends React.Component {
     const ratios = await this.camera.getSupportedRatios();
     return ratios;
   };
+
+  toggleView = () => this.setState({ showGallery: !this.state.showGallery, newPhotos: false });
 
   toggleMoreOptions = () => this.setState({ showMoreOptions: !this.state.showMoreOptions });
 
@@ -111,21 +121,35 @@ export default class CameraScreen extends React.Component {
 
   toggleFaceDetection = () => this.setState({ faceDetecting: !this.state.faceDetecting });
 
-  takePicture = () => {
+  takeVideo =async () => {
     if (this.camera) {
-      this.camera.takePictureAsync({ onPictureSaved: this.onPictureSaved });
+      if (this.state.recording) {
+        this.setState({ 
+          recording: !this.state.recording,
+          recordingIcon: 'ios-radio-button-off',
+          recordingColor: 'white',
+        });
+        this.camera.stopRecording();
+      }
+      else {
+        this.setState({ 
+          recording: !this.state.recording,
+          recordingIcon: 'ios-radio-button-on',
+          recordingColor: 'red',
+        });
+        const video = await this.camera.recordAsync();
+        console.log(video);
+        await FileSystem.moveAsync({
+          from: video.uri,
+          to: `${FileSystem.documentDirectory}photos/${Date.now()}.mov`,
+        });
+        this.setState({ newPhotos: true });
+      }
+      
     }
   };
 
   handleMountError = ({ message }) => console.error(message);
-
-  onPictureSaved = async photo => {
-    await FileSystem.moveAsync({
-      from: photo.uri,
-      to: `${FileSystem.documentDirectory}photos/${Date.now()}.jpg`,
-    });
-    this.setState({ newPhotos: true });
-  }
 
   onBarCodeScanned = code => {
     this.setState(
@@ -163,6 +187,10 @@ export default class CameraScreen extends React.Component {
       newId = length -1;
     }
     this.setState({ pictureSize: this.state.pictureSizes[newId], pictureSizeId: newId });
+  }
+
+  renderGallery() {
+    return <GalleryScreen onPress={this.toggleView.bind(this)} />;
   }
 
   renderFace({ bounds, faceID, rollAngle, yawAngle }) {
@@ -261,10 +289,10 @@ export default class CameraScreen extends React.Component {
       </TouchableOpacity>
       <View style={{ flex: 0.4 }}>
         <TouchableOpacity
-          onPress={this.takePicture}
+          onPress={this.takeVideo}
           style={{ alignSelf: 'center' }}
         >
-          <Ionicons name="ios-radio-button-on" size={70} color="white" />
+          <Ionicons name={ this.state.recordingIcon } size={70} color={ this.state.recordingColor } />
         </TouchableOpacity>
       </View> 
       <TouchableOpacity style={styles.bottomButton} onPress={this.toggleView}>
@@ -344,7 +372,7 @@ export default class CameraScreen extends React.Component {
     const cameraScreenContent = this.state.permissionsGranted
       ? this.renderCamera()
       : this.renderNoPermissions();
-    const content = cameraScreenContent;
+    const content = this.state.showGallery ? this.renderGallery() : cameraScreenContent;
     return <View style={styles.container}>{content}</View>;
   }
 }
