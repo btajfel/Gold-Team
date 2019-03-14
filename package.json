@@ -10,6 +10,7 @@
     "@babel/runtime": "^7.3.4",
     "react": "16.6.3",
     "react-native": "0.58.6",
+    "react-native-elements": "^1.1.0",
     "react-native-gesture-handler": "^1.1.0",
     "react-native-ultimate-listview": "^3.3.0",
     "react-native-unified-contacts": "^1.6.2",

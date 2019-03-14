@@ -1,8 +1,20 @@
 import React, {Component} from "react";
 import {StyleSheet, View, Alert, Text, TouchableOpacity} from "react-native";
+import {ListItem, SearchBar} from 'react-native-elements';
 import {UltimateListView} from "react-native-ultimate-listview";
+import libraryProject from './libraryProject'
 
-export default class Example extends Component {
+export default class library extends Component {
+    constructor(props) {
+        super(props);
+    
+        this.state = {
+            data: [],
+            error: null,
+            loading: false
+        };
+        this.arrayholder = [];
+      }
 
     sleep = (time) => new Promise(resolve => setTimeout(() => resolve(), time));
 
@@ -13,49 +25,94 @@ export default class Example extends Component {
             if (this.state.layout === 'grid') pageLimit = 60;
             let skip = (page - 1) * pageLimit;
 
-            //Generate dummy data
-            let rowData = Array.from({length: pageLimit}, (value, index) => `item -> ${index + skip}`);
-
-            //Simulate the end of the list if there is no more data returned from the server
-            if (page === 10) {
-                rowData = [];
-            }
-
-            //Simulate the network loading in ES7 syntax (async/await)
-            await this.sleep(2000);
-            startFetch(rowData, pageLimit);
+            // startFetch(rowData, pageLimit);
         } catch (err) {
             abortFetch(); //manually stop the refresh or pagination if it encounters network error
             console.log(err);
         }     
     };
 
-    renderItem = (item, index, separator) => {
-        //write your own layout in list view
+    componentDidMount() {
+      this.makeRemoteRequest();
+    }
+  
+    makeRemoteRequest = () => {
+      const url = `https://randomuser.me/api/?&results=20`;
+      this.setState({ loading: true });
+  
+      fetch(url)
+        .then(res => res.json())
+        .then(res => {
+          this.setState({
+            data: res.results,
+            error: res.error || null,
+            loading: false,
+          });
+          this.arrayholder = res.results;
+        })
+        .catch(error => {
+          this.setState({ error, loading: false });
+        });
     };
+
+    renderItem = (item, index, separator) => {
+        <FlatListItem item={item} index={index} onPress={this.onPressItem} />
+        return null
+      }
 
     onPress = (index, item) => {
         Alert.alert(index, `You're pressing on ${item}`);
     };
 
+    renderHeaderView = () => {
+        return (
+          <SearchBar
+            placeholder="Type Here..."
+            lightTheme
+            round
+            onChangeText={text => this.searchFilterFunction(text)}
+            autoCorrect={false}
+            value={this.state.value}
+          />
+        );
+      };
+
+      renderSeparator = () => {
+        return (
+          <View
+            style={{
+              height: 1,
+              width: '86%',
+              backgroundColor: '#CED0CE',
+              marginLeft: '14%',
+            }}
+          />
+        );
+      };
+
     render() {
-        return (           
+        return (
           <UltimateListView
               ref={(ref) => this.listView = ref}             
               onFetch={this.onFetch}
               keyExtractor={(item, index) => `${this.state.layout} - ${item}`}  //this is required when you are using FlatList
               refreshableMode="advanced" //basic or advanced
-              item={this.renderItem}  //this takes two params (item, index)
-              numColumn={1} //to use grid layout, simply set gridColumn > 1
+            //   item={this.renderItem}  //this takes two params (item, index)
+              numColumn={1} //to use grid layout, simply set gridColumn > 
 
+              renderItem={({ item }) => (
+                <libraryProject item={item}/>
+              )}
+              
              //----Extra Config----
              header={this.renderHeaderView}
-             paginationFetchingView={this.renderPaginationFetchingView}           
-             paginationFetchingView={this.renderPaginationFetchingView}
-             paginationAllLoadedView={this.renderPaginationAllLoadedView}
-             paginationWaitingView={this.renderPaginationWaitingView}
-             emptyView={this.renderEmptyView}
-             separator={this.renderSeparatorView}
+             ItemSeparatorComponent={this.renderSeparator}
+            //  paginationFetchingView={this.renderPaginationFetchingView}           
+            //  paginationFetchingView={this.renderPaginationFetchingView}
+            //  paginationAllLoadedView={this.renderPaginationAllLoadedView}
+            //  paginationWaitingView={this.renderPaginationWaitingView}
+            //  emptyView={this.renderEmptyView}
+            //  separator={this.renderSeparatorView}
            />
         );
     }

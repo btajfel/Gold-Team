@@ -13,6 +13,7 @@ import {createAppContainer, createStackNavigator, StackNavigator} from 'react-na
 import friends from './screens/friends'
 import home from './screens/home'
 import library from './screens/library'
+import libraryProject from './screens/libraryProject'
 import record from './screens/record'
 
 
