@@ -7,7 +7,7 @@ from camcrew.api.error_handler import InvalidUsage
 
 @camcrew.app.route('/api/v1/<int:projectid>/save/',
                     methods=["POST"])
-def get_creators(projectid):
+def post_save(projectid):
 	logname = flask.session["logname"]
 	projectid = projectid
 	cur = crewcam.model.get_db().cursor()
@@ -17,5 +17,4 @@ def get_creators(projectid):
 		cur.execute('INSERT INTO projects(postid, name, \
 			owner, created) VALUES (?,?,?,datetime("now"));',
 			(postid, FIX, logname))
-
 	return flask.jsonify()
