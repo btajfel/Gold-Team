@@ -1,8 +1,10 @@
 import React, { Component } from 'react';
 import { Alert, View, Text, FlatList, ActivityIndicator } from 'react-native';
 import { ListItem, SearchBar } from 'react-native-elements';
-import ContactRender from './ContactRender'
-
+import ContactRender from './ContactRender';
+import {Permissions, openSettings} from 'react-native-permissions';
+import { PermissionsAndroid } from 'react-native';
+import Contacts from 'react-native-contacts';
 
 
 
@@ -14,15 +16,86 @@ export default class SearchScreen extends Component {
       loading: false,
       data: [],
       error: null,
-      invite:[]
+      users: [],
+      invite: [],
+      myContacts: []
     };
 
     this.arrayholder = [];
+    this.APIholder = [];
   }
 
   componentDidMount() {
     this.makeRemoteRequest();
+    this.makeUserAPIRequest();
+    this.getUserContacts();
+  //  this.timer = setInterval(()=> this.getInvites(), 5)
   }
+
+/*
+
+SHOULD PUT THIS ON RECORD SCREEN
+
+
+  getInvites = () =>{
+   fetch('invite api URL', {method: "GET"})
+  .then((response) => response.json())
+  .then((responseData) =>
+  {
+
+    if you receive invite, open alert for accept or deny request.
+    if accept, send post to invite api to add it to collaborators table and delete it from pending invites table
+    by checking for it by users and project id
+    //set your data here
+     console.log(responseData);
+  })
+  .catch((error) => {
+      console.error(error);
+  });
+}
+
+*/
+
+/*
+pressDone = (type, item) => {
+    this.setState({ inviteIcon: this.state.inviteIcon === 'off' ? 'on' : 'off'});
+  };
+
+*/
+  
+  async getUserContacts(){
+    const permission = await Expo.Permissions.askAsync(Expo.Permissions.CONTACTS);
+     if (permission.status !== 'granted') {
+    this.alertUserToAllowAccessToContacts();
+    }
+
+    const contacts = await Expo.Contacts.getContactsAsync({
+    fields: [
+      Expo.Contacts.PHONE_NUMBERS,
+      Expo.Contacts.PHONETIC_FIRST_NAME,
+      Expo.Contacts.PHONETIC_LAST_NAME,
+    ],
+  });
+
+  this.setState({
+          myContacts: contacts.data
+        });
+  };
+
+alertUserToAllowAccessToContacts = () => {
+  Alert.alert(
+    "Can't Access Your Contacts",
+    "Click on Open Settings and allow CrewCam to access your Contacts.\n" +
+    "\n" +
+    "Then come back!",
+    [
+    {text: "Later", style: 'cancel'},
+    {text: 'Open Settings', onPress: () => Permissions.openSettings() }
+    ]
+    )
+};
+
+
 
   makeRemoteRequest = () => {
     const url = `https://randomuser.me/api/?&results=20`;
@@ -37,6 +110,26 @@ export default class SearchScreen extends Component {
           loading: false,
         });
         this.arrayholder = res.results;
+      })
+      .catch(error => {
+        this.setState({ error, loading: false });
+      });
+  };
+
+
+  makeUserAPIRequest = () => {
+    const url = `https://randomuser.me/api/?&results=20`;
+    this.setState({ loading: true });
+
+    fetch(url)
+      .then(res => res.json())
+      .then(res => {
+        this.setState({
+          users: res.results,
+          error: res.error || null,
+          loading: false,
+        });
+        this.APIholder = res.results;
       })
       .catch(error => {
         this.setState({ error, loading: false });
@@ -62,7 +155,7 @@ export default class SearchScreen extends Component {
       value: text,
     });
 
-    const newData = this.arrayholder.filter(item => {
+    const newData = this.APIholder.filter(item => {
       const itemData = `${item.name.title.toUpperCase()} ${item.name.first.toUpperCase()} ${item.name.last.toUpperCase()}`;
       const textData = text.toUpperCase();
 
@@ -98,11 +191,11 @@ export default class SearchScreen extends Component {
     return (
       <View style={{ flex: 1 }}>
         <FlatList
-          data={this.state.data}
+          data={this.state.myContacts}
           renderItem={({ item }) => (
             <ContactRender item={item}/>
           )}
-          keyExtractor={item => item.email}
+          keyExtractor={item => item.id}
           ItemSeparatorComponent={this.renderSeparator}
           ListHeaderComponent={this.renderHeader}
           refreshableMode="advanced"

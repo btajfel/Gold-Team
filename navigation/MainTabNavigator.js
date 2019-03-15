@@ -19,6 +19,16 @@ ContactsStack.navigationOptions = {
       name={Platform.OS === 'ios' ? 'ios-contacts' : 'md-contacts'}
     />
   ),
+  /*
+  headerTitle: <LogoTitle />,
+    headerRight: (
+      <Button
+        button = <ContactsScreen onPress={this.pressDone}>
+        title = "Done"
+        color = "#fff"
+      />
+    ),
+    */
 };
 
 const RecordStack = createStackNavigator({

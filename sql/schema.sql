@@ -19,11 +19,11 @@ CREATE TABLE projects(
 );
 
 CREATE TABLE creators(
-  creatorid INTEGER PRIMARY KEY,
   username VARCHAR(20) NOT NULL,
-  projectid INT NOT NULL,
+  projectid INTEGER NOT NULL,
   filename VARCHAR(64) NOT NULL,
   created TIMESTAMP NOT NULL,
+  PRIMARY KEY(username, projectid),
   FOREIGN KEY(username) REFERENCES users(username)
     ON DELETE CASCADE
     ON UPDATE CASCADE,
@@ -32,11 +32,31 @@ CREATE TABLE creators(
     ON UPDATE CASCADE
 );
 
-CREATE TABLE friends(
+CREATE TABLE collaborators(
+  projectid INTEGER NOT NULL,
   username1 VARCHAR(20) NOT NULL,
   username2 VARCHAR(20) NOT NULL,
   created TIMESTAMP NOT NULL,
-  PRIMARY KEY(username1, username2),
+  PRIMARY KEY(projectid, username1, username2),
+  FOREIGN KEY(projectid) REFERENCES projects(projectid)
+    ON DELETE CASCADE
+    ON UPDATE CASCADE,
+  FOREIGN KEY(username1) REFERENCES users(username)
+    ON DELETE CASCADE
+    ON UPDATE CASCADE,
+  FOREIGN KEY(username2) REFERENCES users(username)
+    ON DELETE CASCADE
+    ON UPDATE CASCADE
+);
+
+CREATE TABLE pendingInvites(
+  projectid INTEGER NOT NULL,
+  username1 VARCHAR(20) NOT NULL,
+  username2 VARCHAR(20) NOT NULL,
+  PRIMARY KEY(projectid, username2),
+  FOREIGN KEY(projectid) REFERENCES projects(projectid)
+    ON DELETE CASCADE
+    ON UPDATE CASCADE,
   FOREIGN KEY(username1) REFERENCES users(username)
     ON DELETE CASCADE
     ON UPDATE CASCADE,
