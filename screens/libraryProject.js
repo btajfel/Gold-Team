@@ -1,20 +1,15 @@
 import React, {Component} from "react";
-import {StyleSheet, View, Alert, Text, TouchableOpacity} from "react-native";
-import {UltimateListView} from "react-native-ultimate-listview";
-import { ListItem } from "react-native-elements";
+import { StyleSheet, View, Alert, TouchableOpacity, Image, TouchableHighlight } from 'react-native'
+import { Button, ListItem, Left, Right, Body, Thumbnail, Text, Icon } from 'native-base'
 
 
-export default class library extends Component {
+
+export default class LibraryProject extends Component {
     constructor(props) {
         super(props);
         this.state = {
             // projectName: "project"
         };
-      }
-
-    renderItem = (item, index, separator) => {
-        <FlatListItem item={item} index={index} onPress={this.onPressItem} />
-        return null
       }
 
     onPress = (index, item) => {
@@ -34,10 +29,9 @@ export default class library extends Component {
                             small
                             transparent
                             title="view"
-                            // onPress={() => this.onPressItem('invite', rowData.cell)}
                             style={styles.editButton}
                         >
-                            <Icon name={editButton} style={styles.editButton} />
+                            <Icon name="download" />
                         </Button>
                     </View>
                 </Right>

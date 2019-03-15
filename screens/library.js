@@ -1,8 +1,7 @@
 import React, {Component} from "react";
-import {StyleSheet, View, Alert, Text, TouchableOpacity} from "react-native";
-import {ListItem, SearchBar} from 'react-native-elements';
-import {UltimateListView} from "react-native-ultimate-listview";
-import libraryProject from './libraryProject'
+import { Alert, View, Text, FlatList, ActivityIndicator } from 'react-native';
+import { ListItem, SearchBar } from 'react-native-elements';
+import LibraryProject from './libraryProject'
 
 export default class library extends Component {
     constructor(props) {
@@ -11,7 +10,8 @@ export default class library extends Component {
         this.state = {
             data: [],
             error: null,
-            loading: false
+            loading: false,
+            index: 0
         };
         this.arrayholder = [];
       }
@@ -55,10 +55,9 @@ export default class library extends Component {
         });
     };
 
-    renderItem = (item, index, separator) => {
-        <FlatListItem item={item} index={index} onPress={this.onPressItem} />
-        return null
-      }
+    // renderItem = (item, index, separator) => {
+    //     return <FlatListItem item={item} index={index} onPress={this.onPressItem} />
+    //   }
 
     onPress = (index, item) => {
         Alert.alert(index, `You're pressing on ${item}`);
@@ -91,19 +90,27 @@ export default class library extends Component {
       };
 
     render() {
+      if (this.state.loading) {
         return (
-          <UltimateListView
-              ref={(ref) => this.listView = ref}             
-              onFetch={this.onFetch}
-              keyExtractor={(item, index) => `${this.state.layout} - ${item}`}  //this is required when you are using FlatList
-              refreshableMode="advanced" //basic or advanced
-            //   item={this.renderItem}  //this takes two params (item, index)
-              numColumn={1} //to use grid layout, simply set gridColumn > 
-
-              renderItem={({ item }) => (
-                <libraryProject item={item}/>
-              )}
-              
+          <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
+            <ActivityIndicator />
+          </View>
+        );
+      }
+        return (
+          <FlatList
+            ref={(ref) => this.listView = ref}
+            data = {this.state.data}
+            renderItem={({ item }) => (
+              <LibraryProject item={item}/>
+            )}
+            onFetch={this.onFetch}
+            keyExtractor={item => item.email}
+            // keyExtractor={(item, index) => `${this.state.layout} - ${item}`}  //this is required when you are using FlatList
+            refreshableMode="advanced" //basic or advanced
+            // item={this.renderItem}  //this takes two params (item, index)
+            numColumn={1} //to use grid layout, simply set gridColumn > 
+            
              //----Extra Config----
              header={this.renderHeaderView}
              ItemSeparatorComponent={this.renderSeparator}
