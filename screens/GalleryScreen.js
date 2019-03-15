@@ -3,6 +3,7 @@ import { Image, StyleSheet, View, TouchableOpacity, Text, ScrollView } from 'rea
 import { FileSystem, FaceDetector, MediaLibrary, Permissions } from 'expo';
 import { MaterialIcons } from '@expo/vector-icons';
 import Photo from './Photo';
+import PropTypes from 'prop-types';
 
 const PHOTOS_DIR = FileSystem.documentDirectory + 'photos';
 
@@ -29,25 +30,47 @@ export default class GalleryScreen extends React.Component {
     this.setState({ selected });
   };
 
+// CHANGE THIS FUNCTION
   saveToGallery = async () => {
-    const photos = this.state.selected;
-
+    const photos = this.state.selected[0];
+    const type = 'video/mov';
+    // photos.map(photo => {
+    const data = new FormData();
+    data.append("video", {
+      name: "video-upload",
+      type,
+      photos
+    });
+    // FIXME (projectid)
+    const url = 'http://localhost:8000/api/v1/1/save/';
     if (photos.length > 0) {
-      const { status } = await Permissions.askAsync(Permissions.CAMERA_ROLL);
-
-      if (status !== 'granted') {
-        throw new Error('Denied CAMERA_ROLL permissions!');
+      try {
+        await fetch(url, {
+          credentials: 'same-origin',
+          method: 'POST',
+          body: data
+        });
+        alert('Videos Saved to Project');
+      } catch (e) {
+        console.error(e)
       }
-
-      const promises = photos.map(photoUri => {
-        return MediaLibrary.createAssetAsync(photoUri);
-      });
-
-      await Promise.all(promises);
-      alert('Successfully saved photos to user\'s gallery!');
-    } else {
-      alert('No photos to save!');
     }
+    // });
+    //   const { status } = await Permissions.askAsync(Permissions.CAMERA_ROLL);
+
+    //   if (status !== 'granted') {
+    //     throw new Error('Denied CAMERA_ROLL permissions!');
+    //   }
+
+    //   const promises = photos.map(photoUri => {
+    //     return MediaLibrary.createAssetAsync(photoUri);
+    //   });
+
+    //   await Promise.all(promises);
+    //   alert('Successfully saved photos to user\'s gallery!');
+    // } else {
+    //   alert('No photos to save!');
+    // }
   };
 
   renderPhoto = fileName => 
@@ -64,7 +87,7 @@ export default class GalleryScreen extends React.Component {
           <TouchableOpacity style={styles.button} onPress={this.props.onPress}>
             <MaterialIcons name="arrow-back" size={25} color="white" />
           </TouchableOpacity>
-          <TouchableOpacity style={styles.button} onPress={this.saveToGallery}>
+          <TouchableOpacity style={styles.button} onPress={this.saveToGallery}> 
             <Text style={styles.whiteText}>Save selected to gallery</Text>
           </TouchableOpacity>
         </View>

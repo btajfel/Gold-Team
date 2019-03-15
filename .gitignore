@@ -3,6 +3,8 @@ ios/
 android/
 env/
 var/
-*/__pycache__/*
+__pycache__/
+.expo/
+*.egg-info*
 .expo/
 .DS_Store
