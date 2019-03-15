@@ -1,5 +1,5 @@
 import React from 'react';
-import { Platform } from 'react-native';
+import { Platform, Button } from 'react-native';
 import { createStackNavigator, createBottomTabNavigator } from 'react-navigation';
 
 import TabBarIcon from '../components/TabBarIcon';
@@ -12,23 +12,14 @@ const ContactsStack = createStackNavigator({
 });
 
 ContactsStack.navigationOptions = {
-  tabBarLabel: 'Contacts',
+  tabBarLabel: 'Invite',
   tabBarIcon: ({ focused }) => (
     <TabBarIcon
       focused={focused}
       name={Platform.OS === 'ios' ? 'ios-contacts' : 'md-contacts'}
     />
   ),
-  /*
-  headerTitle: <LogoTitle />,
-    headerRight: (
-      <Button
-        button = <ContactsScreen onPress={this.pressDone}>
-        title = "Done"
-        color = "#fff"
-      />
-    ),
-    */
+
 };
 
 const RecordStack = createStackNavigator({

@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Alert, View, Text, FlatList, ActivityIndicator } from 'react-native';
+import { Alert, View, Text, Button, FlatList, ActivityIndicator } from 'react-native';
 import { ListItem, SearchBar } from 'react-native-elements';
 import ContactRender from './ContactRender';
 import {Permissions, openSettings} from 'react-native-permissions';
@@ -9,6 +9,19 @@ import Contacts from 'react-native-contacts';
 
 
 export default class SearchScreen extends Component {
+
+    static navigationOptions = ({ navigation }) => {
+    return {
+      headerRight: (
+      <Button
+          onPress={() => alert('This is a button!')}
+          title="Done"
+          color="black"
+      />
+      ),
+    };
+  };
+
   constructor(props) {
     super(props);
 
@@ -33,16 +46,12 @@ export default class SearchScreen extends Component {
   }
 
 /*
-
 SHOULD PUT THIS ON RECORD SCREEN
-
-
   getInvites = () =>{
    fetch('invite api URL', {method: "GET"})
   .then((response) => response.json())
   .then((responseData) =>
   {
-
     if you receive invite, open alert for accept or deny request.
     if accept, send post to invite api to add it to collaborators table and delete it from pending invites table
     by checking for it by users and project id
@@ -53,14 +62,12 @@ SHOULD PUT THIS ON RECORD SCREEN
       console.error(error);
   });
 }
-
 */
 
 /*
 pressDone = (type, item) => {
     this.setState({ inviteIcon: this.state.inviteIcon === 'off' ? 'on' : 'off'});
   };
-
 */
   
   async getUserContacts(){
@@ -94,6 +101,22 @@ alertUserToAllowAccessToContacts = () => {
     ]
     )
 };
+
+  
+  async sendInvites(){
+    const invited = this.state.invite;
+    const url = 'http://localhost:8000/api/v1/1/invite/';
+      try {
+        await fetch(url, {
+          credentials: 'same-origin',
+          method: 'POST',
+          body: invited
+        });
+        alert('Send invites');
+      } catch (e) {
+        console.error(e)
+      }
+  }
 
 
 

@@ -17,7 +17,15 @@ VALUES (1, 'azarrabi', 3, 'test.mov', datetime('now', 'localtime')),
 	   (2, 'armruval', 3, 'test.mov', datetime('now', 'localtime')),
 	   (3, 'btajfel', 3, 'test.mov', datetime('now', 'localtime'));
 
-INSERT INTO friends(username1, username2, created)
+INSERT INTO collaborators(username1, username2, created)
+VALUES ('azarrabi', 'armruval', datetime('now', 'localtime')),
+	   ('azarrabi', 'btajfel', datetime('now', 'localtime')),
+	   ('azarrabi', 'makaela', datetime('now', 'localtime')),
+	   ('azarrabi', 'mattjw', datetime('now', 'localtime')),
+	   ('azarrabi', 'tobymac', datetime('now', 'localtime')),
+	   ('azarrabi', 'tjsande', datetime('now', 'localtime'));
+
+INSERT INTO pendingInvites(username1, username2, created)
 VALUES ('azarrabi', 'armruval', datetime('now', 'localtime')),
 	   ('azarrabi', 'btajfel', datetime('now', 'localtime')),
 	   ('azarrabi', 'makaela', datetime('now', 'localtime')),
