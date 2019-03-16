@@ -7,22 +7,16 @@ import camcrew
 from camcrew.api.error_handler import InvalidUsage
 
 
-
 @camcrew.app.route('/api/v1/contacts/',
                    methods=["GET"])
 
 def get_users():
 
-	context = {}
+    context = {}
 
-    conn = insta485.model.get_db()
-    cur = connect.cursor()
+    cur = camcrew.model.get_db().cursor()
 
-	contacts = cur.execute("""\
-        SELECT username, fullname, phonenumber FROM users
-        """).fetchall()
-	context['allContacts'] = contacts
-    connect.commit()
+    cur.execute('SELECT username, fullname, phonenumber FROM users')
+    context['allContacts'] = cur.fetchall()
 
-
-	return flask.jsonify(**context), 201
+    return flask.jsonify(**context), 201

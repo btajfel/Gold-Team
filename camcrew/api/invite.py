@@ -7,30 +7,21 @@ import camcrew
 from camcrew.api.error_handler import InvalidUsage
 
 
-
-
 @camcrew.app.route('/api/v1/invite/',
                    methods=["GET", "POST"])
-
 def invite():
+    context = {}
+    cur = camcrew.model.get_db().cursor()
 
-	context = {}
-
-    conn = insta485.model.get_db()
-    cur = connect.cursor()
-
-
-  	if flask.request.method == "POST":
-    	cur.execute("""\
-            INSERT INTO collaborators
-            VALUES ('%s', '%s')
-            """ % (flask.session['username'], postid_url_slug))
+    if flask.request.method == "POST":
+        cur.execute('\
+            INSERT INTO collaborators \
+            VALUES (?, ?) \
+            ', (flask.session['username'], postid_url_slug))
 
     contacts = cur.execute("""\
         SELECT username, fullname, phonenumber FROM users
         """).fetchall()
-	context['allContacts'] = contacts
-    connect.commit()
+    context['allContacts'] = contacts
 
-
-	return flask.jsonify(**context), 201
+    return flask.jsonify(**context), 201

@@ -121,7 +121,7 @@ export default class CameraScreen extends React.Component {
 
   toggleFaceDetection = () => this.setState({ faceDetecting: !this.state.faceDetecting });
 
-  takeVideo =async () => {
+  takeVideo = async () => {
     if (this.camera) {
       if (this.state.recording) {
         this.setState({ 

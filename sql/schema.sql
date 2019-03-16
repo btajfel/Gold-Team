@@ -19,6 +19,7 @@ CREATE TABLE projects(
 );
 
 CREATE TABLE creators(
+  creatorid INTEGER NOT NULL,
   username VARCHAR(20) NOT NULL,
   projectid INTEGER NOT NULL,
   filename VARCHAR(64) NOT NULL,
