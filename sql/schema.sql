@@ -51,9 +51,10 @@ CREATE TABLE collaborators(
 );
 
 CREATE TABLE pendingInvites(
-  projectid INTEGER NOT NULL,
+  projectid INTEGER,
   username1 VARCHAR(20) NOT NULL,
   username2 VARCHAR(20) NOT NULL,
+  created TIMESTAMP NOT NULL,
   PRIMARY KEY(projectid, username2),
   FOREIGN KEY(projectid) REFERENCES projects(projectid)
     ON DELETE CASCADE
