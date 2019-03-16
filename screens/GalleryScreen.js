@@ -44,11 +44,9 @@ export default class GalleryScreen extends React.Component {
     const url = 'http://crewcam.eecs.umich.edu/api/v1/1/save/';
     try {
       const response = await fetch(url, {
-        "method": "POST",
-        "headers": {
-          "Content_Type": "multipart/form-data",
-        },
-        "data": form
+        method: "POST",
+        headers: new Headers({'Content-Type': 'multipart/form-data'}),
+        body: form
       });
       alert('Videos Saved to Project');
       console.log(response)

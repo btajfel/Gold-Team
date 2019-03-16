@@ -31,8 +31,7 @@ def post_save(projectid):
     # Move temp file to permanent location
     shutil.move(temp_filename, new_filename)
 
-    context["name"] = flask.request.form["name"]
-    context["type"] = flask.request.form["type"]
+    context["file"] = file.filename
 
     # projects(projectid, name, owner, created)
     if flask.request.method == 'POST':
