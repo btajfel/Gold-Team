@@ -35,27 +35,27 @@ export default class GalleryScreen extends React.Component {
     const photos = this.state.selected[0];
     const type = 'video/mov';
     // photos.map(photo => {
-    const data = new FormData();
-    data.append("video", {
-      name: "video-upload",
-      type,
-      photos
-    });
+    const form = new FormData();
+    form.append("name", "\"video-upload\"");
+    form.append("type", type);
+    form.append("file", photos);
+    console.log(photos)
     // FIXME (projectid)
-    const url = 'http://localhost:8000/api/v1/1/save/';
-    if (photos.length > 0) {
-      try {
-        await fetch(url, {
-          credentials: 'same-origin',
-          method: 'POST',
-          body: data
-        });
-        alert('Videos Saved to Project');
-      } catch (e) {
-        console.error(e)
-      }
+    const url = 'http://crewcam.eecs.umich.edu/api/v1/1/save/';
+    try {
+      const response = await fetch(url, {
+        "method": "POST",
+        "headers": {
+          "Content_Type": "multipart/form-data",
+        },
+        "data": form
+      });
+      alert('Videos Saved to Project');
+      console.log(response)
+    } catch (e) {
+      console.error(e)
     }
-    // });
+        // });
     //   const { status } = await Permissions.askAsync(Permissions.CAMERA_ROLL);
 
     //   if (status !== 'granted') {
