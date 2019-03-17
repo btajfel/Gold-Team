@@ -14,7 +14,7 @@ export default class SearchScreen extends Component {
     return {
       headerRight: (
       <Button
-          onPress={() => alert('This is a button!')}
+          onPress={() => alert('Friends invited and ready to record!')}
           title="Done"
           color="black"
       />

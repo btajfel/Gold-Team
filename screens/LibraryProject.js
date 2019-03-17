@@ -1,5 +1,6 @@
 import React, {Component} from "react";
 import { StyleSheet, View, Alert, TouchableOpacity, Image, TouchableHighlight } from 'react-native'
+import { Permissions } from "expo";
 import { Button, ListItem, Left, Right, Body, Thumbnail, Text, Icon } from 'native-base'
 
 
@@ -12,8 +13,24 @@ export default class LibraryProject extends Component {
         };
       }
 
-    onPress = (index, item) => {
-        Alert.alert(index, `You're pressing on ${item}`);
+    handlePress = async () => {
+      //   if (photos.length > 0) {
+      //   const { status } = await Permissions.askAsync(Permissions.CAMERA_ROLL);
+
+      //   if (status !== 'granted') {
+      //     throw new Error('Denied CAMERA_ROLL permissions!');
+      //   }
+
+      //   const promises = photos.map(photoUri => {
+      //     return MediaLibrary.createAssetAsync(photoUri);
+      //   });
+
+      //   await Promise.all(promises);
+      //   alert('Successfully saved photos to user\'s gallery!');
+      // } else {
+      //   alert('No photos to save!');
+      // }
+      alert('Video exported to Camera Roll')
     };
 
     render() {
@@ -21,15 +38,17 @@ export default class LibraryProject extends Component {
         return (
             <ListItem>
                 <Body style={{ borderBottomWidth: 0 }}>
-                    <Text>{rowData.name.first}</Text>
+                    <Text style={{fontWeight: "bold"}}>{rowData.name}</Text>
+                    <Text Note>{rowData.owner}</Text>
                 </Body>
                 <Right style={{ borderBottomWidth: 0 }}>
-                    <View style={styles.editButton}>
+                    <View style={styles.exportButton}>
                         <Button
                             small
                             transparent
                             title="view"
-                            style={styles.editButton}
+                            onPress={this.handlePress}
+                            style={styles.exportButton}
                         >
                             <Icon name="download" />
                         </Button>
@@ -41,7 +60,7 @@ export default class LibraryProject extends Component {
 }
 
 const styles = StyleSheet.create({
-    editButton: {
+    exportButton: {
     margin: 0,
     padding: 5
   }

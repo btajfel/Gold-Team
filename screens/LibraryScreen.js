@@ -37,14 +37,15 @@ export default class library extends Component {
     }
   
     makeRemoteRequest = () => {
-      const url = `https://randomuser.me/api/?&results=20`;
+      const url = `http://crewcam.eecs.umich.edu/api/v1/projects/`;
       this.setState({ loading: true });
   
       fetch(url)
         .then(res => res.json())
         .then(res => {
+        	console.log(res)
           this.setState({
-            data: res.results,
+            data: res.projects,
             error: res.error || null,
             loading: false,
           });
@@ -105,7 +106,7 @@ export default class library extends Component {
               <LibraryProject item={item}/>
             )}
             onFetch={this.onFetch}
-            keyExtractor={item => item.email}
+            keyExtractor={item => item.name}
             // keyExtractor={(item, index) => `${this.state.layout} - ${item}`}  //this is required when you are using FlatList
             refreshableMode="advanced" //basic or advanced
             // item={this.renderItem}  //this takes two params (item, index)
