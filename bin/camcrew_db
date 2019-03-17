@@ -25,7 +25,6 @@ case $1 in
     mkdir -p var/uploads
     sqlite3 var/camcrew.sqlite3 < sql/schema.sql
     sqlite3 var/camcrew.sqlite3 < sql/data.sql
-    cp sql/uploads/* var/uploads/
     echo "+ mkdir -p var/uploads
 + sqlite3 var/camcrew.sqlite3 < sql/schema.sql
 + sqlite3 var/camcrew.sqlite3 < sql/data.sql
@@ -42,7 +41,6 @@ case $1 in
     mkdir -p var/uploads
     sqlite3 var/camcrew.sqlite3 < sql/schema.sql
     sqlite3 var/camcrew.sqlite3 < sql/data.sql
-    cp sql/uploads/* var/uploads/
     echo "+ rm -rf var/camcrew.sqlite3 var/uploads
 + mkdir -p var/uploads
 + sqlite3 var/camcrew.sqlite3 < sql/schema.sql
