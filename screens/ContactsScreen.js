@@ -31,7 +31,7 @@ export default class SearchScreen extends Component {
       error: null,
       users: [],
       invite: [],
-      myContacts: []
+      myContacts: [],
     };
 
     this.arrayholder = [];
@@ -105,7 +105,7 @@ alertUserToAllowAccessToContacts = () => {
   
   async sendInvites(){
     const invited = this.state.invite;
-    const url = 'http://localhost:8000/api/v1/1/invite/';
+    const url = 'http://crewcam.eecs.umich.edu/api/v1/1/invite/';
       try {
         await fetch(url, {
           credentials: 'same-origin',
@@ -173,7 +173,7 @@ alertUserToAllowAccessToContacts = () => {
     );
   };
 
-  searchFilterFunction = text => {
+  searchFilterFunction = async (text) => {
     this.setState({
       value: text,
     });
@@ -211,12 +211,19 @@ alertUserToAllowAccessToContacts = () => {
         </View>
       );
     }
+
+    // addInvite={(invite) => this.setState(prevState => ({
+    //             results: prevState.results.concat(data),
+    //             value: '',
+    //           }))}
     return (
       <View style={{ flex: 1 }}>
         <FlatList
           data={this.state.myContacts}
           renderItem={({ item }) => (
-            <ContactRender item={item}/>
+            <ContactRender 
+              item={item}
+            />
           )}
           keyExtractor={item => item.id}
           ItemSeparatorComponent={this.renderSeparator}

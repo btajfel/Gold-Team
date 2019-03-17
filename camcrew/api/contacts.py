@@ -13,7 +13,6 @@ from camcrew.api.error_handler import InvalidUsage
 def get_users():
 
     context = {}
-
     cur = camcrew.model.get_db().cursor()
 
     cur.execute('SELECT username, fullname, phonenumber FROM users')

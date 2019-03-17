@@ -33,19 +33,18 @@ export default class GalleryScreen extends React.Component {
 // CHANGE THIS FUNCTION
   saveToGallery = async () => {
     const photos = this.state.selected[0];
-    const type = 'video/mov';
+    // const type = 'video/mov';
     // photos.map(photo => {
     const form = new FormData();
-    form.append("name", "\"video-upload\"");
-    form.append("type", type);
-    form.append("file", photos);
+    // form.append("name", "\"video-upload\"");
+    // form.append("type", type);
+    form.append('file', photos);
     console.log(photos)
     // FIXME (projectid)
-    const url = 'http://crewcam.eecs.umich.edu/api/v1/1/save/';
+    const url = 'http://crewcam.eecs.umich.edu/api/v1/3/save/';
     try {
       const response = await fetch(url, {
-        method: "POST",
-        headers: new Headers({'Content-Type': 'multipart/form-data'}),
+        method: 'POST',
         body: form
       });
       alert('Videos Saved to Project');
