@@ -1,12 +1,9 @@
 """REST API for saving."""
 import json
 import flask
-<<<<<<< HEAD
 import tempfile
 import os
 import shutil
-=======
->>>>>>> dd04e59b9b8b1898ce08115488ab47620fd323bb
 import camcrew
 from camcrew.api.error_handler import InvalidUsage
 
