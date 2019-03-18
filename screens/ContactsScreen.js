@@ -42,7 +42,7 @@ export default class SearchScreen extends Component {
   componentDidMount() {
    // this.makeRemoteRequest();
     this.getUserContacts();
-    this.makeUserAPIRequest();
+    //this.makeUserAPIRequest();
   //  this.timer = setInterval(()=> this.getInvites(), 5)
   }
 
@@ -85,10 +85,14 @@ pressDone = (type, item) => {
     ],
   });
 
+
+
   this.setState({
           myContacts: contacts.data
         });
   this.arrayholder = contacts.data;
+
+  this.makeUserAPIRequest();
   };
 
 alertUserToAllowAccessToContacts = () => {
@@ -136,7 +140,8 @@ alertUserToAllowAccessToContacts = () => {
         this.APIholder = res.allContacts;
       })
       .then(() =>{
-        this.joinList(this.state.users, this.state.myContacts);
+        this.joinList();
+        console.log("here2");
         })
       .catch(error => {
         this.setState({ error, loading: false });
@@ -144,22 +149,32 @@ alertUserToAllowAccessToContacts = () => {
       
   };
 
-  joinList = (usersList, contactsList) =>{
-    var i;
-    var j;
-    const finalList = [];
-    for (i = 0; i < usersList.size(); i++){
-      for (j= 0; j < contactsList.size() j++){
-        if(usersList[i].phoneNumbers === contactsList[j].phonenumber){
-          finalList.push(contactsList[j]);
-        }
-      }
+  joinList = () =>{
+    const usersList = this.state.users;
+    const contactsList = this.state.myContacts;
+    //console.log("here "); //+ Object.keys(usersList).length());
+    let finalList = [];
+/*
+    usersList.forEach(function(userData) {
+      contactsList.forEach(function(contactData) {
+        console.log("contacts " + contactData.firstName);
+        console.log(contactData.phoneNumbers[0].digits);
+        console.log("users " + userData.fullname)
+        console.log(userData.phonenumber);
+          if(userData.phonenumber === contactData.phoneNumbers[0].digits){
+            console.log("GOT HERE");
+            //finalList.push(contactData);
+          }
+          
+    });
 
-    }
+    console.log("here2");
+     });
+     */
     this.setState({
       totalUsers: finalList,
     })
-    console.log(finalList);
+    //console.log("here" + finalList);
   }
 
 
@@ -181,9 +196,10 @@ alertUserToAllowAccessToContacts = () => {
       value: text,
     });
     const newData = this.arrayholder.filter(item => {
-      const itemData = "firstName" in item ? `${item.firstName.toUpperCase()}` : '' + "lastName" in item ? `${item.lastName.toUpperCase()}` : '';
+      const itemNumber = "phoneNumbers" in item ? `${item.phoneNumbers[0].digits}` : '';
+      const itemName = "name" in item ? `${item.name.toUpperCase()}` : '';
       const textData = text.toUpperCase();
-      console.log(itemData.indexOf(textData) > -1);
+      const itemData = itemNumber + itemName;
       return itemData.indexOf(textData) > -1;
     });
     this.setState({

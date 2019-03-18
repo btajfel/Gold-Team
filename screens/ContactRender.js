@@ -32,7 +32,7 @@ export default class ContactRender extends PureComponent {
     return (
       <ListItem>
         <Body style={{ borderBottomWidth: 0 }}>
-          <Text>{rowData.firstName} {rowData.lastName}</Text>
+          <Text>{rowData.name}</Text>
           <Text Note>{phoneNumber}</Text>
         </Body>
         <Right style={{ borderBottomWidth: 0 }}>
