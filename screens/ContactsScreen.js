@@ -16,7 +16,7 @@ export default class SearchScreen extends Component {
       <Button
           onPress={() => alert('Friends invited and ready to record!')}
           title="Done"
-          color="black"
+          color="blue"
       />
       ),
     };

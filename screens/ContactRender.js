@@ -1,13 +1,13 @@
 
     
 import React, { PureComponent } from 'react'
-import { StyleSheet, View, Alert, TouchableOpacity, Image, TouchableHighlight } from 'react-native'
-import { Button, ListItem, Left, Right, Body, Thumbnail, Text, Icon } from 'native-base'
+import { StyleSheet, View, Alert} from 'react-native'
+import { Button, ListItem, Left, Right, Body, Text, Icon } from 'native-base'
 
 
  const button = {
-    off: 'ios-checkbox-outline',
-    on: 'ios-checkbox'
+    off: '',
+    on: 'ios-checkmark'
   };
 
 export default class ContactRender extends PureComponent {
@@ -30,7 +30,7 @@ export default class ContactRender extends PureComponent {
     const rowData = this.props.item
     //const phoneNumber = "phoneNumbers" in rowData ? rowData.phoneNumbers[0].digits : ''
     return (
-      <ListItem>
+      <ListItem onPress={() => this.onPressItem('invite', rowData.cell)}>
         <Body style={{ borderBottomWidth: 0 }}>
           <Text>{rowData.fullname}</Text>
           <Text Note>{rowData.phonenumber}</Text>
@@ -38,13 +38,11 @@ export default class ContactRender extends PureComponent {
         <Right style={{ borderBottomWidth: 0 }}>
           <View style={styles.rightBtn}>
             <Button
-              small
               transparent
               title="view"
-              onPress={() => this.onPressItem('invite', rowData.cell)}
               style={styles.rightBtn}
             >
-              <Icon name={invButton} style={styles.rightBtnIcon} />
+              <Icon name={invButton} style={{fontSize: 30, color: 'blue'}}/>
             </Button>
           </View>
         </Right>
