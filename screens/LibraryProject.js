@@ -13,6 +13,36 @@ export default class LibraryProject extends Component {
         };
       }
 
+      handlePress1 = async () => {
+      //   if (photos.length > 0) {
+      //   const { status } = await Permissions.askAsync(Permissions.CAMERA_ROLL);
+
+      //   if (status !== 'granted') {
+      //     throw new Error('Denied CAMERA_ROLL permissions!');
+      //   }
+
+      //   const promises = photos.map(photoUri => {
+      //     return MediaLibrary.createAssetAsync(photoUri);
+      //   });
+
+      //   await Promise.all(promises);
+      //   alert('Successfully saved photos to user\'s gallery!');
+      // } else {
+      //   alert('No photos to save!');
+      // }
+      Alert.alert(
+   /* "Can't Access Your Contacts",
+    "Click on Open Settings and allow CrewCam to access your Contacts.\n" +
+    "\n" +
+    "Then come back!",
+    */
+    [
+    {text: "View", style: 'cancel'},
+    {text: 'Edit', style: 'cancel'/*onPress: () => Permissions.openSettings()*/ }
+    ]
+    )
+    };
+
     handlePress = async () => {
       //   if (photos.length > 0) {
       //   const { status } = await Permissions.askAsync(Permissions.CAMERA_ROLL);
@@ -38,7 +68,7 @@ export default class LibraryProject extends Component {
         return (
             <ListItem>
                 <Body style={{ borderBottomWidth: 0 }}>
-                    <Text style={{fontWeight: "bold"}}>{rowData.name}</Text>
+                    <Text style={{fontWeight: "bold"}}>{rowData.name} </Text>
                     <Text Note>{rowData.owner}</Text>
                 </Body>
                 <Right style={{ borderBottomWidth: 0 }}>
