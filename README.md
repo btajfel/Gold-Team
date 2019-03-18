@@ -3,13 +3,30 @@
 ## Frontend
 ### Project setup
 
-1. Download all the React Native dependencies, following the Getting Started Tutorial at https://facebook.github.io/react-native/docs/getting-started.html
+1. Download all React Native dependencies, following the Getting Started Tutorial at https://facebook.github.io/react-native/docs/getting-started.html
 2. Clone the GoldTeam repository from GitHub onto your local machine.
-3. Make sure you're in the directory with the GoldTeam folder and run the following command:
+3. Run the following command to install expo:
     ```
-    react-native init GoldTeam
+    npm install -g expo-cli
     ```
-4. Run the app on a simulator. Make sure you have Xcode/AndroidStudio downloaded on your computer and run the following commands:
+    \* Download the Expo Client app from your phone's app store if you want to simulate the app on your own phone
+4. Make sure there is no node_modules folder in the project directory:
+    ```
+    cd GoldTeam
+    rm -rf node_modules/
+    ```
+
+5. Install all the required packages 
+    ```
+    cd GoldTeam
+    npm install
+    ```
+6. Run the development server
+    ```
+    cd GoldTeam
+    npm start
+    ```
+7. From here you can run the app through the iOS or Android simulators. You can also run the app on your phone if you have the Expo Client app and scan the QR code.
 
 #### iOS
 
@@ -34,11 +51,13 @@ react-native run-android
     source env/bin/activate
     ```
 \* Mac users run following to be safe:
+
     ```
     cd GoldTeam
     /usr/local/bin/python3 -m venv env
     source env/bin/activate
     ```
+
 2. Install flask app onto virtual environment
     ```
     pip install -e .
@@ -73,15 +92,25 @@ chmod +x bin/camcrew_run
 ## File Structure
 \* Run following command
 ```
-tree --matchdirs -I 'node_modules|ios|android|camcrew.egg-info|env|node_modules'
+tree --matchdirs -I 'node_modules|ios|android|camcrew.egg-info|env|node_modules|yarn.lock'
 ```
 
     GoldTeam
     ├── App.js
     ├── README.md
     ├── __tests__
+    │   ├── App-test.js
     │   └── App.js
     ├── app.json
+    ├── assets
+    │   ├── fonts
+    │   │   └── SpaceMono-Regular.ttf
+    │   └── images
+    │       ├── icon.png
+    │       ├── robot-dev.png
+    │       ├── robot-prod.png
+    │       └── splash.png
+    ├── babel.config.js
     ├── bin
     │   ├── camcrew_db
     │   └── camcrew_run
@@ -89,13 +118,55 @@ tree --matchdirs -I 'node_modules|ios|android|camcrew.egg-info|env|node_modules'
     │   ├── __init__.py
     │   ├── __pycache__
     │   │   ├── __init__.cpython-37.pyc
-    │   │   └── config.cpython-37.pyc
+    │   │   ├── config.cpython-37.pyc
+    │   │   └── model.cpython-37.pyc
+    │   ├── api
+    │   │   ├── __init__.py
+    │   │   ├── __pycache__
+    │   │   │   ├── __init__.cpython-37.pyc
+    │   │   │   ├── contacts.cpython-37.pyc
+    │   │   │   ├── creators.cpython-37.pyc
+    │   │   │   ├── error_handler.cpython-37.pyc
+    │   │   │   ├── invite.cpython-37.pyc
+    │   │   │   ├── projects.cpython-37.pyc
+    │   │   │   ├── save.cpython-37.pyc
+    │   │   │   └── videos.cpython-37.pyc
+    │   │   ├── contacts.py
+    │   │   ├── creators.py
+    │   │   ├── error_handler.py
+    │   │   ├── friends.py
+    │   │   ├── invite.py
+    │   │   ├── projects.py
+    │   │   ├── save.py
+    │   │   └── videos.py
     │   ├── config.py
-    │   └── model.py
+    │   ├── model.py
+    │   └── views
+    │       ├── __init__.py
+    │       └── __pycache__
+    │           └── __init__.cpython-37.pyc
+    ├── components
+    │   ├── StyledText.js
+    │   ├── TabBarIcon.js
+    │   └── __tests__
+    │       └── StyledText-test.js
+    ├── constants
+    │   ├── Colors.js
+    │   └── Layout.js
     ├── index.js
+    ├── navigation
+    │   ├── AppNavigator.js
+    │   └── MainTabNavigator.js
     ├── package-lock.json
     ├── package.json
     ├── screens
+    │   ├── ContactRender.js
+    │   ├── ContactsScreen.js
+    │   ├── GalleryScreen.js
+    │   ├── LibraryProject.js
+    │   ├── LibraryScreen.js
+    │   ├── Photo.js
+    │   ├── RecordScreen.js
     │   ├── friends.js
     │   ├── home.js
     │   ├── library.js
