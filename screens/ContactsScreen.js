@@ -42,7 +42,6 @@ export default class SearchScreen extends Component {
   componentDidMount() {
     this.makeUserAPIRequest();
     this.getUserContacts();
-    //this.makeUserAPIRequest();
   //  this.timer = setInterval(()=> this.getInvites(), 5)
   }
 

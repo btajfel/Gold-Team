@@ -13,37 +13,21 @@ export default class LibraryProject extends Component {
         };
       }
 
-      handlePress1 = async () => {
-      //   if (photos.length > 0) {
-      //   const { status } = await Permissions.askAsync(Permissions.CAMERA_ROLL);
-
-      //   if (status !== 'granted') {
-      //     throw new Error('Denied CAMERA_ROLL permissions!');
-      //   }
-
-      //   const promises = photos.map(photoUri => {
-      //     return MediaLibrary.createAssetAsync(photoUri);
-      //   });
-
-      //   await Promise.all(promises);
-      //   alert('Successfully saved photos to user\'s gallery!');
-      // } else {
-      //   alert('No photos to save!');
-      // }
+      handlePress = (name) => {
+      const title = name;
       Alert.alert(
-   /* "Can't Access Your Contacts",
-    "Click on Open Settings and allow CrewCam to access your Contacts.\n" +
-    "\n" +
-    "Then come back!",
-    */
+    `${title}`,
+    "",
+    
     [
-    {text: "View", style: 'cancel'},
-    {text: 'Edit', style: 'cancel'/*onPress: () => Permissions.openSettings()*/ }
+    {text: "Cancel", style: 'cancel'},
+    {text: "View", onPress: () => console.log('View Video')},
+    {text: 'Edit', onPress: () => console.log('Edit Video')}
     ]
     )
     };
 
-    handlePress = async () => {
+    handleExportPress = async () => {
       //   if (photos.length > 0) {
       //   const { status } = await Permissions.askAsync(Permissions.CAMERA_ROLL);
 
@@ -66,7 +50,7 @@ export default class LibraryProject extends Component {
     render() {
         const rowData = this.props.item
         return (
-            <ListItem>
+            <ListItem onPress={() => this.handlePress(rowData.name)}>
                 <Body style={{ borderBottomWidth: 0 }}>
                     <Text style={{fontWeight: "bold"}}>{rowData.name} </Text>
                     <Text Note>{rowData.owner}</Text>
@@ -77,7 +61,7 @@ export default class LibraryProject extends Component {
                             small
                             transparent
                             title="view"
-                            onPress={this.handlePress}
+                            onPress={this.handleExportPress}
                             style={styles.exportButton}
                         >
                             <Icon name="download" />
