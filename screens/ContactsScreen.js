@@ -31,6 +31,7 @@ export default class SearchScreen extends Component {
       error: null,
       users: [],
       invite: [],
+      totalUsers: [],
       myContacts: [],
     };
 
@@ -39,9 +40,9 @@ export default class SearchScreen extends Component {
   }
 
   componentDidMount() {
-    this.makeRemoteRequest();
-    this.makeUserAPIRequest();
+   // this.makeRemoteRequest();
     this.getUserContacts();
+    this.makeUserAPIRequest();
   //  this.timer = setInterval(()=> this.getInvites(), 5)
   }
 
@@ -87,6 +88,7 @@ pressDone = (type, item) => {
   this.setState({
           myContacts: contacts.data
         });
+  this.arrayholder = contacts.data;
   };
 
 alertUserToAllowAccessToContacts = () => {
@@ -119,45 +121,46 @@ alertUserToAllowAccessToContacts = () => {
   }
 
 
-
-  makeRemoteRequest = () => {
-    const url = `https://randomuser.me/api/?&results=20`;
-    this.setState({ loading: true });
-
-    fetch(url)
-      .then(res => res.json())
-      .then(res => {
-        this.setState({
-          data: res.results,
-          error: res.error || null,
-          loading: false,
-        });
-        this.arrayholder = res.results;
-      })
-      .catch(error => {
-        this.setState({ error, loading: false });
-      });
-  };
-
-
   makeUserAPIRequest = () => {
-    const url = `https://randomuser.me/api/?&results=20`;
+    const url = `http://crewcam.eecs.umich.edu/api/v1/contacts/`;
     this.setState({ loading: true });
 
     fetch(url)
       .then(res => res.json())
       .then(res => {
         this.setState({
-          users: res.results,
+          users: res.allContacts,
           error: res.error || null,
           loading: false,
         });
-        this.APIholder = res.results;
+        this.APIholder = res.allContacts;
       })
+      .then(() =>{
+        this.joinList(this.state.users, this.state.myContacts);
+        })
       .catch(error => {
         this.setState({ error, loading: false });
       });
+      
   };
+
+  joinList = (usersList, contactsList) =>{
+    var i;
+    var j;
+    const finalList = [];
+    for (i = 0; i < usersList.size(); i++){
+      for (j= 0; j < contactsList.size() j++){
+        if(usersList[i].phoneNumbers === contactsList[j].phonenumber){
+          finalList.push(contactsList[j]);
+        }
+      }
+
+    }
+    this.setState({
+      totalUsers: finalList,
+    })
+    console.log(finalList);
+  }
 
 
   renderSeparator = () => {
@@ -177,15 +180,14 @@ alertUserToAllowAccessToContacts = () => {
     this.setState({
       value: text,
     });
-
-    const newData = this.APIholder.filter(item => {
-      const itemData = `${item.name.title.toUpperCase()} ${item.name.first.toUpperCase()} ${item.name.last.toUpperCase()}`;
+    const newData = this.arrayholder.filter(item => {
+      const itemData = "firstName" in item ? `${item.firstName.toUpperCase()}` : '' + "lastName" in item ? `${item.lastName.toUpperCase()}` : '';
       const textData = text.toUpperCase();
-
+      console.log(itemData.indexOf(textData) > -1);
       return itemData.indexOf(textData) > -1;
     });
     this.setState({
-      data: newData,
+      myContacts: newData,
     });
   };
 
