@@ -29,7 +29,29 @@ export default class ContactRender extends PureComponent {
     const invButton = button[this.state.inviteIcon]
     const rowData = this.props.item
     //const phoneNumber = "phoneNumbers" in rowData ? rowData.phoneNumbers[0].digits : ''
-    return (
+    if (this.state.inviteIcon === "off"){
+     return (
+      <ListItem onPress={() => this.onPressItem('invite', rowData.cell)}>
+        <Body style={{ borderBottomWidth: 0 }}>
+          <Text>{rowData.fullname}</Text>
+          <Text Note>{rowData.phonenumber}</Text>
+        </Body>
+        <Right style={{ borderBottomWidth: 0 }}>
+          <View style={styles.rightBtn}>
+            <Button
+              transparent
+              title="view"
+              style={styles.rightBtn}
+            >
+            </Button>
+          </View>
+        </Right>
+      </ListItem>
+    )
+
+    }
+    else{
+         return (
       <ListItem onPress={() => this.onPressItem('invite', rowData.cell)}>
         <Body style={{ borderBottomWidth: 0 }}>
           <Text>{rowData.fullname}</Text>
@@ -48,6 +70,9 @@ export default class ContactRender extends PureComponent {
         </Right>
       </ListItem>
     )
+
+    }
+
   }
 }
 
