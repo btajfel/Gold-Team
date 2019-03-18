@@ -28,12 +28,12 @@ export default class ContactRender extends PureComponent {
   render() {
     const invButton = button[this.state.inviteIcon]
     const rowData = this.props.item
-    const phoneNumber = "phoneNumbers" in rowData ? rowData.phoneNumbers[0].digits : ''
+    //const phoneNumber = "phoneNumbers" in rowData ? rowData.phoneNumbers[0].digits : ''
     return (
       <ListItem>
         <Body style={{ borderBottomWidth: 0 }}>
-          <Text>{rowData.name}</Text>
-          <Text Note>{phoneNumber}</Text>
+          <Text>{rowData.fullname}</Text>
+          <Text Note>{rowData.phonenumber}</Text>
         </Body>
         <Right style={{ borderBottomWidth: 0 }}>
           <View style={styles.rightBtn}>

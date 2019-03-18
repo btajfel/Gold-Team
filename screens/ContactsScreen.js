@@ -35,12 +35,12 @@ export default class SearchScreen extends Component {
       myContacts: [],
     };
 
-    this.arrayholder = [];
-    this.APIholder = [];
+    this.contactholder = [];
+    this.APIuserholder = [];
   }
 
   componentDidMount() {
-   // this.makeRemoteRequest();
+    this.makeUserAPIRequest();
     this.getUserContacts();
     //this.makeUserAPIRequest();
   //  this.timer = setInterval(()=> this.getInvites(), 5)
@@ -90,9 +90,7 @@ pressDone = (type, item) => {
   this.setState({
           myContacts: contacts.data
         });
-  this.arrayholder = contacts.data;
-
-  this.makeUserAPIRequest();
+  this.contactholder = contacts.data;
   };
 
 alertUserToAllowAccessToContacts = () => {
@@ -137,12 +135,13 @@ alertUserToAllowAccessToContacts = () => {
           error: res.error || null,
           loading: false,
         });
-        this.APIholder = res.allContacts;
+        this.APIuserholder = res.allContacts;
       })
+      /*
       .then(() =>{
         this.joinList();
-        console.log("here2");
         })
+        */
       .catch(error => {
         this.setState({ error, loading: false });
       });
@@ -151,26 +150,26 @@ alertUserToAllowAccessToContacts = () => {
 
   joinList = () =>{
     const usersList = this.state.users;
-    const contactsList = this.state.myContacts;
-    //console.log("here "); //+ Object.keys(usersList).length());
+    const contactsList = this.arrayholder;
     let finalList = [];
-/*
-    usersList.forEach(function(userData) {
+
+    usersList.forEach(function(userData) {/*
       contactsList.forEach(function(contactData) {
-        console.log("contacts " + contactData.firstName);
+        console.log("contacts " + contactData.name);
         console.log(contactData.phoneNumbers[0].digits);
         console.log("users " + userData.fullname)
         console.log(userData.phonenumber);
+        /*
           if(userData.phonenumber === contactData.phoneNumbers[0].digits){
             console.log("GOT HERE");
             //finalList.push(contactData);
           }
           
-    });
+    });*/
 
     console.log("here2");
      });
-     */
+  
     this.setState({
       totalUsers: finalList,
     })
@@ -195,15 +194,15 @@ alertUserToAllowAccessToContacts = () => {
     this.setState({
       value: text,
     });
-    const newData = this.arrayholder.filter(item => {
-      const itemNumber = "phoneNumbers" in item ? `${item.phoneNumbers[0].digits}` : '';
-      const itemName = "name" in item ? `${item.name.toUpperCase()}` : '';
+    const newData = this.APIuserholder.filter(item => {
+      const itemNumber = "phonenumber" in item ? `${item.phonenumber}` : '';
+      const itemName = "fullname" in item ? `${item.fullname.toUpperCase()}` : '';
       const textData = text.toUpperCase();
-      const itemData = itemNumber + itemName;
+      const itemData = itemName + itemNumber;
       return itemData.indexOf(textData) > -1;
     });
     this.setState({
-      myContacts: newData,
+      users: newData,
     });
   };
 
@@ -237,13 +236,13 @@ alertUserToAllowAccessToContacts = () => {
     return (
       <View style={{ flex: 1 }}>
         <FlatList
-          data={this.state.myContacts}
+          data={this.state.users}
           renderItem={({ item }) => (
             <ContactRender 
               item={item}
             />
           )}
-          keyExtractor={item => item.id}
+          keyExtractor={item => item.phonenumber}
           ItemSeparatorComponent={this.renderSeparator}
           ListHeaderComponent={this.renderHeader}
           refreshableMode="advanced"
