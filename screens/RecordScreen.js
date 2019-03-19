@@ -1,4 +1,5 @@
 import { Constants, Camera, FileSystem, Permissions, BarCodeScanner } from 'expo';
+
 import React from 'react';
 import {
   Alert,
@@ -71,11 +72,15 @@ export default class CameraScreen extends React.Component {
     pictureSize: undefined,
     pictureSizes: [],
     pictureSizeId: 0,
+    friends: undefined,
+    friendsSizes: [],
+    friendsId: 0,
     recording: false,
     recordingIcon: 'ios-radio-button-off',
     recordingColor: 'white',
     showGallery: false,
-    showMoreOptions: false,
+    showQualityOptions: false,
+    showFriendsOptions: false,
   };
 
 
@@ -101,7 +106,9 @@ export default class CameraScreen extends React.Component {
 
   toggleView = () => this.setState({ showGallery: !this.state.showGallery, newPhotos: false });
 
-  toggleMoreOptions = () => this.setState({ showMoreOptions: !this.state.showMoreOptions });
+  toggleQualityOptions = () => this.setState({ showQualityOptions: !this.state.showQualityOptions });
+
+  toggleFriendsOptions = () => this.setState({ showFriendsOptions: !this.state.showFriendsOptions });
 
   toggleFacing = () => this.setState({ type: this.state.type === 'back' ? 'front' : 'back' });
 
@@ -188,6 +195,21 @@ export default class CameraScreen extends React.Component {
       newId = length -1;
     }
     this.setState({ pictureSize: this.state.pictureSizes[newId], pictureSizeId: newId });
+  }
+
+
+  previousFriends = () => this.changeFriends(1);
+  nextFriends = () => this.changeFriends(-1);
+
+  changeFriends = direction => {
+    let newId = this.state.friendsId + direction;
+    const length = this.state.friendsSizes.length;
+    if (newId >= length) {
+      newId = 0;
+    } else if (newId < 0) {
+      newId = length -1;
+    }
+    this.setState({ friends: this.state.friendsSizs[newId], friendsId: newId });
   }
 
   renderGallery() {
@@ -278,8 +300,8 @@ export default class CameraScreen extends React.Component {
       <TouchableOpacity style={styles.toggleButton} onPress={this.toggleWB}>
         <MaterialIcons name={wbIcons[this.state.whiteBalance]} size={32} color="white" />
       </TouchableOpacity>
-      <TouchableOpacity style={styles.toggleButton} onPress={this.toggleFocus}>
-        <Text style={[styles.autoFocusLabel, { color: this.state.autoFocus === 'on' ? "white" : "#6b6b6b" }]}>AF</Text>
+      <TouchableOpacity style={styles.toggleButton} onPress={this.toggleQualityOptions}>
+       <Ionicons name="ios-options" size={32} color="white" />
       </TouchableOpacity>   
     </View>
     )
@@ -297,8 +319,8 @@ export default class CameraScreen extends React.Component {
       <TouchableOpacity style={styles.toggleButton} onPress={this.toggleWB}>
         <MaterialIcons name={wbIcons[this.state.whiteBalance]} size={32} color="white" />
       </TouchableOpacity>
-      <TouchableOpacity style={styles.toggleButton} onPress={this.toggleFocus}>
-        <Text style={[styles.autoFocusLabel, { color: this.state.autoFocus === 'on' ? "white" : "#6b6b6b" }]}>AF</Text>
+      <TouchableOpacity style={styles.toggleButton} onPress={this.toggleQualityOptions}>
+        <Ionicons name="ios-options" size={32} color="white" />
       </TouchableOpacity>   
     </View>
     )
@@ -308,8 +330,8 @@ export default class CameraScreen extends React.Component {
   renderBottomBar = () =>
     <View
       style={styles.bottomBar}>
-      <TouchableOpacity style={styles.bottomButton} onPress={this.toggleMoreOptions}>
-        <Octicons name="kebab-horizontal" size={30} color="white"/>
+      <TouchableOpacity style={styles.bottomButton} onPress={this.toggleFriendsOptions}>
+        <Ionicons name="ios-contact" size={30} color="white"/>
       </TouchableOpacity>
       <View style={{ flex: 0.4 }}>
         <TouchableOpacity
@@ -327,18 +349,9 @@ export default class CameraScreen extends React.Component {
       </TouchableOpacity>
     </View>
 
-  renderMoreOptions = () =>
+  renderQualityOptions = () =>
     (
-      <View style={styles.options}>
-        <View style={styles.detectors}>
-          <TouchableOpacity onPress={this.toggleFaceDetection}>
-            <MaterialIcons name="tag-faces" size={32} color={this.state.faceDetecting ? "white" : "#858585" } />
-          </TouchableOpacity>
-          <TouchableOpacity onPress={this.toggleBarcodeScanning}>
-            <MaterialCommunityIcons name="barcode-scan" size={32} color={this.state.barcodeScanning ? "white" : "#858585" } />
-          </TouchableOpacity>
-        </View>
-
+      <View style={styles.qualityOptions}>
         <View style={styles.pictureSizeContainer}>
           <Text style={styles.pictureQualityLabel}>Picture quality</Text>
           <View style={styles.pictureSizeChooser}>
@@ -356,6 +369,37 @@ export default class CameraScreen extends React.Component {
       </View> 
     );
 
+  renderFriendsOptions = () => {
+    if (this.state.friendsSizes.length <= 0){
+      return (
+      <View style={styles.friendsOptions}>
+        <View style={styles.pictureSizeContainer}>
+          <Text style={styles.pictureQualityLabel}>No Friends Added!</Text>
+        </View>
+      </View> 
+    );
+    }
+    else{
+    return (
+      <View style={styles.friendsOptions}>
+        <View style={styles.pictureSizeContainer}>
+          <Text style={styles.pictureQualityLabel}>Added Friends</Text>
+          <View style={styles.pictureSizeChooser}>
+            <TouchableOpacity onPress={this.previousFriendsSize} style={{ padding: 6 }}>
+              <Ionicons name="md-arrow-dropleft" size={14} color="white" />
+            </TouchableOpacity>
+            <View style={styles.pictureSizeLabel}>
+              <Text style={{color: 'white'}}>{this.state.friends}</Text>
+            </View>
+            <TouchableOpacity onPress={this.nextFriendsSize} style={{ padding: 6 }}>
+              <Ionicons name="md-arrow-dropright" size={14} color="white" />
+            </TouchableOpacity>
+          </View>
+        </View>
+      </View> 
+    );
+  }
+}
   renderCamera = () =>
     (
       <View style={{ flex: 1 }}>
@@ -388,7 +432,8 @@ export default class CameraScreen extends React.Component {
         </Camera>
         {this.state.faceDetecting && this.renderFaces()}
         {this.state.faceDetecting && this.renderLandmarks()}
-        {this.state.showMoreOptions && this.renderMoreOptions()}
+        {this.state.showQualityOptions && this.renderQualityOptions()}
+        {this.state.showFriendsOptions && this.renderFriendsOptions()}
       </View>
     );
 
@@ -465,12 +510,22 @@ const styles = StyleSheet.create({
     borderRadius: 4,
     backgroundColor: '#4630EB'
   },
-  options: {
+  qualityOptions: {
+    position: 'absolute',
+    top: 80,
+    right: 30,
+    width: 200,
+    height: 80,
+    backgroundColor: '#000000BA',
+    borderRadius: 4,
+    padding: 10,
+  },
+  friendsOptions: {
     position: 'absolute',
     bottom: 80,
-    left: 30,
+    left: 20,
     width: 200,
-    height: 160,
+    height: 80,
     backgroundColor: '#000000BA',
     borderRadius: 4,
     padding: 10,
