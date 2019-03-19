@@ -7,6 +7,7 @@ import { PermissionsAndroid } from 'react-native';
 import Contacts from 'react-native-contacts';
 import {createStackNavigator, createAppContainer} from 'react-navigation';
 import RecordScreen from './RecordScreen';
+import Geolocation from './Geolocation';
 
 
 
@@ -63,14 +64,18 @@ SHOULD PUT THIS ON RECORD SCREEN
       <Button
           title="Done"
           color="blue"
-          onPress={() => {
-            navigate('Record', {
-            invited: 5,
-            });
-          }}
-        
+          onPress={() => navigate('Record', {invited: 5}) }
+          //onPress={() => { navigate('Record', {invited: 5, }); this.sendInvites(); }}
       />
       ),
+      headerLeft: (
+      <Button
+          title="Find Nearby"
+          color="blue"
+          onPress={() => navigate('Geo')}
+      />
+      ),
+
     };
   };
   

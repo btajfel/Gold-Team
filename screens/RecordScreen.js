@@ -265,11 +265,12 @@ export default class CameraScreen extends React.Component {
       </Text>
     </View>
 
-  renderTopBar = () => 
+  renderTopBar = () => {
+  if (this.state.recording){
+    return(
     <View
       style={styles.topBar}>
-      <TouchableOpacity style={styles.toggleButton} onPress={this.toggleFacing}>
-        <Ionicons name="ios-reverse-camera" size={32} color="white" />
+      <TouchableOpacity style={styles.toggleButton}>
       </TouchableOpacity>
       <TouchableOpacity style={styles.toggleButton} onPress={this.toggleFlash}>
         <MaterialIcons name={flashIcons[this.state.flash]} size={32} color="white" />
@@ -281,6 +282,28 @@ export default class CameraScreen extends React.Component {
         <Text style={[styles.autoFocusLabel, { color: this.state.autoFocus === 'on' ? "white" : "#6b6b6b" }]}>AF</Text>
       </TouchableOpacity>   
     </View>
+    )
+  }
+  else{
+    return(
+    <View
+      style={styles.topBar}>
+      <TouchableOpacity style={styles.toggleButton} onPress={this.toggleFacing}>
+        <Ionicons name="ios-reverse-camera"size={32} color="white" />
+      </TouchableOpacity>
+      <TouchableOpacity style={styles.toggleButton} onPress={this.toggleFlash}>
+        <MaterialIcons name={flashIcons[this.state.flash]} size={32} color="white" />
+      </TouchableOpacity>
+      <TouchableOpacity style={styles.toggleButton} onPress={this.toggleWB}>
+        <MaterialIcons name={wbIcons[this.state.whiteBalance]} size={32} color="white" />
+      </TouchableOpacity>
+      <TouchableOpacity style={styles.toggleButton} onPress={this.toggleFocus}>
+        <Text style={[styles.autoFocusLabel, { color: this.state.autoFocus === 'on' ? "white" : "#6b6b6b" }]}>AF</Text>
+      </TouchableOpacity>   
+    </View>
+    )
+  }
+}
 
   renderBottomBar = () =>
     <View

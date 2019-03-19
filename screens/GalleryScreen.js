@@ -70,6 +70,24 @@ export default class GalleryScreen extends React.Component {
     // }
   };
 
+
+
+  DeleteVideo = async () => {
+    const photos = this.state.selected;
+    const remaining = this.state.photos;
+    photos.map(async (photo) => {
+      FileSystem.deleteAsync(photo);
+      var deleted = await remaining.splice( remaining.indexOf(photo), 1 );
+    })
+    this.setState({
+      photos: remaining,
+    })
+
+    console.log("Videos Deleted");
+};
+
+
+
   renderPhoto = fileName => 
     <Photo
       key={fileName}
@@ -84,8 +102,11 @@ export default class GalleryScreen extends React.Component {
           <TouchableOpacity style={styles.button} onPress={this.props.onPress}>
             <MaterialIcons name="arrow-back" size={25} color="white" />
           </TouchableOpacity>
+          <TouchableOpacity style={styles.button} onPress={this.DeleteVideo}> 
+            <Text style={styles.whiteText}>Delete Selected</Text>
+          </TouchableOpacity>
           <TouchableOpacity style={styles.button} onPress={this.saveToGallery}> 
-            <Text style={styles.whiteText}>Save selected to gallery</Text>
+            <Text style={styles.whiteText}>Upload To Project</Text>
           </TouchableOpacity>
         </View>
         <ScrollView contentComponentStyle={{ flex: 1 }}>
