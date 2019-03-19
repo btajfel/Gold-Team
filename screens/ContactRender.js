@@ -15,15 +15,20 @@ export default class ContactRender extends PureComponent {
     super(props)
 
     this.state = {
-      inviteIcon: 'off'
+      inviteIcon: 'off',
+      selected: false,
     };
   }
 
-    
-  onPressItem = (type, item) => {
-    this.setState({ inviteIcon: this.state.inviteIcon === 'off' ? 'on' : 'off'});
-  };
 
+   toggleSelection = (item) => {
+    this.setState(
+      { selected: !this.state.selected,
+        inviteIcon: this.state.inviteIcon === 'off' ? 'on' : 'off',
+       },
+      () => this.props.onSelectionToggle(item.phonenumber, this.state.selected)
+    );
+  }
 
   render() {
     const invButton = button[this.state.inviteIcon]
@@ -31,7 +36,7 @@ export default class ContactRender extends PureComponent {
     //const phoneNumber = "phoneNumbers" in rowData ? rowData.phoneNumbers[0].digits : ''
     if (this.state.inviteIcon === "off"){
      return (
-      <ListItem onPress={() => this.onPressItem('invite', rowData.cell)}>
+      <ListItem onPress={() => this.toggleSelection(rowData)}>
         <Body style={{ borderBottomWidth: 0 }}>
           <Text>{rowData.fullname}</Text>
           <Text Note>{rowData.phonenumber}</Text>
@@ -52,7 +57,7 @@ export default class ContactRender extends PureComponent {
     }
     else{
          return (
-      <ListItem onPress={() => this.onPressItem('invite', rowData.cell)}>
+      <ListItem onPress={() => this.toggleSelection(rowData)}>
         <Body style={{ borderBottomWidth: 0 }}>
           <Text>{rowData.fullname}</Text>
           <Text Note>{rowData.phonenumber}</Text>

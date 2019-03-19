@@ -21,7 +21,7 @@ export default class SearchScreen extends Component {
       data: [],
       error: null,
       users: [],
-      invite: [],
+      invited: [],
       totalUsers: [],
       myContacts: [],
     };
@@ -64,8 +64,9 @@ SHOULD PUT THIS ON RECORD SCREEN
       <Button
           title="Done"
           color="blue"
-          onPress={() => navigate('Record', {invited: 5}) }
-          //onPress={() => { navigate('Record', {invited: 5, }); this.sendInvites(); }}
+          //onPress={() => navigate('Record', {invite: 5}) }
+          onPress={() => this.sendInvites}
+         // onPress={() => { this.sendInvites; navigate('Record', {invite: 5, });  }}
       />
       ),
       headerLeft: (
@@ -79,7 +80,7 @@ SHOULD PUT THIS ON RECORD SCREEN
     };
   };
   
-  async getUserContacts(){
+  getUserContacts = async () => {
     const permission = await Expo.Permissions.askAsync(Expo.Permissions.CONTACTS);
      if (permission.status !== 'granted') {
     this.alertUserToAllowAccessToContacts();
@@ -115,9 +116,11 @@ alertUserToAllowAccessToContacts = () => {
 };
 
   
-  async sendInvites(){
-    const invited = this.state.invite;
-    const url = 'http://crewcam.eecs.umich.edu/api/v1/1/invite/';
+  sendInvites = async () => {
+    const invited = this.state.invited;
+    console.log("invites sent");
+    console.log(invited);
+    const url = 'http://crewcam.eecs.umich.edu/api/v1/invite/';
       try {
         await fetch(url, {
           credentials: 'same-origin',
@@ -129,6 +132,16 @@ alertUserToAllowAccessToContacts = () => {
         console.error(e)
       }
   }
+
+   toggleSelection = (phonenumber, isSelected) => {
+    let inviteList = this.state.invited;
+    if (isSelected) {
+      inviteList.push(phonenumber);
+    } else {
+      inviteList = inviteList.filter(item => item !== phonenumber);
+    }
+    this.setState({ invited: inviteList });
+  };
 
 
   makeUserAPIRequest = () => {
@@ -156,6 +169,7 @@ alertUserToAllowAccessToContacts = () => {
       
   };
 
+/*
   joinList = () =>{
     const usersList = this.state.users;
     const contactsList = this.arrayholder;
@@ -173,7 +187,7 @@ alertUserToAllowAccessToContacts = () => {
             //finalList.push(contactData);
           }
           
-    });*/
+    });
      });
   
     this.setState({
@@ -181,7 +195,7 @@ alertUserToAllowAccessToContacts = () => {
     })
     //console.log("here" + finalList);
   }
-
+*/
 
   renderSeparator = () => {
     return (
@@ -246,6 +260,7 @@ alertUserToAllowAccessToContacts = () => {
           renderItem={({ item }) => (
             <ContactRender 
               item={item}
+              onSelectionToggle= {this.toggleSelection}
             />
           )}
           keyExtractor={item => item.phonenumber}
