@@ -54,11 +54,7 @@ SHOULD PUT THIS ON RECORD SCREEN
 }
 */
 
-/*
-pressDone = (type, item) => {
-    this.setState({ inviteIcon: this.state.inviteIcon === 'off' ? 'on' : 'off'});
-  };
-*/
+
 
     static navigationOptions = ({ navigation }) => {
     const {navigate} = navigation;
@@ -173,8 +169,6 @@ alertUserToAllowAccessToContacts = () => {
           }
           
     });*/
-
-    console.log("here2");
      });
   
     this.setState({

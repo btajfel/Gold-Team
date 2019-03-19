@@ -16,8 +16,8 @@ export default class LibraryProject extends Component {
       handlePress = (name) => {
       const title = name;
       Alert.alert(
-    `${title}`,
-      "",
+      `${title}`,
+        "",
     
     [
     {text: "Cancel", style: 'cancel'},

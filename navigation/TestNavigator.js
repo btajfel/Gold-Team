@@ -1,11 +1,12 @@
 import React from 'react';
 import { Platform, Button } from 'react-native';
-import { createStackNavigator, createBottomTabNavigator } from 'react-navigation';
+import { createStackNavigator, createBottomTabNavigator, TabNavigator } from 'react-navigation';
 
 import TabBarIcon from '../components/TabBarIcon';
 import ContactsScreen from '../screens/ContactsScreen';
 import RecordScreen from '../screens/RecordScreen';
 import LibraryScreen from '../screens/LibraryScreen';
+import SharedProjects from '../screens/SharedProjects';
 
 const ContactsStack = createStackNavigator({
   Contacts: ContactsScreen,
@@ -49,6 +50,8 @@ LibraryStack.navigationOptions = {
     />
   ),
 };
+
+
 
 export default createBottomTabNavigator({
     ContactsStack,
