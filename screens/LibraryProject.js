@@ -17,7 +17,7 @@ export default class LibraryProject extends Component {
       const title = name;
       Alert.alert(
     `${title}`,
-    "",
+      "",
     
     [
     {text: "Cancel", style: 'cancel'},

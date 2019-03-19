@@ -5,22 +5,12 @@ import ContactRender from './ContactRender';
 import {Permissions, openSettings} from 'react-native-permissions';
 import { PermissionsAndroid } from 'react-native';
 import Contacts from 'react-native-contacts';
+import {createStackNavigator, createAppContainer} from 'react-navigation';
+import RecordScreen from './RecordScreen';
 
 
 
 export default class SearchScreen extends Component {
-
-    static navigationOptions = ({ navigation }) => {
-    return {
-      headerRight: (
-      <Button
-          onPress={() => alert('Friends invited and ready to record!')}
-          title="Done"
-          color="blue"
-      />
-      ),
-    };
-  };
 
   constructor(props) {
     super(props);
@@ -69,6 +59,24 @@ pressDone = (type, item) => {
     this.setState({ inviteIcon: this.state.inviteIcon === 'off' ? 'on' : 'off'});
   };
 */
+
+    static navigationOptions = ({ navigation }) => {
+    const {navigate} = navigation;
+    return {
+      headerRight: (
+      <Button
+          title="Done"
+          color="blue"
+          onPress={() => {
+            navigate('Record', {
+            invited: 5,
+            });
+          }}
+        
+      />
+      ),
+    };
+  };
   
   async getUserContacts(){
     const permission = await Expo.Permissions.askAsync(Expo.Permissions.CONTACTS);
