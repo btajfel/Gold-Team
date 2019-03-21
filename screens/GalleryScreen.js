@@ -35,7 +35,7 @@ export default class GalleryScreen extends React.Component {
     const fileupload = this.state.selected[0];
     // const type = 'video/mov';
     // photos.map(photo => {
-    const form = new FormData(uploadfile);
+    const form = new FormData(fileupload);
     // form.append("name", "\"video-upload\"");
     // form.append("type", type);
 
