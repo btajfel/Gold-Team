@@ -40,17 +40,17 @@ export default class GalleryScreen extends React.Component {
     // form.append("type", type);
 
     const url = 'http://crewcam.eecs.umich.edu/api/v1/3/save/';
-    $.ajax({
-      type: 'POST',
-      url: url,
-      data: form,
-      contentType: false,
-      cache: false,
-      processData: false,
-      success:function(returned_data){console.log(returned_data);},
-      error:function(){console.log('sorry...');}
-    });
-
+    const upload = (file) => {
+      fetch('http://www.example.net', { // Your POST endpoint
+        method: 'POST',
+        body: fileupload // This is your file object
+      }).then(
+        response => response.json() // if the response is a JSON object
+      ).then(
+        success => console.log(success) // Handle the success response object
+      ).catch(
+        error => console.log(error) // Handle the error response object
+      );
     /*   OLD CODE ////
     form.append('file', photos);
     console.log(photos)
