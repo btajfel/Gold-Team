@@ -40,10 +40,10 @@ export default class GalleryScreen extends React.Component {
     // form.append("type", type);
 
     const url = 'http://crewcam.eecs.umich.edu/api/v1/3/save/';
-    const upload = (file) => {
-      fetch('http://www.example.net', { // Your POST endpoint
+
+    fetch('http://crewcam.eecs.umich.edu/api/v1/3/save/', { // Your POST endpoint
         method: 'POST',
-        body: fileupload // This is your file object
+        body: form // This is your file object
       }).then(
         response => response.json() // if the response is a JSON object
       ).then(
