@@ -32,12 +32,26 @@ export default class GalleryScreen extends React.Component {
 
 // CHANGE THIS FUNCTION
   saveToGallery = async () => {
-    const photos = this.state.selected[0];
+    const fileupload = this.state.selected[0];
     // const type = 'video/mov';
     // photos.map(photo => {
-    const form = new FormData();
+    const form = new FormData(uploadfile);
     // form.append("name", "\"video-upload\"");
     // form.append("type", type);
+
+    const url = 'http://crewcam.eecs.umich.edu/api/v1/3/save/';
+    $.ajax({
+      type: 'POST',
+      url: url,
+      data: form,
+      contentType: false,
+      cache: false,
+      processData: false,
+      success:function(returned_data){console.log(returned_data);},
+      error:function(){console.log('sorry...');}
+    });
+
+    /*   OLD CODE ////
     form.append('file', photos);
     console.log(photos)
     // FIXME (projectid)
@@ -52,6 +66,7 @@ export default class GalleryScreen extends React.Component {
     } catch (e) {
       console.error(e)
     }
+    */ ///////// OLD CODE
         // });
     //   const { status } = await Permissions.askAsync(Permissions.CAMERA_ROLL);
 
@@ -88,7 +103,7 @@ export default class GalleryScreen extends React.Component {
 
 
 
-  renderPhoto = fileName => 
+  renderPhoto = fileName =>
     <Photo
       key={fileName}
       uri={`${PHOTOS_DIR}/${fileName}`}
@@ -102,10 +117,10 @@ export default class GalleryScreen extends React.Component {
           <TouchableOpacity style={styles.button} onPress={this.props.onPress}>
             <MaterialIcons name="arrow-back" size={25} color="white" />
           </TouchableOpacity>
-          <TouchableOpacity style={styles.button} onPress={this.DeleteVideo}> 
+          <TouchableOpacity style={styles.button} onPress={this.DeleteVideo}>
             <Text style={styles.whiteText}>Delete Selected</Text>
           </TouchableOpacity>
-          <TouchableOpacity style={styles.button} onPress={this.saveToGallery}> 
+          <TouchableOpacity style={styles.button} onPress={this.saveToGallery}>
             <Text style={styles.whiteText}>Upload To Project</Text>
           </TouchableOpacity>
         </View>
