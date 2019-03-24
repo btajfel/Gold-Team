@@ -5,7 +5,7 @@ CREATE TABLE users(
   phonenumber VARCHAR(10) NOT NULL,
   password VARCHAR(256) NOT NULL,
   longitude VARCHAR(256),
-  latitudr VARCHAR(256),
+  latitude VARCHAR(256),
   created TIMESTAMP NOT NULL,
   PRIMARY KEY(username)
 );
