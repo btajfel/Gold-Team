@@ -20,7 +20,7 @@ def invite():
             ', (flask.session['username'], postid_url_slug))
 
     contacts = cur.execute("""\
-        SELECT username, fullname, phonenumber FROM users
+        SELECT fullname, fullname, phonenumber FROM users
         """).fetchall()
     context['allContacts'] = contacts
 

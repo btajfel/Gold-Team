@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Alert, View, Text, Button, FlatList, ActivityIndicator } from 'react-native';
+import { Alert, View, Text, Button, FlatList, ActivityIndicator, TouchableOpacity, StyleSheet } from 'react-native';
 import { ListItem, SearchBar } from 'react-native-elements';
 import ContactRender from './ContactRender';
 import {Permissions, openSettings} from 'react-native-permissions';
@@ -12,6 +12,28 @@ import Geolocation from './Geolocation';
 
 
 export default class SearchScreen extends Component {
+
+    static navigationOptions = ({ navigation }) => {
+    const {navigate} = navigation;
+    const params = navigation.state.params || {};
+    return {
+      headerRight: (
+      <TouchableOpacity
+          //onPress={() => navigate('Record', {invite: 5}) }
+          style={styles.toggleButton}
+          onPress={params.sendInvites}
+         // onPress={() => { this.sendInvites; navigate('Record', {invite: 5, });  }}
+         >
+         <Text style={{color: 'blue', fontSize: 18}}>Done</Text>
+      </TouchableOpacity>
+      ),
+      headerLeft: (
+      <TouchableOpacity style={styles.toggleButton} onPress={() => navigate('Geo')}>
+         <Text style={{color: 'blue', fontSize: 18}}>Find Nearby</Text>
+      </TouchableOpacity>
+      ),
+    };
+  };
 
   constructor(props) {
     super(props);
@@ -30,119 +52,12 @@ export default class SearchScreen extends Component {
     this.APIuserholder = [];
   }
 
+
   componentDidMount() {
+    this.props.navigation.setParams({ sendInvites: this._sendInvites.bind(this) });
     this.makeUserAPIRequest();
     this.getUserContacts();
-  //  this.timer = setInterval(()=> this.getInvites(), 5)
   }
-
-/*
-SHOULD PUT THIS ON RECORD SCREEN
-  getInvites = () =>{
-   fetch('invite api URL', {method: "GET"})
-  .then((response) => response.json())
-  .then((responseData) =>
-  {
-    if you receive invite, open alert for accept or deny request.
-    if accept, send post to invite api to add it to collaborators table and delete it from pending invites table
-    by checking for it by users and project id
-    //set your data here
-     console.log(responseData);
-  })
-  .catch((error) => {
-      console.error(error);
-  });
-}
-*/
-
-
-
-    static navigationOptions = ({ navigation }) => {
-    const {navigate} = navigation;
-    return {
-      headerRight: (
-      <Button
-          title="Done"
-          color="blue"
-          //onPress={() => navigate('Record', {invite: 5}) }
-          onPress={() => this.sendInvites}
-         // onPress={() => { this.sendInvites; navigate('Record', {invite: 5, });  }}
-      />
-      ),
-      headerLeft: (
-      <Button
-          title="Find Nearby"
-          color="blue"
-          onPress={() => navigate('Geo')}
-      />
-      ),
-
-    };
-  };
-  
-  getUserContacts = async () => {
-    const permission = await Expo.Permissions.askAsync(Expo.Permissions.CONTACTS);
-     if (permission.status !== 'granted') {
-    this.alertUserToAllowAccessToContacts();
-    }
-
-    const contacts = await Expo.Contacts.getContactsAsync({
-    fields: [
-      Expo.Contacts.PHONE_NUMBERS,
-      Expo.Contacts.PHONETIC_FIRST_NAME,
-      Expo.Contacts.PHONETIC_LAST_NAME,
-    ],
-  });
-
-
-
-  this.setState({
-          myContacts: contacts.data
-        });
-  this.contactholder = contacts.data;
-  };
-
-alertUserToAllowAccessToContacts = () => {
-  Alert.alert(
-    "Can't Access Your Contacts",
-    "Click on Open Settings and allow CrewCam to access your Contacts.\n" +
-    "\n" +
-    "Then come back!",
-    [
-    {text: "Later", style: 'cancel'},
-    {text: 'Open Settings', onPress: () => Permissions.openSettings() }
-    ]
-    )
-};
-
-  
-  sendInvites = async () => {
-    const invited = this.state.invited;
-    console.log("invites sent");
-    console.log(invited);
-    const url = 'http://crewcam.eecs.umich.edu/api/v1/invite/';
-      try {
-        await fetch(url, {
-          credentials: 'same-origin',
-          method: 'POST',
-          body: invited
-        });
-        alert('Send invites');
-      } catch (e) {
-        console.error(e)
-      }
-  }
-
-   toggleSelection = (phonenumber, isSelected) => {
-    let inviteList = this.state.invited;
-    if (isSelected) {
-      inviteList.push(phonenumber);
-    } else {
-      inviteList = inviteList.filter(item => item !== phonenumber);
-    }
-    this.setState({ invited: inviteList });
-  };
-
 
   makeUserAPIRequest = () => {
     const url = `http://crewcam.eecs.umich.edu/api/v1/contacts/`;
@@ -166,7 +81,17 @@ alertUserToAllowAccessToContacts = () => {
       .catch(error => {
         this.setState({ error, loading: false });
       });
-      
+  };
+
+
+   toggleSelection = (phonenumber, isSelected) => {
+    let inviteList = this.state.invited;
+    if (isSelected) {
+      inviteList.push(phonenumber);
+    } else {
+      inviteList = inviteList.filter(item => item !== phonenumber);
+    }
+    this.setState({ invited: inviteList });
   };
 
 /*
@@ -196,6 +121,64 @@ alertUserToAllowAccessToContacts = () => {
     //console.log("here" + finalList);
   }
 */
+
+
+  
+  _sendInvites = async () => {
+    const {navigate} = this.props.navigation;
+   // console.log("invites sent");
+    const invited = this.state.invited;
+    console.log(invited);
+    
+    const url = 'http://crewcam.eecs.umich.edu/api/v1/invite/';
+      try {
+        await fetch(url, {
+          credentials: 'same-origin',
+          method: 'POST',
+          body: JSON.stringify( {
+             'inviteList': invited
+          }) 
+        })
+        .then(() =>{
+         navigate('Record', {data: invited,}); 
+        })
+      } catch (e) {
+        console.error(e)
+      }
+  };
+
+
+  getUserContacts = async () => {
+    const permission = await Expo.Permissions.askAsync(Expo.Permissions.CONTACTS);
+     if (permission.status !== 'granted') {
+    this.alertUserToAllowAccessToContacts();
+    }
+
+    const contacts = await Expo.Contacts.getContactsAsync({
+    fields: [
+      Expo.Contacts.PHONE_NUMBERS,
+      Expo.Contacts.PHONETIC_FIRST_NAME,
+      Expo.Contacts.PHONETIC_LAST_NAME,
+    ],
+  });
+  this.setState({
+          myContacts: contacts.data
+        });
+  this.contactholder = contacts.data;
+  };
+
+alertUserToAllowAccessToContacts = () => {
+  Alert.alert(
+    "Can't Access Your Contacts",
+    "Click on Open Settings and allow CrewCam to access your Contacts.\n" +
+    "\n" +
+    "Then come back!",
+    [
+    {text: "Later", style: 'cancel'},
+    {text: 'Open Settings', onPress: () => Permissions.openSettings() }
+    ]
+    )
+};
 
   renderSeparator = () => {
     return (
@@ -272,3 +255,26 @@ alertUserToAllowAccessToContacts = () => {
     );
   }
 }
+
+
+
+
+const styles = StyleSheet.create({
+
+  toggleButton: {
+    flex: 0.25,
+    height: 40,
+    marginHorizontal: 2,
+    marginBottom: 10,
+    marginTop: 20,
+    padding: 5,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+
+
+});
+
+
+
+
