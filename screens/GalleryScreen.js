@@ -32,12 +32,26 @@ export default class GalleryScreen extends React.Component {
 
 // CHANGE THIS FUNCTION
   saveToGallery = async () => {
-    const photos = this.state.selected[0];
+    const fileupload = this.state.selected[0];
     // const type = 'video/mov';
     // photos.map(photo => {
-    const form = new FormData();
+    const form = new FormData(fileupload);
     // form.append("name", "\"video-upload\"");
     // form.append("type", type);
+
+    const url = 'http://crewcam.eecs.umich.edu/api/v1/3/save/';
+
+    fetch('http://crewcam.eecs.umich.edu/api/v1/3/save/', { // Your POST endpoint
+        method: 'POST',
+        body: form // This is your file object
+      }).then(
+        response => response.json() // if the response is a JSON object
+      ).then(
+        success => console.log(success) // Handle the success response object
+      ).catch(
+        error => console.log(error) // Handle the error response object
+      );
+    /*   OLD CODE ////
     form.append('file', photos);
     console.log(photos)
     // FIXME (projectid)
@@ -52,6 +66,7 @@ export default class GalleryScreen extends React.Component {
     } catch (e) {
       console.error(e)
     }
+    */ ///////// OLD CODE
         // });
     //   const { status } = await Permissions.askAsync(Permissions.CAMERA_ROLL);
 
@@ -88,7 +103,7 @@ export default class GalleryScreen extends React.Component {
 
 
 
-  renderPhoto = fileName => 
+  renderPhoto = fileName =>
     <Photo
       key={fileName}
       uri={`${PHOTOS_DIR}/${fileName}`}
@@ -102,10 +117,10 @@ export default class GalleryScreen extends React.Component {
           <TouchableOpacity style={styles.button} onPress={this.props.onPress}>
             <MaterialIcons name="arrow-back" size={25} color="white" />
           </TouchableOpacity>
-          <TouchableOpacity style={styles.button} onPress={this.DeleteVideo}> 
+          <TouchableOpacity style={styles.button} onPress={this.DeleteVideo}>
             <Text style={styles.whiteText}>Delete Selected</Text>
           </TouchableOpacity>
-          <TouchableOpacity style={styles.button} onPress={this.saveToGallery}> 
+          <TouchableOpacity style={styles.button} onPress={this.saveToGallery}>
             <Text style={styles.whiteText}>Upload To Project</Text>
           </TouchableOpacity>
         </View>
