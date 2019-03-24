@@ -9,7 +9,7 @@ from camcrew.api.error_handler import InvalidUsage
 
 @camcrew.app.route('/api/v1/location/',
                    methods=["GET", "POST"])
-def invite():
+def get_location():
     context = {}
     cur = camcrew.model.get_db().cursor()
 
@@ -18,7 +18,8 @@ def invite():
             UPDATE users \
             SET latitude = ? AND longitude = ?\
             WHERE username = ?\
-            ', (latitude, longitude, flask.session['username']))
+            ', (flask.request.args["latitude"], 
+                flask.request.args["longitude"], flask.session['username']))
 
     users = cur.execute("""\
         SELECT fullname, phonenumber, latitude, longitude FROM users
