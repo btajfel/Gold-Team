@@ -18,9 +18,10 @@ def invite():
         invited = data["inviteList"]
         for user in invited:
             cur.execute('\
-                INSERT INTO collaborators \
-                VALUES (?, ?, ?, ?) \
-                ', (4, "Brandon", "Tajfel", datetime('now', 'localtime')))
+                INSERT INTO collaborators(username1, username2, created) \
+                VALUES (?, ?, ?) \
+                ', ("Brandon", user, datetime('now', 'localtime')))
+
 
     contacts = cur.execute("""\
         SELECT fullname, fullname, phonenumber FROM users
