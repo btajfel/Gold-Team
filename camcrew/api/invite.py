@@ -14,10 +14,13 @@ def invite():
     cur = camcrew.model.get_db().cursor()
 
     if flask.request.method == "POST":
-        cur.execute('\
-            INSERT INTO collaborators \
-            VALUES (?, ?) \
-            ', (flask.session['username'], postid_url_slug))
+        data = json.loads(flask.request.data)
+        invited = data["inviteList"]
+        for user in invited:
+            cur.execute('\
+                INSERT INTO collaborators \
+                VALUES (?, ?, ?, ?) \
+                ', (4, "Brandon", user, datetime('now', 'localtime')))
 
     contacts = cur.execute("""\
         SELECT fullname, fullname, phonenumber FROM users
