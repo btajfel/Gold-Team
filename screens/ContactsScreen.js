@@ -140,7 +140,7 @@ export default class SearchScreen extends Component {
           }) 
         })
         .then(() =>{
-         navigate('Record', {data: invited,}); 
+         navigate('Record', {data: invited}); 
         })
       } catch (e) {
         console.error(e)

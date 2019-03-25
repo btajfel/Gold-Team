@@ -1,11 +1,18 @@
 import React, {Component} from "react";
-import { StyleSheet, View, Alert, TouchableOpacity, Image, TouchableHighlight } from 'react-native'
+import { StyleSheet, View, Alert, TouchableOpacity, Image, TouchableHighlight } from 'react-native';
 import { Permissions } from "expo";
-import { Button, ListItem, Left, Right, Body, Thumbnail, Text, Icon } from 'native-base'
+import { Button, ListItem, Left, Right, Body, Thumbnail, Text, Icon } from 'native-base';
+import {createStackNavigator, createAppContainer} from 'react-navigation';
 
 
 
 export default class LibraryProject extends Component {
+
+  static navigationOptions = {
+    title: 'Library',
+  };
+
+
     constructor(props) {
         super(props);
         this.state = {
@@ -14,6 +21,7 @@ export default class LibraryProject extends Component {
       }
 
       handlePress = (name) => {
+      const {navigate} = this.props.navigation;
       const title = name;
       Alert.alert(
       `${title}`,
@@ -22,7 +30,7 @@ export default class LibraryProject extends Component {
     [
     {text: "Cancel", style: 'cancel'},
     {text: "View", onPress: () => console.log('View Video')},
-    {text: 'Edit', onPress: () => console.log('Edit Video')}
+    {text: 'Edit', onPress: () => navigate('Edit')}
     ]
     )
     };
