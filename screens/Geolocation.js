@@ -13,7 +13,11 @@ import { Constants, Location, Permissions } from 'expo';
 import ContactRender from './ContactRender';
 
 export default class Geolocation extends Component {
-  state = {
+
+    constructor(props) {
+    super(props);
+
+    this.state = {
     loading: false,
     myLocation: null,
     errorMessage: null,
@@ -22,9 +26,11 @@ export default class Geolocation extends Component {
     invited: [],
   };
 
-  componentWillMount() {
+    //this.nearbyHolder = [];
+  }
+
+  componentDidMount() {
       this._getMyLocation();
-      this._getUserLoactions();
   }
 
 
@@ -48,69 +54,73 @@ export default class Geolocation extends Component {
       });
     }
 
-    let myLocation = await Location.getCurrentPositionAsync({});
-    this.setState({ myLocation });
+    let myLoc = await Location.getCurrentPositionAsync({});
+    this.setState({myLocation: myLoc });
+
+    this._getUserLoactions();
   };
 
     _getUserLoactions = async () => {    
     const url = 'http://crewcam.eecs.umich.edu/api/v1/location/';
     this.setState({ loading: true });
-/*
       await fetch(url)
       .then(res => res.json())
       .then(res => {
         this.setState({
-          userDistances: data.allUsers,
-          loading: false,
+          userDistances: res.allUsers,
         });
       })
       .then(() =>{
         this.calcDistances();
+        this.setState({
+          loading: false,
+        });
+                  
       })
       .catch(errorMessage => {
         this.setState({ errorMessage, loading: false });
       });
-      */
     };
 
 
 
-      calcDistances = async () => {
+      calcDistances = () => {
+        const myLoc = this.state.myLocation;
         const users = this.state.userDistances;
-        const myLat = this.state.myLocation.coord.latitude;
-        const myLong = this.state.myLocation.coord.longitude;
+        const myLat = myLoc.coords.latitude;
+        const myLong = myLoc.coords.longitude;
+        var nearbyHolder = [];
 
         users.forEach(function(user) {
         const lat = user.latitude;
         const long = user.longitude;
-        const diff = getDistance(myLat,MyLong,lat,long);
+        var diff = (function() {
+          if ((myLat === lat) && (myLong === long)) {
+             return 0;
+          }
+          else{
+          var radlat1 = Math.PI * myLat/180;
+          var radlat2 = Math.PI * lat/180;
+          var theta = long-myLong;
+          var radtheta = Math.PI * theta/180;
+          var dist = Math.sin(radlat1) * Math.sin(radlat2) + Math.cos(radlat1) * Math.cos(radlat2) * Math.cos(radtheta);
+          dist = Math.acos(dist);
+          dist = dist * 180/Math.PI;
+          dist = dist * 60 * 1.1515;
+          dist = Math.round(dist*100)/100
+          return dist;
+       }
+          })(); 
 
         if (diff <= 1.0){
-          this.setState({ nearby: [this.state.nearby, [user.fullname, user.phonenumber]] })
+          nearbyHolder.push({fullname: user.fullname, phonenumber: user.phonenumber, distance: diff});
         }
         });
-      }
-
-
-
-  getDistance = async (lat1,lon1,lat2,lon2) => {
-  var R = 3958.8; // Radius of the earth in mi
-  var dLat = deg2rad(lat2-lat1);  // deg2rad below
-  var dLon = deg2rad(lon2-lon1); 
-  var a = 
-    Math.sin(dLat/2) * Math.sin(dLat/2) +
-    Math.cos(deg2rad(lat1)) * Math.cos(deg2rad(lat2)) * 
-    Math.sin(dLon/2) * Math.sin(dLon/2)
-    ; 
-  var c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a)); 
-  var d = R * c; // Distance in mi
-  return d;
-}
-
- deg2rad = async (deg) => {
-  return deg * (Math.PI/180)
-}
-
+        this.setState({
+          nearby: nearbyHolder
+        })
+      };
+ 
 
   render() {
      if (this.state.loading) {
