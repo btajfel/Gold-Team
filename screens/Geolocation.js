@@ -112,7 +112,7 @@ export default class Geolocation extends Component {
        }
           })(); 
 
-        if (diff <= 1.0){
+        if (diff <= 20.0){
           nearbyHolder.push({fullname: user.fullname, phonenumber: user.phonenumber, distance: diff});
         }
         });
@@ -120,6 +120,16 @@ export default class Geolocation extends Component {
           nearby: nearbyHolder
         })
       };
+
+  toggleSelection = (phonenumber, isSelected) => {
+    let inviteList = this.state.invited;
+    if (isSelected) {
+      inviteList.push(phonenumber);
+    } else {
+      inviteList = inviteList.filter(item => item !== phonenumber);
+    }
+    this.setState({ invited: inviteList });
+  };
  
 
   render() {
