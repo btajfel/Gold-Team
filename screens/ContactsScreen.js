@@ -111,7 +111,7 @@ export default class SearchScreen extends Component {
             console.log("GOT HERE");
             //finalList.push(contactData);
           }
-          
+        
     });
      });
   
