@@ -18,12 +18,8 @@ VALUES (1, 'azarrabi', 3, 'test.mov', datetime('now', 'localtime')),
 	   (3, 'btajfel', 3, 'test.mov', datetime('now', 'localtime'));
 
 INSERT INTO collaborators(projectid, username1, username2, created)
-VALUES (3, 'azarrabi', 'armruval', datetime('now', 'localtime')),
-	   (3, 'azarrabi', 'btajfel', datetime('now', 'localtime')),
-	   (3, 'azarrabi', 'makaela', datetime('now', 'localtime')),
-	   (3, 'azarrabi', 'mattjw', datetime('now', 'localtime')),
-	   (3, 'azarrabi', 'tobymac', datetime('now', 'localtime')),
-	   (3, 'azarrabi', 'tjsande', datetime('now', 'localtime'));
+VALUES (3, 'azarrabi', 'armruval', datetime('now', 'localtime'));
+
 
 INSERT INTO pendingInvites(projectid, username1, username2, created)
 VALUES (3, 'azarrabi', 'armruval', datetime('now', 'localtime')),

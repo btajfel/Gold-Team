@@ -51,8 +51,8 @@ case $1 in
   "dump")
     # echo "+ sqlite3 -batch -line var/camcrew.sqlite3 'SELECT * FROM pendingInvites'"
     # sqlite3 -batch -line var/camcrew.sqlite3 'SELECT * FROM pendingInvites'
-    # echo "+ sqlite3 -batch -line var/camcrew.sqlite3 'SELECT * FROM colloborators'"
-    # sqlite3 -batch -line var/camcrew.sqlite3 'SELECT * FROM colloborators'
+    echo "+ sqlite3 -batch -line var/camcrew.sqlite3 'SELECT * FROM colloborators'"
+    sqlite3 -batch -line var/camcrew.sqlite3 'SELECT * FROM colloborators'
     echo "+ sqlite3 -batch -line var/camcrew.sqlite3 'SELECT * FROM creators'"
     sqlite3 -batch -line var/camcrew.sqlite3 'SELECT * FROM creators'
     echo "+ sqlite3 -batch -line var/camcrew.sqlite3 'SELECT * FROM projects'"
