@@ -1,4 +1,4 @@
-INSERT INTO users(username, fullname, email, phonenumber, password, longitude, latitude, created)
+INSERT INTO users(username, fullname, email, phonenumber, password, latitude, longitude, created)
 VALUES ('azarrabi', 'Ali Zarrabi', 'azarrabi@umich.edu',  '9739857896', 'sha512$a45ffdcc71884853a2cba9e6bc55e812$c739cef1aec45c6e345c8463136dc1ae2fe19963106cf748baf87c7102937aa96928aa1db7fe1d8da6bd343428ff3167f4500c8a61095fb771957b4367868fb8', '42.3124', '-83.6985', datetime('now', 'localtime')),
 	   ('armruval', 'Armando Ruvalcaba', 'armruval@umich.edu', '7347800645', 'sha512$a45ffdcc71884853a2cba9e6bc55e812$c739cef1aec45c6e345c8463136dc1ae2fe19963106cf748baf87c7102937aa96928aa1db7fe1d8da6bd343428ff3167f4500c8a61095fb771957b4367868fb8', '42.2627', '-83.7432', datetime('now', 'localtime')),
 	   ('btajfel', 'Brandon Tajfel', 'btajfel@umich.edu', '9088399223', 'sha512$a45ffdcc71884853a2cba9e6bc55e812$c739cef1aec45c6e345c8463136dc1ae2fe19963106cf748baf87c7102937aa96928aa1db7fe1d8da6bd343428ff3167f4500c8a61095fb771957b4367868fb8', '42.2649', '-83.7145', datetime('now', 'localtime')),
