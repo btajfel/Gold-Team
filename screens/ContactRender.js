@@ -26,7 +26,7 @@ export default class ContactRender extends PureComponent {
       { selected: !this.state.selected,
         inviteIcon: this.state.inviteIcon === 'off' ? 'on' : 'off',
        },
-      () => this.props.onSelectionToggle(item.phonenumber, this.state.selected)
+      () => this.props.onSelectionToggle(item.username, this.state.selected)
     );
   }
 

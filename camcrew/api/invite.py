@@ -24,7 +24,7 @@ def invite():
 
 
     contacts = cur.execute("""\
-        SELECT fullname, fullname, phonenumber FROM users
+        SELECT fullname, username, phonenumber FROM users
         """).fetchall()
     context['allContacts'] = contacts
 

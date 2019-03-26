@@ -20,6 +20,7 @@
     "react-native-elements": "^1.1.0",
     "react-native-icons": "^0.7.1",
     "react-native-is-iphonex": "^1.0.1",
+    "react-native-orientation": "^3.1.3",
     "react-native-permissions": "^2.0.0-alpha.1",
     "react-native-search-header": "^0.3.2",
     "react-navigation": "^3.0.9"

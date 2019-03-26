@@ -84,12 +84,12 @@ export default class SearchScreen extends Component {
   };
 
 
-   toggleSelection = (phonenumber, isSelected) => {
+   toggleSelection = (username, isSelected) => {
     let inviteList = this.state.invited;
     if (isSelected) {
-      inviteList.push(phonenumber);
+      inviteList.push(username);
     } else {
-      inviteList = inviteList.filter(item => item !== phonenumber);
+      inviteList = inviteList.filter(item => item !== username);
     }
     this.setState({ invited: inviteList });
   };
