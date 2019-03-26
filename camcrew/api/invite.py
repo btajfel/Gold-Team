@@ -12,10 +12,10 @@ def invite():
     context = {}
     cur = camcrew.model.get_db().cursor()
 
+    projectid = 1
     if flask.request.method == "POST":
         cur.execute('SELECT MAX(projectid) FROM collaborators ')
         result = cur.fetchone()["MAX(projectid)"]
-        projectid = 1
         if result:
             projectid =  result + 1
 
@@ -30,8 +30,8 @@ def invite():
                 ', (projectid, "btajfel", user))
 
     contacts = cur.execute("""\
-        SELECT fullname, username, phonenumber FROM users
+        SELECT projectid, username1, username2 FROM collaborators WHERE projectid = ?
         """).fetchall()
-    context['allContacts'] = contacts
+    context['collaborators'] = cur.fetchall()
 
     return flask.jsonify(**context), 201
