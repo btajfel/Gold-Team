@@ -29,9 +29,8 @@ def invite():
                 VALUES (?, ?, ?, datetime("now", "localtime")) \
                 ', (projectid, "btajfel", user))
 
-    contacts = cur.execute("""\
+    collaborators = cur.execute("""\
         SELECT projectid, username1, username2 FROM collaborators WHERE projectid = ?
-        """).fetchall()
-    context['collaborators'] = cur.fetchall()
-
+        """, (projectid,)).fetchall()
+    context['collaborators'] = collaborators
     return flask.jsonify(**context), 201
