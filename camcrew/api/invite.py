@@ -20,7 +20,7 @@ def invite():
             cur.execute('\
                 INSERT INTO collaborators(username1, username2, created) \
                 VALUES (?, ?, datetime("now", "localtime")) \
-                ', ("Brandon", user))
+                ', ("btajfel", user))
 
 
     contacts = cur.execute("""\
