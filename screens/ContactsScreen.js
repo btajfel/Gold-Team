@@ -140,10 +140,10 @@ export default class SearchScreen extends Component {
           }) 
         })
         .then((response) =>{
-          if(!response.ok) throw Error(response.statusText);
           return response.json();
         })
         .then((data) =>{
+          console.log(data.collaborators[0].projectid);
           navigate('Record', {data: data.collaborators[0].projectid}); 
         })
       } catch (e) {
