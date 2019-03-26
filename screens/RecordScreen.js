@@ -12,6 +12,7 @@ import {
 } from 'react-native';
 import GalleryScreen from './GalleryScreen';
 import isIPhoneX from 'react-native-is-iphonex';
+import {NavigationEvents} from 'react-navigation';
 
 import { 
   Ionicons,
@@ -55,6 +56,8 @@ const wbIcons = {
   incandescent: 'wb-incandescent',
 };
 
+
+
 export default class CameraScreen extends React.Component {
   state = {
     flash: 'off',
@@ -72,6 +75,8 @@ export default class CameraScreen extends React.Component {
     pictureSize: undefined,
     pictureSizes: [],
     pictureSizeId: 0,
+    projectID: 0,
+    allCollabs: [],
     friends: undefined,
     friendsSizes: [],
     friendsId: 0,
@@ -98,6 +103,26 @@ export default class CameraScreen extends React.Component {
       console.log(e, 'Directory exists');
     });
   }
+
+  paramsFunction = async () => {
+    const array = [];
+    const pid = this.props.navigation.getParam('data', 0);
+    if (pid !== 0){
+     const url = `http://crewcam.eecs.umich.edu/api/v1/${pid}/invites/`;
+     fetch(url)
+      .then(res => res.json())
+      .then(res => {
+        this.setState({
+          allCollabs: res.collaborators,
+        });
+        array = res.collaborators;
+      })
+      .catch(error => {
+       console.log(error);
+      });
+      console.log(array);
+    }
+  };
 
   getRatios = async () => {
     const ratios = await this.camera.getSupportedRatios();
@@ -442,7 +467,12 @@ export default class CameraScreen extends React.Component {
       ? this.renderCamera()
       : this.renderNoPermissions();
     const content = this.state.showGallery ? this.renderGallery() : cameraScreenContent;
-    return <View style={styles.container}>{content}</View>;
+    return <View style={styles.container}>
+            <NavigationEvents
+              onDidFocus={() => this.paramsFunction()}
+            /> 
+            {content}
+          </View>;
   }
 }
 

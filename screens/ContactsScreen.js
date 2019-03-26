@@ -19,10 +19,8 @@ export default class SearchScreen extends Component {
     return {
       headerRight: (
       <TouchableOpacity
-          //onPress={() => navigate('Record', {invite: 5}) }
           style={styles.toggleButton}
           onPress={params.sendInvites}
-         // onPress={() => { this.sendInvites; navigate('Record', {invite: 5, });  }}
          >
          <Text style={{color: 'blue', fontSize: 18}}>Done</Text>
       </TouchableOpacity>
@@ -126,9 +124,7 @@ export default class SearchScreen extends Component {
   
   _sendInvites = async () => {
     const {navigate} = this.props.navigation;
-   // console.log("invites sent");
     const invited = this.state.invited;
-    console.log(invited);
     
     const url = 'http://crewcam.eecs.umich.edu/api/v1/invite/';
       try {
@@ -143,7 +139,6 @@ export default class SearchScreen extends Component {
           return response.json();
         })
         .then((data) =>{
-          console.log(data.projectid);
           navigate('Record', {data: data.projectid}); 
         })
       } catch (e) {
