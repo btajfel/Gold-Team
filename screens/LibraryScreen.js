@@ -103,7 +103,7 @@ export default class library extends Component {
             ref={(ref) => this.listView = ref}
             data = {this.state.data}
             renderItem={({ item }) => (
-              <LibraryProject item={item}/>
+              <LibraryProject item={item} navigation={this.props.navigation}/>
             )}
             onFetch={this.onFetch}
             keyExtractor={item => item.name}

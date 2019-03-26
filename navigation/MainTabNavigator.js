@@ -6,8 +6,10 @@ import TabBarIcon from '../components/TabBarIcon';
 import ContactsScreen from '../screens/ContactsScreen';
 import RecordScreen from '../screens/RecordScreen';
 import LibraryScreen from '../screens/LibraryScreen';
+import LibraryProject from '../screens/LibraryProject';
 import Geolocation from '../screens/Geolocation';
 import SharedProjects from '../screens/SharedProjects';
+import EditScreen from '../screens/EditScreen';
 
 
 const ContactsStack = createStackNavigator({
@@ -42,6 +44,8 @@ RecordStack.navigationOptions = {
 
 const LibraryStack = createStackNavigator({
   Library: LibraryScreen,
+  Edit: EditScreen,
+  LibraryP: LibraryProject,
 });
 
 LibraryStack.navigationOptions = {
@@ -58,9 +62,11 @@ const SharedStack = createStackNavigator({
   Shared: SharedProjects,
 });
 
-const GeolocationStack = createStackNavigator({
-  Geo: Geolocation,
+
+const EditStack = createStackNavigator({
+  Edit: EditScreen,
 });
+
 
 export default createBottomTabNavigator({
     ContactsStack,
