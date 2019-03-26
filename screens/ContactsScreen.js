@@ -139,8 +139,12 @@ export default class SearchScreen extends Component {
              'inviteList': invited
           }) 
         })
-        .then(() =>{
-         navigate('Record', {data: invited}); 
+        .then((response) =>{
+          if(!response.ok) throw Error(response.statusText);
+          return response.json();
+        })
+        .then((data) =>{
+          navigate('Record', {data: data.collaborators[0].projectid}); 
         })
       } catch (e) {
         console.error(e)

@@ -34,16 +34,6 @@ export default class Geolocation extends Component {
   }
 
 
-  toggleSelection = (phonenumber, isSelected) => {
-    let inviteList = this.state.invited;
-    if (isSelected) {
-      inviteList.push(phonenumber);
-    } else {
-      inviteList = inviteList.filter(item => item !== phonenumber);
-    }
-    this.setState({ invited: inviteList });
-  };
-
 
 
   _getMyLocation = async () => {
@@ -113,7 +103,7 @@ export default class Geolocation extends Component {
           })(); 
 
         if (diff <= 20.0){
-          nearbyHolder.push({fullname: user.fullname, phonenumber: user.phonenumber, distance: diff});
+          nearbyHolder.push({fullname: user.fullname, username: user.username, distance: diff});
         }
         });
         this.setState({
@@ -121,12 +111,12 @@ export default class Geolocation extends Component {
         })
       };
 
-  toggleSelection = (phonenumber, isSelected) => {
+  toggleSelection = (username, isSelected) => {
     let inviteList = this.state.invited;
     if (isSelected) {
-      inviteList.push(phonenumber);
+      inviteList.push(username);
     } else {
-      inviteList = inviteList.filter(item => item !== phonenumber);
+      inviteList = inviteList.filter(item => item !== username);
     }
     this.setState({ invited: inviteList });
   };
@@ -150,7 +140,7 @@ export default class Geolocation extends Component {
               onSelectionToggle= {this.toggleSelection}
             />
           )}
-          keyExtractor={item => item.phonenumber}
+          keyExtractor={item => item.username}
           refreshableMode="advanced"
         />
       </View>

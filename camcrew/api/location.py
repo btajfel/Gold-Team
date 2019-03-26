@@ -22,7 +22,7 @@ def get_location():
                 flask.request.args["longitude"], flask.session['username']))
 
     users = cur.execute("""\
-        SELECT fullname, phonenumber, latitude, longitude FROM users
+        SELECT fullname, username, latitude, longitude FROM users
         """).fetchall()
     context['allUsers'] = users
 
