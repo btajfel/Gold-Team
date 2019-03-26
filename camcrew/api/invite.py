@@ -13,7 +13,6 @@ def invite():
     cur = camcrew.model.get_db().cursor()
 
     if flask.request.method == "POST":
-        print("data string", data_bytes)
         data = json.loads(flask.request.data)
         print("json")
         invited = data["inviteList"]
