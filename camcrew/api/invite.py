@@ -11,9 +11,9 @@ from camcrew.api.error_handler import InvalidUsage
 def get_invite(projectid):
     context = {}
     cur = camcrew.model.get_db().cursor()
-    collaborators = cur.execute("""\
-    SELECT username1, username2 FROM collaborators WHERE projectid = ?
-    """, (projectid,)).fetchall()
+    collaborators = cur.execute('\
+    SELECT username1, username2 FROM collaborators WHERE projectid = ? \
+    ', (projectid,)).fetchall()
 
     context["collaborators"] = collaborators
 

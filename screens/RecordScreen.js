@@ -108,7 +108,7 @@ export default class CameraScreen extends React.Component {
     const array = [];
     const pid = this.props.navigation.getParam('data', 0);
     if (pid !== 0){
-     const url = `http://crewcam.eecs.umich.edu/api/v1/${pid}/invites/`;
+     const url = `http://crewcam.eecs.umich.edu/api/v1/${pid}/invite/`;
      fetch(url)
       .then(res => res.json())
       .then(res => {
