@@ -105,7 +105,7 @@ export default class CameraScreen extends React.Component {
   }
 
   paramsFunction = async () => {
-    const array = [];
+    let array = [];
     const pid = this.props.navigation.getParam('data', 0);
     if (pid !== 0){
      const url = `http://crewcam.eecs.umich.edu/api/v1/${pid}/invite/`;
@@ -115,12 +115,14 @@ export default class CameraScreen extends React.Component {
         this.setState({
           allCollabs: res.collaborators,
         });
-        array = res.collaborators;
+      })
+      .then(() => {
+        this.collectFriends();
+
       })
       .catch(error => {
        console.log(error);
       });
-      console.log(array);
     }
   };
 
@@ -220,7 +222,23 @@ export default class CameraScreen extends React.Component {
       newId = length -1;
     }
     this.setState({ pictureSize: this.state.pictureSizes[newId], pictureSizeId: newId });
-  }
+  };
+
+    collectFriends= async () => {
+     let friendsSizes = [];
+     let friendsId = 0;
+    if (this.state.allCollabs){
+      collabs = this.state.allCollabs;
+      var i;
+      for (i = 0; i < collabs.length; i++){
+        if (i === 0){
+          friendsSizes.push(collabs[0].username1);
+        }
+          friendsSizes.push(collabs[i].username2);
+      }
+    }
+      this.setState({friendsSizes, friendsId, friends: friendsSizes[friendsId] });
+  };
 
 
   previousFriends = () => this.changeFriends(1);
@@ -234,8 +252,8 @@ export default class CameraScreen extends React.Component {
     } else if (newId < 0) {
       newId = length -1;
     }
-    this.setState({ friends: this.state.friendsSizs[newId], friendsId: newId });
-  }
+    this.setState({ friends: this.state.friendsSizes[newId], friendsId: newId });
+  };
 
   renderGallery() {
     return <GalleryScreen onPress={this.toggleView.bind(this)} />;
@@ -410,13 +428,13 @@ export default class CameraScreen extends React.Component {
         <View style={styles.pictureSizeContainer}>
           <Text style={styles.pictureQualityLabel}>Added Friends</Text>
           <View style={styles.pictureSizeChooser}>
-            <TouchableOpacity onPress={this.previousFriendsSize} style={{ padding: 6 }}>
+            <TouchableOpacity onPress={this.previousFriends} style={{ padding: 6 }}>
               <Ionicons name="md-arrow-dropleft" size={14} color="white" />
             </TouchableOpacity>
             <View style={styles.pictureSizeLabel}>
               <Text style={{color: 'white'}}>{this.state.friends}</Text>
             </View>
-            <TouchableOpacity onPress={this.nextFriendsSize} style={{ padding: 6 }}>
+            <TouchableOpacity onPress={this.nextFriends} style={{ padding: 6 }}>
               <Ionicons name="md-arrow-dropright" size={14} color="white" />
             </TouchableOpacity>
           </View>
