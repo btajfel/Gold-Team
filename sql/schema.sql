@@ -50,20 +50,3 @@ CREATE TABLE collaborators(
     ON DELETE CASCADE
     ON UPDATE CASCADE
 );
-
-CREATE TABLE pendingInvites(
-  projectid INTEGER,
-  username1 VARCHAR(20) NOT NULL,
-  username2 VARCHAR(20) NOT NULL,
-  created TIMESTAMP NOT NULL,
-  PRIMARY KEY(projectid, username2),
-  FOREIGN KEY(projectid) REFERENCES projects(projectid)
-    ON DELETE CASCADE
-    ON UPDATE CASCADE,
-  FOREIGN KEY(username1) REFERENCES users(username)
-    ON DELETE CASCADE
-    ON UPDATE CASCADE,
-  FOREIGN KEY(username2) REFERENCES users(username)
-    ON DELETE CASCADE
-    ON UPDATE CASCADE
-);
