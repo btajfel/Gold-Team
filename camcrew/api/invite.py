@@ -6,9 +6,23 @@ import camcrew
 from camcrew.api.error_handler import InvalidUsage
 
 
+@camcrew.app.route('/api/v1/invite/<int: projectid>/',
+                   methods=["GET"])
+def get_invite(projectid):
+    context = {}
+    cur = camcrew.model.get_db().cursor()
+    collaborators = cur.execute("""\
+    SELECT username1, username2 WHERE projectid = ?
+    """, (projectid,)).fetchall()
+
+    context["collaborators"] = collaborators
+
+    return flask.jsonify(**context), 201
+
+
 @camcrew.app.route('/api/v1/invite/',
-                   methods=["GET", "POST"])
-def invite():
+                   methods=["POST"])
+def post_invite():
     context = {}
     cur = camcrew.model.get_db().cursor()
 
@@ -29,8 +43,9 @@ def invite():
                 VALUES (?, ?, ?, datetime("now", "localtime")) \
                 ', (projectid, "btajfel", user))
 
-    collaborators = cur.execute("""\
-        SELECT projectid, username1, username2 FROM collaborators WHERE projectid = ?
-        """, (projectid,)).fetchall()
-    context['collaborators'] = collaborators
+
+    context['projectid'] = projectid
     return flask.jsonify(**context), 201
+
+
+
