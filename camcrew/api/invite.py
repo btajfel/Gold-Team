@@ -13,8 +13,8 @@ def invite():
     cur = camcrew.model.get_db().cursor()
 
     if flask.request.method == "POST":
-        cur.execute('SELECT COUNT(*) FROM collaborators')
-        projectid = cur.fetchone()["COUNT(*)"] + 1
+        cur.execute('SELECT MAX(projectid) FROM collaborators ')
+        projectid = cur.fetchone()["MAX(projectid)"] + 1
 
         data = json.loads(flask.request.data)
         print("json")
