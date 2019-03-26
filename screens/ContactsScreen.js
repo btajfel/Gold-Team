@@ -143,8 +143,8 @@ export default class SearchScreen extends Component {
           return response.json();
         })
         .then((data) =>{
-          console.log(data.collaborators[0].projectid);
-          navigate('Record', {data: data.collaborators[0].projectid}); 
+          console.log(data.projectid);
+          navigate('Record', {data: data.projectid}); 
         })
       } catch (e) {
         console.error(e)
