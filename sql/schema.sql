@@ -50,15 +50,3 @@ CREATE TABLE collaborators(
     ON DELETE CASCADE
     ON UPDATE CASCADE
 );
-
-
-CREATE SEQUENCE proj_seq
-START WITH 1
-INCREMENT BY 1;
-
-CREATE TRIGGER proj_trig
-  BEFORE INSERT ON collaborators
-    FOR EACH ROW
-      BEGIN
-        SELECT proj_seq.NEXTVAL INTO :NEW.projectid FROM DUAL;
-      END;
