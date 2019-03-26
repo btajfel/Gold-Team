@@ -17,6 +17,9 @@ CREATE TABLE projects(
   created TIMESTAMP NOT NULL,
   FOREIGN KEY(owner) REFERENCES users(username) 
     ON DELETE CASCADE
+    ON UPDATE CASCADE,
+  FOREIGN KEY(projectid) REFERENCES collaborators(projectid)
+    ON DELETE CASCADE
     ON UPDATE CASCADE
 );
 
@@ -40,9 +43,6 @@ CREATE TABLE collaborators(
   username1 VARCHAR(20) NOT NULL,
   username2 VARCHAR(20) NOT NULL,
   created TIMESTAMP NOT NULL,
-  FOREIGN KEY(projectid) REFERENCES projects(projectid)
-    ON DELETE CASCADE
-    ON UPDATE CASCADE,
   FOREIGN KEY(username1) REFERENCES users(username)
     ON DELETE CASCADE
     ON UPDATE CASCADE,
