@@ -14,7 +14,10 @@ def invite():
 
     if flask.request.method == "POST":
         cur.execute('SELECT MAX(projectid) FROM collaborators ')
-        projectid = cur.fetchone()["MAX(projectid)"] + 1
+        result = cur.fetchone()["MAX(projectid)"]
+        projectid = 1
+        if result:
+            projectid =  result + 1
 
         data = json.loads(flask.request.data)
         print("json")
