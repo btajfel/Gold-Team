@@ -36,10 +36,11 @@ CREATE TABLE creators(
 );
 
 CREATE TABLE collaborators(
-  projectid INTEGER PRIMARY KEY,
+  projectid INTEGER NOT NULL,
   username1 VARCHAR(20) NOT NULL,
   username2 VARCHAR(20) NOT NULL,
   created TIMESTAMP NOT NULL,
+  PRIMARY KEY(projectid),
   FOREIGN KEY(projectid) REFERENCES projects(projectid)
     ON DELETE CASCADE
     ON UPDATE CASCADE,
