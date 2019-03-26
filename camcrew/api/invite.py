@@ -19,8 +19,8 @@ def invite():
         print(invited)
         for user in invited:
             cur.execute('\
-                INSERT INTO collaborators(projectid, username1, username2, created) \
-                VALUES (1, ?, ?, datetime("now", "localtime")) \
+                INSERT INTO collaborators(username1, username2, created) \
+                VALUES (?, ?, datetime("now", "localtime")) \
                 ', ("btajfel", user))
 
     contacts = cur.execute("""\
