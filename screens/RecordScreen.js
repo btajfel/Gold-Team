@@ -1,4 +1,4 @@
-import { Constants, Camera, FileSystem, Permissions, BarCodeScanner } from 'expo';
+import { Constants, Camera, FileSystem, Location, Permissions, BarCodeScanner } from 'expo';
 
 import React from 'react';
 import {
@@ -105,6 +105,7 @@ export default class CameraScreen extends React.Component {
   }
 
   paramsFunction = async () => {
+    this.updateLocation();
     let array = [];
     const pid = this.props.navigation.getParam('data', 0);
     if (pid !== 0){
@@ -118,10 +119,6 @@ export default class CameraScreen extends React.Component {
       })
       .then(() => {
         this.collectFriends();
-
-      })
-      .then(() => {
-        this.updateLocation();
 
       })
       .catch(error => {
@@ -141,6 +138,8 @@ export default class CameraScreen extends React.Component {
     let myLoc = await Location.getCurrentPositionAsync({});
     const latitude = myLoc.coords.latitude;
     const longitude = myLoc.coords.longitude;
+    console.log(longitude);
+    console.log(latitude);
 
 
     const url = 'http://crewcam.eecs.umich.edu/api/v1/location/';

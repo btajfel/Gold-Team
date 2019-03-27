@@ -25,6 +25,7 @@ def get_location():
             SET latitude = ? AND longitude = ?\
             WHERE username = ?\
             ', (latitude, longitude, username))
+        context['updated'] = longitude
     else:
         users = cur.execute("""\
             SELECT fullname, username, latitude, longitude FROM users
