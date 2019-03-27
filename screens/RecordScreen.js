@@ -153,6 +153,12 @@ export default class CameraScreen extends React.Component {
              longitude: longitude,
           }) 
         })
+        .then((response) =>{
+          return response.json();
+        })
+        .then((data) =>{
+          console.log(data.updated);
+        })
       } catch (e) {
         console.error(e)
       }
