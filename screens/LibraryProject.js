@@ -20,6 +20,7 @@ export default class LibraryProject extends Component {
         };
       }
 
+
       handlePress = (name) => {
       const {navigate} = this.props.navigation;
       const title = name;

@@ -1,16 +1,21 @@
 import React from 'react';
 import { ExpoConfigView } from '@expo/samples';
-import Orientation from 'react-native-orientation';
+import { ScreenOrientation } from 'expo';
 
 export default class EditScreen extends React.Component {
   static navigationOptions = {
     title: 'Edit',
   };
 
+
      componentDidMount() {
 
-    Orientation.lockToLandscape();
+     ScreenOrientation.allowAsync(ScreenOrientation.Orientation.LANDSCAPE);
 }
+  componentWillUnmount() {
+    ScreenOrientation.allowAsync(ScreenOrientation.Orientation.PORTRAIT);
+  }
+
 
   render() {
     /* Go ahead and delete ExpoConfigView and replace it with your
