@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import {Keyboard, Text, View, TextInput, TouchableWithoutFeedback, Alert, KeyboardAvoidingView, StyleSheet} from 'react-native';
+import {Keyboard, Text, View, TextInput, TouchableWithoutFeedback, TouchableOpacity, Alert, KeyboardAvoidingView, StyleSheet} from 'react-native';
 import { Button } from 'react-native-elements';
 
 
@@ -20,7 +20,7 @@ export default class LoginScreen extends Component {
   }
 
   loginSuccess = async () => {
-    const {navigate} = this.props.navigation;
+    
   };
 
   loginFailed = async () => {
@@ -32,10 +32,20 @@ export default class LoginScreen extends Component {
     )
   };
 
+   createAccount = async () => {
+    const {navigate} = this.props.navigation;
+    navigate('SignUp');
+  };
+
+  forgotPassword = async () => {
+    alert("Forgot Password");
+  };
+
 
 
   onLoginPress = async () => {
      const { username, password } = this.state;
+     const {navigate} = this.props.navigation;
 
     const url = 'http://crewcam.eecs.umich.edu/api/v1/login/';
       try {
@@ -51,7 +61,12 @@ export default class LoginScreen extends Component {
           return response.json();
         })
         .then((data) =>{
-          console.log(data); 
+          if (data.result === false){
+            this.loginFailed();
+          }
+          else{
+            navigate('Record');
+          }
         })
       } catch (e) {
         console.error(e)
@@ -76,6 +91,16 @@ export default class LoginScreen extends Component {
               onPress={() => this.onLoginPress()}
               title="Login"
             />
+            <TouchableOpacity onPress = {()=>this.props.navigation.navigate('SignUp')}>
+            <View style = {styles.create}>
+              <Text style = {styles.text}>Create Account</Text>
+            </View>
+          </TouchableOpacity>
+          <TouchableOpacity onPress = {this.forgotPassword}>
+            <View style = {styles.forgot}>
+              <Text style={styles.text}>Forgot Password?</Text>
+            </View>
+          </TouchableOpacity>
           </View>
         </View>
       </TouchableWithoutFeedback>
@@ -115,6 +140,28 @@ loginFormTextInput: {
   marginTop: 5,
   marginBottom: 5,
 
+},
+create: {
+  marginTop: 10,
+  position: 'absolute',
+  left:15,
+},
+forgot: {
+  marginTop: 10,
+  position: 'absolute',
+  right:15,
+},
+text: {
+  color: '#3897f1',
+  backgroundColor: 'transparent',
+},
+otherButtons: {
+  backgroundColor: 'transparent',
+  borderRadius: 5,
+  height: 15,
+  marginLeft: 15,
+  marginRight: 15,
+  marginTop: 10,
 },
 loginButton: {
   backgroundColor: '#3897f1',
