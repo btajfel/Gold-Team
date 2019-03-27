@@ -22,7 +22,7 @@ def get_location():
         latitude = locate_info["latitude"]
         cur.execute('\
             UPDATE users \
-            SET latitude = ? AND longitude = ?\
+            SET latitude = ? , longitude = ?\
             WHERE username = ?\
             ', (latitude, longitude, username))
         context['updated'] = latitude
