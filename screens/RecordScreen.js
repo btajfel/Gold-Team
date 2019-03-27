@@ -120,10 +120,43 @@ export default class CameraScreen extends React.Component {
         this.collectFriends();
 
       })
+      .then(() => {
+        this.updateLocation();
+
+      })
       .catch(error => {
        console.log(error);
       });
     }
+  };
+
+  updateLocation = async () => {
+    let { status } = await Permissions.askAsync(Permissions.LOCATION);
+    if (status !== 'granted') {
+      this.setState({
+        errorMessage: 'Permission to access location was denied',
+      });
+    }
+
+    let myLoc = await Location.getCurrentPositionAsync({});
+    const latitude = myLoc.coords.latitude;
+    const longitude = myLoc.coords.longitude;
+
+
+    const url = 'http://crewcam.eecs.umich.edu/api/v1/location/';
+      try {
+        await fetch(url, {
+          credentials: 'same-origin',
+          method: 'POST',
+          body: JSON.stringify( {
+             username: "btajfel",
+             latitude: latitude,
+             longitude: longitude,
+          }) 
+        })
+      } catch (e) {
+        console.error(e)
+      }
   };
 
   getRatios = async () => {

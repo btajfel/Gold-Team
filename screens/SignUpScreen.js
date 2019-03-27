@@ -63,9 +63,9 @@ export default class SignUpScreen extends Component {
               value={this.state.password} onChangeText={(password) => this.setState({ password })}/>
             <TextInput placeholder="Full Name" placeholderColor="#c4c3cb" style={styles.loginFormTextInput}
              value={this.state.fullname} onChangeText={(fullname) => this.setState({ fullname })} />
-            <TextInput placeholder="Phone number" placeholderColor="#c4c3cb" style={styles.loginFormTextInput} secureTextEntry={true}
+            <TextInput placeholder="Phone number" placeholderColor="#c4c3cb" style={styles.loginFormTextInput}
               value={this.state.phonenumber} onChangeText={(phonenumber) => this.setState({ phonenumber })}/>
-            <TextInput placeholder="Email" placeholderColor="#c4c3cb" style={styles.loginFormTextInput} secureTextEntry={true}
+            <TextInput placeholder="Email" placeholderColor="#c4c3cb" style={styles.loginFormTextInput}
               value={this.state.email} onChangeText={(email) => this.setState({ email })}/>
             <Button
               buttonStyle={styles.loginButton}
