@@ -16,7 +16,7 @@ def login():
     password = login_info["password"]
 
     if flask.request.method == "POST":
-        result = cursor.execute("""
+        result = cur.execute("""
             SELECT username, password
             FROM users
             WHERE username = '%s'
