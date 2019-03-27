@@ -22,8 +22,8 @@ def login():
             WHERE username = '%s'
             AND password = '%s'""" % (username, password)).fetchone()
         if not result:
-            context['result'] = false
+            context['result'] = False
             return flask.jsonify(**context), 201
         else:
-            context['result'] = true
+            context['result'] = True
     return flask.jsonify(**context), 201
