@@ -138,9 +138,6 @@ export default class CameraScreen extends React.Component {
     let myLoc = await Location.getCurrentPositionAsync({});
     const latitude = myLoc.coords.latitude;
     const longitude = myLoc.coords.longitude;
-    console.log(longitude);
-    console.log(latitude);
-
 
     const url = 'http://crewcam.eecs.umich.edu/api/v1/location/';
       try {
@@ -152,12 +149,6 @@ export default class CameraScreen extends React.Component {
              latitude: latitude,
              longitude: longitude,
           }) 
-        })
-        .then((response) =>{
-          return response.json();
-        })
-        .then((data) =>{
-          console.log(data.updated);
         })
       } catch (e) {
         console.error(e)

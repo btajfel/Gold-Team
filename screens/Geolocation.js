@@ -102,7 +102,11 @@ export default class Geolocation extends Component {
        }
           })(); 
 
-        if (diff <= 20.0){
+          if (diff === 0){
+            diff = 0.1;
+          }
+
+        if (diff <= 2.0){
           nearbyHolder.push({fullname: user.fullname, username: user.username, distance: diff});
         }
         });
