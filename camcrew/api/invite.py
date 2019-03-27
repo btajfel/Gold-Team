@@ -34,7 +34,6 @@ def post_invite():
             projectid =  result + 1
 
         data = json.loads(flask.request.data)
-        print("json")
         invited = data["inviteList"]
         print(invited)
         for user in invited:
