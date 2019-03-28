@@ -32,36 +32,37 @@ export default class GalleryScreen extends React.Component {
 
 // CHANGE THIS FUNCTION
   saveToGallery = async () => {
-    const fileupload = this.state.selected[0];
+    const video = this.state.selected[0];
     // const type = 'video/mov';
     // photos.map(photo => {
-    const form = new FormData(fileupload);
+    const form = new FormData();
     // form.append("name", "\"video-upload\"");
     // form.append("type", type);
 
-    const url = 'http://crewcam.eecs.umich.edu/api/v1/3/save/';
+    // const myheaders = new Headers();
+    // myheaders.append('content-type', 'undefined')
+    // myheaders.append('cache-control', 'no-cache');
 
-
-    const myheaders = new Headers();
-    myheaders.append('content-type', 'multipart/form-data; boundary=--------------------------329807639315040972580346')
-    myheaders.append('cache-control', 'no-cache');
-
-    form.append('file', photos);
-    console.log(photos)
+    form.append('file', {
+      uri: video,
+      type: 'video/mov', // or photo.type
+      name: 'test'
+    });
+    console.log(video)
     // FIXME (projectid)
     const url = 'http://crewcam.eecs.umich.edu/api/v1/3/save/';
     try {
       const response = await fetch(url, {
         method: 'POST',
-        headers: myheaders,
-        body: form
+        // headers: myheaders,
+        body: form,
       });
       alert('Videos Saved to Project');
       console.log(response)
     } catch (e) {
       console.error(e)
     }
-    
+
     /*   OLD CODE ////
     form.append('file', photos);
     console.log(photos)
