@@ -178,7 +178,7 @@ export default class CameraScreen extends React.Component {
   };
 
   fetchPending = async () => {
-    wasInvited = false;
+    let wasInvited = false;
     let inviter = "";
     let pid = 0;
     const username = "azarrabi"
