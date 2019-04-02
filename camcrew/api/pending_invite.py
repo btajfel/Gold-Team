@@ -16,10 +16,12 @@ def get_pending(username):
             SELECT projectid, username1 FROM pending_invites WHERE username2 = ? \
             ', (username,)).fetchone()
 
-    if (pending_info):
+    if (pending_info["projectid"]):
         context["status"] = "true"
         context["pid"] = pending_info["projectid"]
         context["inviter"] = pending_info["username1"]
+    else:
+        context["status"] = "false"
 
     return flask.jsonify(**context), 201
 
