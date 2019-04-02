@@ -86,6 +86,9 @@ export default class CameraScreen extends React.Component {
     showGallery: false,
     showQualityOptions: false,
     showFriendsOptions: false,
+    wasInvited: false,
+    statePid: 0,
+    inviter: "",
   };
 
 
@@ -106,10 +109,29 @@ export default class CameraScreen extends React.Component {
 
   paramsFunction = async () => {
     this.updateLocation();
+    this.fetchPending();
     let array = [];
     const pid = this.props.navigation.getParam('data', 0);
+    const invitedPid = this.state.statePid;
     if (pid !== 0){
      const url = `http://crewcam.eecs.umich.edu/api/v1/${pid}/invite/`;
+     fetch(url)
+      .then(res => res.json())
+      .then(res => {
+        this.setState({
+          allCollabs: res.collaborators,
+        });
+      })
+      .then(() => {
+        this.collectFriends();
+
+      })
+      .catch(error => {
+       console.log(error);
+      });
+    }
+    if (invitedPid !== 0){
+     const url = `http://crewcam.eecs.umich.edu/api/v1/${invitedPid}/invite/`;
      fetch(url)
       .then(res => res.json())
       .then(res => {
@@ -139,7 +161,7 @@ export default class CameraScreen extends React.Component {
     const latitude = myLoc.coords.latitude;
     const longitude = myLoc.coords.longitude;
 
-    const url = 'http://crewcam.eecs.umich.edu/api/v1/location/';
+    const url = `http://crewcam.eecs.umich.edu/api/v1/location/`;
       try {
         await fetch(url, {
           credentials: 'same-origin',
@@ -154,6 +176,91 @@ export default class CameraScreen extends React.Component {
         console.error(e)
       }
   };
+
+  fetchPending = async () => {
+    wasInvited = false;
+    let inviter = "";
+    let pid = 0;
+    const username = "azarrabi"
+    const url = `http://crewcam.eecs.umich.edu/api/v1/${username}/pending/`;
+      fetch(url)
+      .then(res => res.json())
+      .then(res => {
+        this.setState({
+          wasInvited: res.status,
+          statePid: res.pid,
+          inviter: res.inviter,
+        });
+        console.log(res.pid);
+        console.log(res.inviter);
+        wasInvited = true;
+        pid = res.pid;
+        inviter = res.inviter;
+      })
+      .then(() => {
+        if(wasInvited === true){
+          this.notifyInvite(pid, inviter);
+        }
+      })
+      .catch(error => {
+       console.log(error);
+      });
+  };
+
+
+ notifyInvite = async (pid, inviter) => {
+   const {navigate} = this.props.navigation;
+   const invite = inviter;
+      Alert.alert(
+      `${invite} has invited you to join a project`,
+        "",
+    
+    [
+    {text: "Deny", onPress: () => this.denyInvite(pid,inviter)},
+    {text: "Accept", onPress: () => this.acceptInvite(pid,inviter)}
+    ]
+    )
+
+  };
+
+  acceptInvite = async (pid, inviter) => {
+    const decision = "accept"
+     const url = `http://crewcam.eecs.umich.edu/api/v1/${decision}/pending/`;
+      try {
+        await fetch(url, {
+          credentials: 'same-origin',
+          method: 'POST',
+          body: JSON.stringify( {
+             username: "azarrabi",
+             inviter: inviter,
+             pid: pid,
+          }) 
+        })
+      } catch (e) {
+        console.error(e)
+      }
+  };
+
+  denyInvite = async (pid, inviter) => {
+    const decision = "deny"
+     const url = `http://crewcam.eecs.umich.edu/api/v1/${decision}/pending/`;
+      try {
+        await fetch(url, {
+          credentials: 'same-origin',
+          method: 'POST',
+          body: JSON.stringify( {
+             username: "azarrabi",
+             inviter: inviter,
+             pid: pid,
+          }) 
+        })
+      } catch (e) {
+        console.error(e)
+      }
+  };
+
+
+
 
   getRatios = async () => {
     const ratios = await this.camera.getSupportedRatios();
