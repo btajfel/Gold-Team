@@ -35,10 +35,9 @@ def post_invite():
 
         data = json.loads(flask.request.data)
         invited = data["inviteList"]
-        print(invited)
         for user in invited:
             cur.execute('\
-                INSERT INTO collaborators(projectid, username1, username2, created) \
+                INSERT INTO pending_invites(projectid, username1, username2, created) \
                 VALUES (?, ?, ?, datetime("now", "localtime")) \
                 ', (projectid, "btajfel", user))
 
