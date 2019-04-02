@@ -28,7 +28,7 @@ def get_pending(username):
 
 @camcrew.app.route('/api/v1/<string:decision>/pending/',
                    methods=["POST"])
-def post_pending():
+def post_pending(decision):
     context = {}
     cur = camcrew.model.get_db().cursor()
 
