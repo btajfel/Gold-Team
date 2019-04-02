@@ -19,7 +19,7 @@ def login():
         result = cur.execute("""
             SELECT username, password
             FROM users
-            WHERE username =?""", (username, password)).fetchone()
+            WHERE username =?""", (username,)).fetchone()
         if not result or result["password"] != password:
             context['result'] = False
             return flask.jsonify(**context), 201
