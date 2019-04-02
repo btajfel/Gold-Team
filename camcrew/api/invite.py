@@ -30,7 +30,7 @@ def post_invite():
     if flask.request.method == "POST":
         collabResult = cur.execute('SELECT MAX(projectid) FROM collaborators ').fetchone()
         pendingResult =  cur.execute('SELECT MAX(projectid) FROM pending_invites ').fetchone()
-        if (collabResult and pendingResult):
+        if (collabResult["MAX(projectid)"] and pendingResult["MAX(projectid)"]):
             if (pendingResult["MAX(projectid)"] > collabResult["MAX(projectid)"]):
                 projectid =  pendingResult["MAX(projectid)"] + 1
             else:
