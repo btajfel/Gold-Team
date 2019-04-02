@@ -16,7 +16,7 @@ def get_pending(username):
             SELECT projectid, username1 FROM pending_invites WHERE username2 = ? \
             ', (username,)).fetchone()
 
-    if (pending_info["projectid"]):
+    if (pending_info):
         context["status"] = "true"
         context["pid"] = pending_info["projectid"]
         context["inviter"] = pending_info["username1"]
