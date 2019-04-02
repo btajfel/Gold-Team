@@ -11,6 +11,7 @@ import {
 } from "react-native";
 import { Constants, Location, Permissions } from 'expo';
 import ContactRender from './ContactRender';
+import {NavigationEvents} from 'react-navigation';
 
 export default class Geolocation extends Component {
 
@@ -32,6 +33,18 @@ export default class Geolocation extends Component {
   componentDidMount() {
       this._getMyLocation();
   }
+
+
+  paramsFunction = async () => {
+    const currentInvited = this.state.invited
+     const invitedFromContacts = this.props.navigation.getParam('invited', 0);
+     const appended = currentInvited.append(invitedFromContacts);
+     if(invitedFromContacts !== 0){
+      this.setState({
+        invited: appended,
+      })
+     }
+  };
 
 
 
@@ -136,6 +149,9 @@ export default class Geolocation extends Component {
     }
     return (
       <View style={{ flex: 1 }}>
+      <NavigationEvents
+              onDidFocus={() => this.paramsFunction()}
+            /> 
         <FlatList
           data={this.state.nearby}
           renderItem={({ item }) => (

@@ -26,7 +26,7 @@ export default class SearchScreen extends Component {
       </TouchableOpacity>
       ),
       headerLeft: (
-      <TouchableOpacity style={styles.toggleButton} onPress={() => navigate('Geo')}>
+      <TouchableOpacity style={styles.toggleButton} onPress={params.findNearby}>
          <Text style={{color: 'blue', fontSize: 18}}>Find Nearby</Text>
       </TouchableOpacity>
       ),
@@ -52,7 +52,7 @@ export default class SearchScreen extends Component {
 
 
   componentDidMount() {
-    this.props.navigation.setParams({ sendInvites: this._sendInvites.bind(this) });
+    this.props.navigation.setParams({ sendInvites: this._sendInvites.bind(this), findNearby: this._findNearby.bind(this) });
     this.makeUserAPIRequest();
     this.getUserContacts();
   }
@@ -144,6 +144,13 @@ export default class SearchScreen extends Component {
       } catch (e) {
         console.error(e)
       }
+  };
+
+
+   _findNearby = async () => {
+    const {navigate} = this.props.navigation;
+    const invited = this.state.invited;
+    navigate('Geo', {invited: invited}); 
   };
 
 
