@@ -564,7 +564,7 @@ export default class CameraScreen extends React.Component {
     return (
       <View style={styles.friendsOptions}>
         <View style={styles.pictureSizeContainer}>
-          <Text style={styles.pictureQualityLabel}>Added Friends</Text>
+          <Text style={styles.pictureQualityLabel}>Collaborators</Text>
           <View style={styles.pictureSizeChooser}>
             <TouchableOpacity onPress={this.previousFriends} style={{ padding: 6 }}>
               <Ionicons name="md-arrow-dropleft" size={14} color="white" />
