@@ -35,9 +35,9 @@ def post_invite():
                 projectid =  pendingResult["MAX(projectid)"] + 1
             else:
                 projectid = collabResult["MAX(projectid)"] + 1
-        else if (pendingResult["MAX(projectid)"]):
+        elif (pendingResult["MAX(projectid)"]):
             projectid =  pendingResult["MAX(projectid)"] + 1
-        else if (collabResult["MAX(projectid)"]):
+        elif (collabResult["MAX(projectid)"]):
             projectid = collabResult["MAX(projectid)"] + 1
        
 
