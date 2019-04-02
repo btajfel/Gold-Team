@@ -1,3 +1,6 @@
+import flask
+import camcrew
+
 @camcrew.app.route('/api/v1/<string:username>/pending/',
                    methods=["GET"])
 def get_pending(username):

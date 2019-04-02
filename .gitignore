@@ -8,3 +8,4 @@ __pycache__/
 *.egg-info*
 .expo/
 .DS_Store
+Setup.pem
