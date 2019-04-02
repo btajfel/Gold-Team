@@ -36,10 +36,10 @@ export default class ContactRender extends PureComponent {
     if(rowData.distance){
       if (this.state.inviteIcon === "off"){
      return (
-      <ListItem>
+      <ListItem onPress={() => this.toggleSelection(rowData)}>
         <Body style={{ borderBottomWidth: 0 }}>
           <Text>{rowData.fullname}</Text>
-          <Text Note>{rowData.distance} miles</Text>
+          <Text Note>{rowData.phonenumber} {rowData.distance} miles</Text>
         </Body>
         <Right style={{ borderBottomWidth: 0 }}>
           <View style={styles.rightBtn}>
@@ -57,10 +57,10 @@ export default class ContactRender extends PureComponent {
     }
     else{
          return (
-      <ListItem>
+      <ListItem onPress={() => this.toggleSelection(rowData)}>
         <Body style={{ borderBottomWidth: 0 }}>
           <Text>{rowData.fullname}</Text>
-          <Text Note>{rowData.distance} miles</Text>
+          <Text Note>{rowData.phonenumber} {rowData.distance} miles</Text>
         </Body>
         <Right style={{ borderBottomWidth: 0 }}>
           <View style={styles.rightBtn}>
