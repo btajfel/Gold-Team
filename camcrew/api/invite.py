@@ -31,10 +31,10 @@ def post_invite():
         collabResult = cur.execute('SELECT MAX(projectid) FROM collaborators ').fetchone()
         pendingResult =  cur.execute('SELECT MAX(projectid) FROM pending_invites ').fetchone()
         if (collabResult and pendingResult):
-            if (pendingResult > collabResult):
-                projectid =  pendingResult + 1
+            if (pendingResult["projectid"] > collabResult["projectid"]):
+                projectid =  pendingResult["projectid"] + 1
             else:
-                projectid = collabResult + 1
+                projectid = collabResult["projectid"] + 1
 
         data = json.loads(flask.request.data)
         invited = data["inviteList"]
