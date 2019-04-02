@@ -186,6 +186,7 @@ export default class CameraScreen extends React.Component {
       fetch(url)
       .then(res => res.json())
       .then(res => {
+        if (res.status === true){
         this.setState({
           wasInvited: res.status,
           statePid: res.pid,
@@ -196,6 +197,7 @@ export default class CameraScreen extends React.Component {
         wasInvited = true;
         pid = res.pid;
         inviter = res.inviter;
+      }
       })
       .then(() => {
         if(wasInvited === true){
