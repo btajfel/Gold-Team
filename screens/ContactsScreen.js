@@ -2,12 +2,13 @@ import React, { Component } from 'react';
 import { Alert, View, Text, Button, FlatList, ActivityIndicator, TouchableOpacity, StyleSheet } from 'react-native';
 import { ListItem, SearchBar } from 'react-native-elements';
 import ContactRender from './ContactRender';
-import {Permissions, openSettings} from 'react-native-permissions';
+import {openSettings} from 'react-native-permissions';
 import { PermissionsAndroid } from 'react-native';
 import Contacts from 'react-native-contacts';
 import {createStackNavigator, createAppContainer} from 'react-navigation';
 import RecordScreen from './RecordScreen';
 import Geolocation from './Geolocation';
+import { Constants, Location, Permissions } from 'expo';
 
 
 
@@ -25,11 +26,6 @@ export default class SearchScreen extends Component {
          <Text style={{color: 'blue', fontSize: 18}}>Done</Text>
       </TouchableOpacity>
       ),
-      headerLeft: (
-      <TouchableOpacity style={styles.toggleButton} onPress={params.findNearby}>
-         <Text style={{color: 'blue', fontSize: 18}}>Find Nearby</Text>
-      </TouchableOpacity>
-      ),
     };
   };
 
@@ -40,6 +36,9 @@ export default class SearchScreen extends Component {
       loading: false,
       data: [],
       error: null,
+      myLocation: null,
+      userDistances: [],
+      nearby: [],
       users: [],
       invited: [],
       totalUsers: [],
@@ -52,7 +51,8 @@ export default class SearchScreen extends Component {
 
 
   componentDidMount() {
-    this.props.navigation.setParams({ sendInvites: this._sendInvites.bind(this), findNearby: this._findNearby.bind(this) });
+    this.props.navigation.setParams({ sendInvites: this._sendInvites.bind(this)});
+    this._getMyLocation();
     this.makeUserAPIRequest();
     this.getUserContacts();
   }
@@ -120,6 +120,81 @@ export default class SearchScreen extends Component {
   }
 */
 
+  _getMyLocation = async () => {
+    let { status } = await Permissions.askAsync(Permissions.LOCATION);
+    if (status !== 'granted') {
+      this.setState({
+        errorMessage: 'Permission to access location was denied',
+      });
+    }
+
+    let myLoc = await Location.getCurrentPositionAsync({});
+    this.setState({myLocation: myLoc });
+
+    this._getUserLoactions();
+  };
+
+    _getUserLoactions = async () => {    
+    const url = 'http://crewcam.eecs.umich.edu/api/v1/location/';
+    this.setState({ loading: true });
+      await fetch(url)
+      .then(res => res.json())
+      .then(res => {
+        this.setState({
+          userDistances: res.allUsers,
+        });
+      })
+      .then(() =>{
+        this.calcDistances();
+        this.setState({
+          loading: false,
+        });
+                  
+      })
+      .catch(errorMessage => {
+        this.setState({ errorMessage, loading: false });
+      });
+    };
+
+
+
+      calcDistances = () => {
+        const myLoc = this.state.myLocation;
+        const users = this.state.userDistances;
+        const myLat = myLoc.coords.latitude;
+        const myLong = myLoc.coords.longitude;
+        var nearbyHolder = [];
+
+        users.forEach(function(user) {
+        const lat = user.latitude;
+        const long = user.longitude;
+        var diff = (function() {
+          if ((myLat === lat) && (myLong === long)) {
+             return 0;
+          }
+          else{
+          var radlat1 = Math.PI * myLat/180;
+          var radlat2 = Math.PI * lat/180;
+          var theta = long-myLong;
+          var radtheta = Math.PI * theta/180;
+          var dist = Math.sin(radlat1) * Math.sin(radlat2) + Math.cos(radlat1) * Math.cos(radlat2) * Math.cos(radtheta);
+          dist = Math.acos(dist);
+          dist = dist * 180/Math.PI;
+          dist = dist * 60 * 1.1515;
+          dist = Math.round(dist*100)/100
+          return dist;
+       }
+          })(); 
+
+        if (diff <= 1.0 && diff !== 0){
+          nearbyHolder.push({fullname: user.fullname, username: user.username, distance: diff});
+        }
+        });
+        this.setState({
+          nearby: nearbyHolder
+        })
+      };
+
 
   
   _sendInvites = async () => {
@@ -147,15 +222,9 @@ export default class SearchScreen extends Component {
   };
 
 
-   _findNearby = async () => {
-    const {navigate} = this.props.navigation;
-    const invited = this.state.invited;
-    navigate('Geo', {invited: invited}); 
-  };
-
 
   getUserContacts = async () => {
-    const permission = await Expo.Permissions.askAsync(Expo.Permissions.CONTACTS);
+    const permission = await Permissions.askAsync(Permissions.CONTACTS);
      if (permission.status !== 'granted') {
     this.alertUserToAllowAccessToContacts();
     }
@@ -230,6 +299,9 @@ alertUserToAllowAccessToContacts = () => {
 
 
   render() {
+    const users = this.state.users
+    const nearby = this.state.nearby
+    const combo = nearby.concat(users);
     if (this.state.loading) {
       return (
         <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
@@ -237,22 +309,17 @@ alertUserToAllowAccessToContacts = () => {
         </View>
       );
     }
-
-    // addInvite={(invite) => this.setState(prevState => ({
-    //             results: prevState.results.concat(data),
-    //             value: '',
-    //           }))}
     return (
       <View style={{ flex: 1 }}>
         <FlatList
-          data={this.state.users}
+          data={combo}
           renderItem={({ item }) => (
             <ContactRender 
               item={item}
               onSelectionToggle= {this.toggleSelection}
             />
           )}
-          keyExtractor={item => item.phonenumber}
+          keyExtractor={item => item.username}
           ItemSeparatorComponent={this.renderSeparator}
           ListHeaderComponent={this.renderHeader}
           refreshableMode="advanced"

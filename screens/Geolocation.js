@@ -31,21 +31,25 @@ export default class Geolocation extends Component {
   }
 
   componentDidMount() {
+    //this.paramsFunction();
       this._getMyLocation();
   }
 
-
+/*
   paramsFunction = async () => {
-    const currentInvited = this.state.invited
+    const currentInvited = this.state.invited;
+    console.log(currentInvited);
      const invitedFromContacts = this.props.navigation.getParam('invited', 0);
-     const appended = currentInvited.append(invitedFromContacts);
+     console.log(invitedFromContacts);
+     const appended = currentInvited.concat(invitedFromContacts);
+     console.log(appended);
      if(invitedFromContacts !== 0){
       this.setState({
         invited: appended,
       })
      }
   };
-
+*/
 
 
 
@@ -115,11 +119,7 @@ export default class Geolocation extends Component {
        }
           })(); 
 
-          if (diff === 0){
-            diff = 0.1;
-          }
-
-        if (diff <= 2.0){
+        if (diff <= 1.0 && diff !== 0){
           nearbyHolder.push({fullname: user.fullname, username: user.username, distance: diff});
         }
         });
@@ -127,7 +127,7 @@ export default class Geolocation extends Component {
           nearby: nearbyHolder
         })
       };
-
+/*
   toggleSelection = (username, isSelected) => {
     let inviteList = this.state.invited;
     if (isSelected) {
@@ -138,7 +138,7 @@ export default class Geolocation extends Component {
     this.setState({ invited: inviteList });
   };
  
-
+*/
   render() {
      if (this.state.loading) {
       return (
@@ -149,15 +149,11 @@ export default class Geolocation extends Component {
     }
     return (
       <View style={{ flex: 1 }}>
-      <NavigationEvents
-              onDidFocus={() => this.paramsFunction()}
-            /> 
         <FlatList
           data={this.state.nearby}
           renderItem={({ item }) => (
             <ContactRender 
               item={item}
-              onSelectionToggle= {this.toggleSelection}
             />
           )}
           keyExtractor={item => item.username}

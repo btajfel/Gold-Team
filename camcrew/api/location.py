@@ -28,7 +28,7 @@ def get_location():
         context['updated'] = latitude
     else:
         users = cur.execute("""\
-            SELECT fullname, username, latitude, longitude FROM users
+            SELECT fullname, username, phonenumber, latitude, longitude FROM users
             """).fetchall()
         context['allUsers'] = users
 

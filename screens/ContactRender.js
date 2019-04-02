@@ -39,7 +39,7 @@ export default class ContactRender extends PureComponent {
       <ListItem onPress={() => this.toggleSelection(rowData)}>
         <Body style={{ borderBottomWidth: 0 }}>
           <Text>{rowData.fullname}</Text>
-          <Text Note>{rowData.distance} miles</Text>
+          <Text Note>{rowData.phonenumber} {rowData.distance} miles</Text>
         </Body>
         <Right style={{ borderBottomWidth: 0 }}>
           <View style={styles.rightBtn}>
@@ -60,7 +60,7 @@ export default class ContactRender extends PureComponent {
       <ListItem onPress={() => this.toggleSelection(rowData)}>
         <Body style={{ borderBottomWidth: 0 }}>
           <Text>{rowData.fullname}</Text>
-          <Text Note>{rowData.distance} miles</Text>
+          <Text Note>{rowData.phonenumber} {rowData.distance} miles</Text>
         </Body>
         <Right style={{ borderBottomWidth: 0 }}>
           <View style={styles.rightBtn}>
