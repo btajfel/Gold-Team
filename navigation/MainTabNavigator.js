@@ -68,10 +68,6 @@ const EditStack = createStackNavigator({
 });
 
 
-const SignUpStack = createStackNavigator({
-  SignUp: SignUpScreen,
-})
-
 export default createBottomTabNavigator({
     ContactsStack,
     RecordStack,
