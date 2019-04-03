@@ -11,7 +11,7 @@ def get_projects(username):
     context = {}
     cur = camcrew.model.get_db().cursor()
 
-    cur.execute("""SELECT name, owner FROM projects WHERE owner = ?""", (username,))
+    cur.execute("""SELECT name, created, projectid FROM projects WHERE owner = ?""", (username,))
     context["projects"] = cur.fetchall()
 
     return flask.jsonify(**context), 201
