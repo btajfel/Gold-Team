@@ -33,14 +33,12 @@ export default class ContactRender extends PureComponent {
   render() {
     const invButton = button[this.state.inviteIcon]
     const rowData = this.props.item
-    if(rowData.distance){
-      if (this.state.inviteIcon === "off"){
      return (
       <ListItem onPress={() => this.toggleSelection(rowData)}>
         <Body style={{ borderBottomWidth: 0 }}>
           <Text>{rowData.fullname}</Text>
           <Text Note>{rowData.phonenumber}</Text>
-          <Text>{rowData.distance} miles </Text>
+          {rowData.distance && <Text>{rowData.distance} miles </Text>}
         </Body>
         <Right style={{ borderBottomWidth: 0 }}>
           <View style={styles.rightBtn}>
@@ -49,83 +47,12 @@ export default class ContactRender extends PureComponent {
               title="view"
               style={styles.rightBtn}
             >
+              {this.state.inviteIcon === "on" && <Icon name={invButton} style={{fontSize: 30, color: 'blue'}}/>}
             </Button>
           </View>
         </Right>
       </ListItem>
-    )
-
-    }
-    else{
-         return (
-      <ListItem onPress={() => this.toggleSelection(rowData)}>
-        <Body style={{ borderBottomWidth: 0 }}>
-          <Text>{rowData.fullname}</Text>
-          <Text Note>{rowData.phonenumber}</Text>
-          <Text>{rowData.distance} miles </Text>
-        </Body>
-        <Right style={{ borderBottomWidth: 0 }}>
-          <View style={styles.rightBtn}>
-            <Button
-              transparent
-              title="view"
-              style={styles.rightBtn}
-            >
-              <Icon name={invButton} style={{fontSize: 30, color: 'blue'}}/>
-            </Button>
-          </View>
-        </Right>
-      </ListItem>
-    )
-
-    }
-    }
-    else{
-    if (this.state.inviteIcon === "off"){
-     return (
-      <ListItem onPress={() => this.toggleSelection(rowData)}>
-        <Body style={{ borderBottomWidth: 0 }}>
-          <Text>{rowData.fullname}</Text>
-          <Text Note>{rowData.phonenumber}</Text>
-        </Body>
-        <Right style={{ borderBottomWidth: 0 }}>
-          <View style={styles.rightBtn}>
-            <Button
-              transparent
-              title="view"
-              style={styles.rightBtn}
-            >
-            </Button>
-          </View>
-        </Right>
-      </ListItem>
-    )
-
-    }
-    else{
-         return (
-      <ListItem onPress={() => this.toggleSelection(rowData)}>
-        <Body style={{ borderBottomWidth: 0 }}>
-          <Text>{rowData.fullname}</Text>
-          <Text Note>{rowData.phonenumber}</Text>
-        </Body>
-        <Right style={{ borderBottomWidth: 0 }}>
-          <View style={styles.rightBtn}>
-            <Button
-              transparent
-              title="view"
-              style={styles.rightBtn}
-            >
-              <Icon name={invButton} style={{fontSize: 30, color: 'blue'}}/>
-            </Button>
-          </View>
-        </Right>
-      </ListItem>
-    )
-
-    }
-  }
-
+    );
   }
 }
 
