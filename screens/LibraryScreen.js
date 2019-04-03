@@ -1,7 +1,7 @@
 import React, {Component} from "react";
 import { Alert, View, Text, FlatList, ActivityIndicator } from 'react-native';
 import { ListItem, SearchBar } from 'react-native-elements';
-import LibraryProject from './LibraryProject'
+import LibraryRender from './LibraryRender'
 
 export default class library extends Component {
     constructor(props) {
@@ -103,7 +103,7 @@ export default class library extends Component {
             ref={(ref) => this.listView = ref}
             data = {this.state.data}
             renderItem={({ item }) => (
-              <LibraryProject item={item} navigation={this.props.navigation}/>
+              <LibraryRender item={item} navigation={this.props.navigation}/>
             )}
             onFetch={this.onFetch}
             keyExtractor={item => item.name}

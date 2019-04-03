@@ -1,9 +1,9 @@
 import React from 'react';
 import { Platform, Button } from 'react-native';
-import { createStackNavigator, createBottomTabNavigator } from 'react-navigation';
+import { createStackNavigator, createBottomTabNavigator, createMaterialTopTabNavigator } from 'react-navigation';
 
 import TabBarIcon from '../components/TabBarIcon';
-import ContactsScreen from '../screens/ContactsScreen';
+import ContactsScreen from '../screens/ContactScreen';
 import RecordScreen from '../screens/RecordScreen';
 import LibraryScreen from '../screens/LibraryScreen';
 import Geolocation from '../screens/Geolocation';
@@ -41,9 +41,9 @@ RecordStack.navigationOptions = {
   ),
 };
 
-const LibraryStack = createStackNavigator({
+const LibraryStack = createMaterialTopTabNavigator({
   Library: LibraryScreen,
-  Edit: EditScreen,
+  Shared: SharedProjects,
 });
 
 LibraryStack.navigationOptions = {
@@ -55,10 +55,6 @@ LibraryStack.navigationOptions = {
     />
   ),
 };
-
-const SharedStack = createStackNavigator({
-  Shared: SharedProjects,
-});
 
 
 const EditStack = createStackNavigator({

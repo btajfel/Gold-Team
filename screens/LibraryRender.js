@@ -4,7 +4,7 @@ import { Permissions } from "expo";
 import { Button, ListItem, Left, Right, Body, Thumbnail, Text, Icon } from 'native-base';
 import {createStackNavigator, createAppContainer} from 'react-navigation';
 
-export default class LibraryProject extends Component {
+export default class LibraryRender extends Component {
 
   static navigationOptions = {
     title: 'Library',
