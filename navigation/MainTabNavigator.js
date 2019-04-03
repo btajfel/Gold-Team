@@ -68,10 +68,19 @@ const EditStack = createStackNavigator({
 });
 
 
+const SignUpStack = createStackNavigator({
+  SignUp: SignUpScreen,
+})
+
 export default createBottomTabNavigator({
     ContactsStack,
     RecordStack,
     LibraryStack,
+<<<<<<< HEAD
+=======
+    LoginStack,
+    SignUpStack,
+>>>>>>> 7ec6c9dbbb9295fe6f77ba01fe50ef266e36c2f8
   },  
   {
     initialRouteName: 'RecordStack',
