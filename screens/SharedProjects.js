@@ -3,7 +3,7 @@ import { ExpoConfigView } from '@expo/samples';
 
 export default class SettingsScreen extends React.Component {
   static navigationOptions = {
-    title: 'Shared',
+    title: 'Shared With Me',
   };
 
   render() {

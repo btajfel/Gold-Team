@@ -41,10 +41,52 @@ RecordStack.navigationOptions = {
   ),
 };
 
-const LibraryStack = createMaterialTopTabNavigator({
-  Library: LibraryScreen,
-  Shared: SharedProjects,
+const SharedLibraryStack = createMaterialTopTabNavigator(
+  {
+  "My Library": LibraryScreen,
+  "Shared With Me": SharedProjects,
+ },
+ {
+    navigationOptions: ({ navigation, screenProps }) => ({
+      header: null,
+      headerMode: 'none',
+      tabBarVisible: true,
+      tabBarLabel: () => {
+        const { routeName } = navigation.state;
+        return <Text>{routeName}</Text>;
+      },
+    }),
+    animationEnabled: false,
+    swipeEnabled: false,
+    tabBarOptions: {
+      activeTintColor: 'blue',
+      inactiveTintColor: 'black',
+      indicatorStyle: {
+        backgroundColor: 'blue',
+      },
+      labelStyle: {
+        fontSize: 15,
+      },
+      tabStyle: {
+        marginTop: 35,
+        height: 60,
+        alignItems: 'center',
+        justifyContent: 'center',
+      },
+      style: {
+        backgroundColor: 'white',
+      },
+      statusBarStyle: 'light-content',
+    },
+  },
+
+);
+
+const LibraryStack = createStackNavigator({
+  Library: SharedLibraryStack,
+  Edit: EditScreen,
 });
+
 
 LibraryStack.navigationOptions = {
   tabBarLabel: 'Library',
@@ -56,10 +98,6 @@ LibraryStack.navigationOptions = {
   ),
 };
 
-
-const EditStack = createStackNavigator({
-  Edit: EditScreen,
-});
 
 
 export default createBottomTabNavigator({

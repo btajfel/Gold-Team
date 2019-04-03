@@ -6,11 +6,6 @@ import {createStackNavigator, createAppContainer} from 'react-navigation';
 
 export default class LibraryRender extends Component {
 
-  static navigationOptions = {
-    title: 'Library',
-  };
-
-
     constructor(props) {
         super(props);
         this.state = {
@@ -71,7 +66,7 @@ export default class LibraryRender extends Component {
                             onPress={this.handleExportPress}
                             style={styles.exportButton}
                         >
-                            <Icon name="download" />
+                            <Icon name="download" color="blue" />
                         </Button>
                     </View>
                 </Right>
