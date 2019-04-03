@@ -23,7 +23,7 @@ export default class SearchScreen extends Component {
           style={styles.toggleButton}
           onPress={params.sendInvites}
          >
-         <Text style={{color: 'blue', fontSize: 18}}>Done</Text>
+         <Text style={{color: 'blue', fontSize: 18}}>Invite</Text>
       </TouchableOpacity>
       ),
     };
@@ -43,18 +43,19 @@ export default class SearchScreen extends Component {
       invited: [],
       totalUsers: [],
       myContacts: [],
+      combo: [],
     };
 
-    this.contactholder = [];
+    this.nearbyHolder = [];
     this.APIuserholder = [];
+    this.comboHolder = [];
   }
 
 
   componentDidMount() {
     this.props.navigation.setParams({ sendInvites: this._sendInvites.bind(this)});
     this._getMyLocation();
-    this.makeUserAPIRequest();
-    this.getUserContacts();
+    //this.getUserContacts();
   }
 
   makeUserAPIRequest = () => {
@@ -71,11 +72,9 @@ export default class SearchScreen extends Component {
         });
         this.APIuserholder = res.allContacts;
       })
-      /*
       .then(() =>{
-        this.joinList();
+        this.comboState();
         })
-        */
       .catch(error => {
         this.setState({ error, loading: false });
       });
@@ -146,6 +145,7 @@ export default class SearchScreen extends Component {
       })
       .then(() =>{
         this.calcDistances();
+        this.makeUserAPIRequest();
         this.setState({
           loading: false,
         });
@@ -163,12 +163,12 @@ export default class SearchScreen extends Component {
         const users = this.state.userDistances;
         const myLat = myLoc.coords.latitude;
         const myLong = myLoc.coords.longitude;
-        var nearbyHolder = [];
+        let nearby = [];
 
         users.forEach(function(user) {
         const lat = user.latitude;
         const long = user.longitude;
-        var diff = (function() {
+        let diff = (function() {
           if ((myLat === lat) && (myLong === long)) {
              return 0;
           }
@@ -187,11 +187,12 @@ export default class SearchScreen extends Component {
           })(); 
 
         if (diff <= 1.0 && diff !== 0){
-          nearbyHolder.push({fullname: user.fullname, username: user.username, distance: diff});
+          nearby.push({fullname: user.fullname, username: user.username, phonenumber: user.phonenumber, distance: diff});
         }
         });
+        this.nearbyHolder = nearby;
         this.setState({
-          nearby: nearbyHolder
+          nearby: nearby
         })
       };
 
@@ -222,7 +223,7 @@ export default class SearchScreen extends Component {
   };
 
 
-
+/*
   getUserContacts = async () => {
     const permission = await Permissions.askAsync(Permissions.CONTACTS);
      if (permission.status !== 'granted') {
@@ -241,6 +242,7 @@ export default class SearchScreen extends Component {
         });
   this.contactholder = contacts.data;
   };
+  */
 
 alertUserToAllowAccessToContacts = () => {
   Alert.alert(
@@ -253,6 +255,27 @@ alertUserToAllowAccessToContacts = () => {
     {text: 'Open Settings', onPress: () => Permissions.openSettings() }
     ]
     )
+};
+
+
+comboState = async () => {
+  const users = this.APIuserholder;
+  const nearby = this.nearbyHolder;
+  var combo = nearby.concat(users);
+    for(var i=0; i< combo.length; ++i) {
+        for(var j=i+1; j< combo.length; ++j) {
+            if(combo[i].username === combo[j].username)
+                combo.splice(j--, 1);
+        }
+    }
+
+    this.comboHolder = combo;
+
+
+
+  this.setState({
+    combo: combo
+  })
 };
 
   renderSeparator = () => {
@@ -272,7 +295,8 @@ alertUserToAllowAccessToContacts = () => {
     this.setState({
       value: text,
     });
-    const newData = this.APIuserholder.filter(item => {
+
+    const newData = this.comboHolder.filter(item => {
       const itemNumber = "phonenumber" in item ? `${item.phonenumber}` : '';
       const itemName = "fullname" in item ? `${item.fullname.toUpperCase()}` : '';
       const textData = text.toUpperCase();
@@ -280,7 +304,7 @@ alertUserToAllowAccessToContacts = () => {
       return itemData.indexOf(textData) > -1;
     });
     this.setState({
-      users: newData,
+      combo: newData,
     });
   };
 
@@ -299,9 +323,7 @@ alertUserToAllowAccessToContacts = () => {
 
 
   render() {
-    const users = this.state.users
-    const nearby = this.state.nearby
-    const combo = nearby.concat(users);
+    const combo = this.state.combo;
     if (this.state.loading) {
       return (
         <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
