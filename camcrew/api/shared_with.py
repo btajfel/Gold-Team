@@ -41,10 +41,10 @@ def share():
     name = vidInfo["name"]
     created = vidInfo["created"]
     shared = data["sharedList"]
-        for user in shared:
-            cur.execute('\
-                INSERT INTO shared_projects(projectid, name, owner, sharedWith, created) \
-                VALUES (?, ?, ?, ?, datetime("now", "localtime")) \
-                ', (projectid, name, owner, user))
+    for user in shared:
+        cur.execute('\
+            INSERT INTO shared_projects(projectid, name, owner, sharedWith, created) \
+            VALUES (?, ?, ?, ?, datetime("now", "localtime")) \
+            ', (projectid, name, owner, user))
 
     return flask.jsonify(**context), 201
