@@ -186,7 +186,6 @@ export default class CameraScreen extends React.Component {
     let myLoc = await Location.getCurrentPositionAsync({});
     const latitude = myLoc.coords.latitude;
     const longitude = myLoc.coords.longitude;
-    const username = await AsyncStorage.getItem("userToken")
 
     const url = `http://crewcam.eecs.umich.edu/api/v1/location/`;
       try {
@@ -194,7 +193,7 @@ export default class CameraScreen extends React.Component {
           credentials: 'same-origin',
           method: 'POST',
           body: JSON.stringify( {
-             username: username,
+             username: await AsyncStorage.getItem("userToken"),
              latitude: latitude,
              longitude: longitude,
           }) 
@@ -209,7 +208,6 @@ export default class CameraScreen extends React.Component {
     let inviter = "";
     let pid = 0;
     const username = await AsyncStorage.getItem("userToken")
-    console.log(username)
     const url = `http://crewcam.eecs.umich.edu/api/v1/${username}/pending/`;
       fetch(url)
       .then(res => res.json())
@@ -220,8 +218,6 @@ export default class CameraScreen extends React.Component {
           statePid: res.pid,
           inviter: res.inviter,
         });
-        console.log(res.pid);
-        console.log(res.inviter);
         wasInvited = true;
         pid = res.pid;
         inviter = res.inviter;
@@ -255,13 +251,14 @@ export default class CameraScreen extends React.Component {
 
   acceptInvite = async (pid, inviter) => {
     const decision = "accept"
+    const user = await AsyncStorage.getItem("userToken")
      const url = `http://crewcam.eecs.umich.edu/api/v1/${decision}/pending/`;
       try {
         await fetch(url, {
           credentials: 'same-origin',
           method: 'POST',
           body: JSON.stringify( {
-             username: "azarrabi",
+             username: user,
              inviter: inviter,
              pid: pid,
           }) 
@@ -273,13 +270,14 @@ export default class CameraScreen extends React.Component {
 
   denyInvite = async (pid, inviter) => {
     const decision = "deny"
+    const user = await AsyncStorage.getItem("userToken")
      const url = `http://crewcam.eecs.umich.edu/api/v1/${decision}/pending/`;
       try {
         await fetch(url, {
           credentials: 'same-origin',
           method: 'POST',
           body: JSON.stringify( {
-             username: "azarrabi",
+             username: user,
              inviter: inviter,
              pid: pid,
           }) 

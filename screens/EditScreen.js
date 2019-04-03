@@ -6,9 +6,7 @@ import { Row } from 'native-base';
 import EditScreenVideo from './EditScreenVideo'
 
 export default class EditScreen extends React.Component {
-  static navigationOptions = {
-    title: 'Edit',
-  };
+
 
   constructor(props) {
     super(props);

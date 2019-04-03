@@ -1,9 +1,8 @@
 import React, { Component } from 'react';
-import { Alert, View, Text, Button, FlatList, ActivityIndicator, TouchableOpacity, StyleSheet } from 'react-native';
+import { Alert, View, Text, Button, FlatList, AsyncStorage, ActivityIndicator, TouchableOpacity, StyleSheet, PermissionsAndroid } from 'react-native';
 import { ListItem, SearchBar } from 'react-native-elements';
 import ContactRender from './ContactRender';
 import {openSettings} from 'react-native-permissions';
-import { PermissionsAndroid } from 'react-native';
 import Contacts from 'react-native-contacts';
 import {createStackNavigator, createAppContainer} from 'react-navigation';
 import RecordScreen from './RecordScreen';
@@ -186,11 +185,17 @@ export default class SearchScreen extends Component {
        }
           })(); 
 
-        if (diff <= 1.0 && diff !== 0){
+          if (diff === 0){
+            diff = 0.1
+          }
+
+        if (diff <= 1.0){
           nearby.push({fullname: user.fullname, username: user.username, phonenumber: user.phonenumber, distance: diff});
         }
         });
-        this.nearbyHolder = nearby;
+        this.nearbyHolder = nearby.sort(function(a, b) {
+                          return parseFloat(a.distance) - parseFloat(b.distance);
+                          });
         this.setState({
           nearby: nearby
         })
@@ -264,13 +269,20 @@ comboState = async () => {
   var combo = nearby.concat(users);
     for(var i=0; i< combo.length; ++i) {
         for(var j=i+1; j< combo.length; ++j) {
-            if(combo[i].username === combo[j].username)
+            if(combo[i].username === combo[j].username){
                 combo.splice(j--, 1);
+              }
         }
     }
 
-    this.comboHolder = combo;
+    for(var k=0; k< combo.length; ++k) {
+       if(combo[k].username === await AsyncStorage.getItem("userToken")){
+              combo.splice(k, 1);
+            }
+    }
+            
 
+    this.comboHolder = combo;
 
 
   this.setState({
