@@ -5,13 +5,13 @@ import camcrew
 from camcrew.api.error_handler import InvalidUsage
 
 
-@camcrew.app.route('/api/v1/projects/',
+@camcrew.app.route('/api/v1/<string:username>/projects/',
                     methods=["GET"])
-def get_projects():
+def get_projects(username):
     context = {}
     cur = camcrew.model.get_db().cursor()
 
-    cur.execute('SELECT name, owner FROM projects;')
+    cur.execute("""SELECT name, owner FROM projects WHERE owner = ?""", (username,))
     context["projects"] = cur.fetchall()
 
     return flask.jsonify(**context), 201
