@@ -193,7 +193,7 @@ export default class CameraScreen extends React.Component {
           credentials: 'same-origin',
           method: 'POST',
           body: JSON.stringify( {
-             username: "btajfel",
+             username: AsyncStorage.getItem("userToken"),
              latitude: latitude,
              longitude: longitude,
           }) 
@@ -207,7 +207,8 @@ export default class CameraScreen extends React.Component {
     let wasInvited = false;
     let inviter = "";
     let pid = 0;
-    const username = "azarrabi"
+    const username = AsyncStorage.getItem("userToken")
+    console.log(username)
     const url = `http://crewcam.eecs.umich.edu/api/v1/${username}/pending/`;
       fetch(url)
       .then(res => res.json())
