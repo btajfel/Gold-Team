@@ -37,7 +37,7 @@ def share():
     owner = data["owner"]
     vidInfo = cur.execute('\
                 SELECT name, created FROM projects WHERE owner = ? AND projectid = ? \
-                ', (owner, projectid)).fetchone()
+                ', (owner, pid)).fetchone()
     name = vidInfo["name"]
     created = vidInfo["created"]
     shared = data["sharedList"]
