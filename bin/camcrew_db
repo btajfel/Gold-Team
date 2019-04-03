@@ -57,6 +57,8 @@ case $1 in
     sqlite3 -batch -line var/camcrew.sqlite3 'SELECT * FROM creators'
     echo "+ sqlite3 -batch -line var/camcrew.sqlite3 'SELECT * FROM projects'"
     sqlite3 -batch -line var/camcrew.sqlite3 'SELECT * FROM projects'
+    echo "+ sqlite3 -batch -line var/camcrew.sqlite3 'SELECT * FROM shared_projects'"
+    sqlite3 -batch -line var/camcrew.sqlite3 'SELECT * FROM shared_projects'
     echo "+ sqlite3 -batch -line var/camcrew.sqlite3 'SELECT * FROM users'"
     sqlite3 -batch -line var/camcrew.sqlite3 'SELECT * FROM users'
     ;;
