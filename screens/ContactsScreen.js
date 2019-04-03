@@ -193,7 +193,9 @@ export default class SearchScreen extends Component {
           nearby.push({fullname: user.fullname, username: user.username, phonenumber: user.phonenumber, distance: diff});
         }
         });
-        this.nearbyHolder = nearby;
+        this.nearbyHolder = nearby.sort(function(a, b) {
+                          return parseFloat(a.distance) - parseFloat(b.distance);
+                          });
         this.setState({
           nearby: nearby
         })
