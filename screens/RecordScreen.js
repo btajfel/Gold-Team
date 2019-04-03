@@ -123,7 +123,7 @@ export default class CameraScreen extends React.Component {
   componentDidMount() {
     this.props.navigation.setParams({ signOutAsync: this._signOutAsync.bind(this) });
     FileSystem.makeDirectoryAsync(FileSystem.documentDirectory + 'photos').catch(e => {
-      console.log(e, 'Directory exists');
+      console.log('Directory exists');
     });
   }
 
@@ -186,6 +186,7 @@ export default class CameraScreen extends React.Component {
     let myLoc = await Location.getCurrentPositionAsync({});
     const latitude = myLoc.coords.latitude;
     const longitude = myLoc.coords.longitude;
+    const username = await AsyncStorage.getItem("userToken")
 
     const url = `http://crewcam.eecs.umich.edu/api/v1/location/`;
       try {
@@ -193,7 +194,7 @@ export default class CameraScreen extends React.Component {
           credentials: 'same-origin',
           method: 'POST',
           body: JSON.stringify( {
-             username: AsyncStorage.getItem("userToken"),
+             username: username,
              latitude: latitude,
              longitude: longitude,
           }) 
@@ -207,7 +208,7 @@ export default class CameraScreen extends React.Component {
     let wasInvited = false;
     let inviter = "";
     let pid = 0;
-    const username = AsyncStorage.getItem("userToken")
+    const username = await AsyncStorage.getItem("userToken")
     console.log(username)
     const url = `http://crewcam.eecs.umich.edu/api/v1/${username}/pending/`;
       fetch(url)

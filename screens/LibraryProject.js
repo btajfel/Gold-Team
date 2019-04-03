@@ -19,19 +19,19 @@ export default class LibraryProject extends Component {
       }
 
 
-      handlePress = (name) => {
+    handlePress = (name) => {
       const {navigate} = this.props.navigation;
       const title = name;
       Alert.alert(
-      `${title}`,
-        "",
-    
-    [
-    {text: "Cancel", style: 'cancel'},
-    {text: "View", onPress: () => console.log('View Video')},
-    {text: 'Edit', onPress: () => navigate('Edit')}
-    ]
-    )
+        `${title}`,
+          "",
+      
+        [
+          {text: "Cancel", style: 'cancel'},
+          {text: "View", onPress: () => console.log('View Video')},
+          {text: 'Edit', onPress: () => navigate('Edit')}
+        ]
+      )
     };
 
     handleExportPress = async () => {
