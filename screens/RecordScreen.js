@@ -496,12 +496,10 @@ export default class CameraScreen extends React.Component {
       </Text>
     </View>
 
-  renderTopBar = () => {
-  if (this.state.recording){
-    return(
-    <View
-      style={styles.topBar}>
-      <TouchableOpacity style={styles.toggleButton}>
+  renderTopBar = () =>
+    <View style={styles.topBar}>
+      <TouchableOpacity style={styles.toggleButton} onPress={!this.state.recording ? this.toggleFacing: null}>
+        {!this.state.recording && <Ionicons name="ios-reverse-camera"size={32} color="white" />}
       </TouchableOpacity>
       <TouchableOpacity style={styles.toggleButton} onPress={this.toggleFlash}>
         <MaterialIcons name={flashIcons[this.state.flash]} size={32} color="white" />
@@ -513,29 +511,7 @@ export default class CameraScreen extends React.Component {
        <Ionicons name="ios-options" size={32} color="white" />
       </TouchableOpacity>   
     </View>
-    )
-  }
-  else{
-    return(
-    <View
-      style={styles.topBar}>
-      <TouchableOpacity style={styles.toggleButton} onPress={this.toggleFacing}>
-        <Ionicons name="ios-reverse-camera"size={32} color="white" />
-      </TouchableOpacity>
-      <TouchableOpacity style={styles.toggleButton} onPress={this.toggleFlash}>
-        <MaterialIcons name={flashIcons[this.state.flash]} size={32} color="white" />
-      </TouchableOpacity>
-      <TouchableOpacity style={styles.toggleButton} onPress={this.toggleWB}>
-        <MaterialIcons name={wbIcons[this.state.whiteBalance]} size={32} color="white" />
-      </TouchableOpacity>
-      <TouchableOpacity style={styles.toggleButton} onPress={this.toggleQualityOptions}>
-        <Ionicons name="ios-options" size={32} color="white" />
-      </TouchableOpacity>   
-    </View>
-    )
-  }
-}
-
+    
   renderBottomBar = () =>
     <View
       style={styles.bottomBar}>
@@ -578,21 +554,11 @@ export default class CameraScreen extends React.Component {
       </View> 
     );
 
-  renderFriendsOptions = () => {
-    if (this.state.friendsSizes.length <= 0){
-      return (
-      <View style={styles.friendsOptions}>
-        <View style={styles.pictureSizeContainer}>
-          <Text style={styles.pictureQualityLabel}>No Friends Added!</Text>
-        </View>
-      </View> 
-    );
-    }
-    else{
-    return (
-      <View style={styles.friendsOptions}>
-        <View style={styles.pictureSizeContainer}>
-          <Text style={styles.pictureQualityLabel}>Collaborators</Text>
+  renderFriendsOptions = () => 
+    <View style={styles.friendsOptions}>
+      <View style={styles.pictureSizeContainer}>
+        <Text style={styles.pictureQualityLabel}>{this.state.friendsSizes.length <= 0 ? "No Friends Added!" : "Collaborators"}</Text>
+        {this.state.friendsSizes.length > 0 &&
           <View style={styles.pictureSizeChooser}>
             <TouchableOpacity onPress={this.previousFriends} style={{ padding: 6 }}>
               <Ionicons name="md-arrow-dropleft" size={14} color="white" />
@@ -604,11 +570,10 @@ export default class CameraScreen extends React.Component {
               <Ionicons name="md-arrow-dropright" size={14} color="white" />
             </TouchableOpacity>
           </View>
-        </View>
-      </View> 
-    );
-  }
-}
+        }
+      </View>
+    </View> 
+    
   renderCamera = () =>
     (
       <View style={{ flex: 1 }}>
