@@ -10,7 +10,6 @@ import LibraryProject from '../screens/LibraryProject';
 import Geolocation from '../screens/Geolocation';
 import SharedProjects from '../screens/SharedProjects';
 import EditScreen from '../screens/EditScreen';
-import LoginScreen from '../screens/LoginScreen'
 
 
 const ContactsStack = createStackNavigator({
@@ -68,17 +67,13 @@ const EditStack = createStackNavigator({
   Edit: EditScreen,
 });
 
-const LoginStack = createStackNavigator({
-  Login: LoginScreen,
-})
 
 export default createBottomTabNavigator({
     ContactsStack,
     RecordStack,
     LibraryStack,
-    LoginStack,
   },  
   {
-    initialRouteName: 'LoginStack',
+    initialRouteName: 'RecordStack',
   }
 );

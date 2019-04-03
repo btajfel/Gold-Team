@@ -41,7 +41,10 @@ export default class library extends Component {
       this.setState({ loading: true });
   
       fetch(url)
-        .then(res => res.json())
+        .then((res) => {
+          if (!res.ok) throw Error(res.statusText);
+          res.json()
+        })
         .then(res => {
         	console.log(res)
           this.setState({

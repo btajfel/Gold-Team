@@ -1,23 +1,36 @@
 import React, { Component } from "react";
-import {Keyboard, Text, View, TextInput, TouchableWithoutFeedback, TouchableOpacity, Alert, KeyboardAvoidingView, StyleSheet} from 'react-native';
+import {
+  Keyboard, 
+  Image,
+  Text, 
+  View, 
+  AsyncStorage,
+  TextInput, 
+  TouchableWithoutFeedback, 
+  TouchableOpacity, 
+  Alert, 
+  KeyboardAvoidingView, 
+  StyleSheet
+} from 'react-native';
 import { Button } from 'react-native-elements';
 
 
 export default class LoginScreen extends Component {
     constructor(props) {
-    super(props);
-    
-    this.state = {
-      username: '',
-      password: '',
-    };
-  }
+      super(props);
+      
+      this.state = {
+        username: '',
+        password: '',
+      };
+    }
 
-    componentDidMount() {
+  componentDidMount() {
   }
 
   componentWillUnmount() {
   }
+
 
   loginSuccess = async () => {
     
@@ -32,15 +45,9 @@ export default class LoginScreen extends Component {
     )
   };
 
-   createAccount = async () => {
-    const {navigate} = this.props.navigation;
-    navigate('SignUp');
-  };
-
   forgotPassword = async () => {
     alert("Forgot Password");
   };
-
 
 
   onLoginPress = async () => {
@@ -49,7 +56,7 @@ export default class LoginScreen extends Component {
 
     const url = 'http://crewcam.eecs.umich.edu/api/v1/login/';
       try {
-        await fetch(url, {
+        fetch(url, {
           credentials: 'same-origin',
           method: 'POST',
           body: JSON.stringify( {
@@ -60,12 +67,14 @@ export default class LoginScreen extends Component {
         .then((response) =>{
           return response.json();
         })
-        .then((data) =>{
+        .then(async (data) => {
           if (data.result === false){
             this.loginFailed();
+
           }
           else{
-            navigate('Record');
+            await AsyncStorage.setItem('userToken', username);
+            navigate('Main');
           }
         })
       } catch (e) {
@@ -80,6 +89,12 @@ export default class LoginScreen extends Component {
       <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
         <View style={styles.loginScreenContainer}>
           <View style={styles.loginFormView}>
+            <View style={{ alignItems: 'center', marginTop: 20 }}>
+              <Image 
+                source={require('../assets/images/camcrew_logo.png')} 
+                style={{ width: 150, height: 125, position: 'absolute', }}
+              />
+            </View>
           <Text style={styles.logoText}>CrewCam</Text>
             <TextInput placeholder="Username" placeholderColor="#c4c3cb" style={styles.loginFormTextInput}
              value={this.state.username} onChangeText={(username) => this.setState({ username })} />
@@ -115,7 +130,7 @@ const styles = StyleSheet.create({
   flex: 1,
 },
 loginScreenContainer: {
-  flex: 1,
+  flex: 1
 },
 logoText: {
   fontSize: 40,

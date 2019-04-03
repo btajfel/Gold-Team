@@ -30,7 +30,7 @@ export default class SignUpScreen extends Component {
 
     const url = 'http://crewcam.eecs.umich.edu/api/v1/create/';
       try {
-        await fetch(url, {
+         fetch(url, {
           credentials: 'same-origin',
           method: 'POST',
           body: JSON.stringify( {
@@ -42,7 +42,7 @@ export default class SignUpScreen extends Component {
           }) 
         })
         .then((response) =>{
-          navigate('Login');
+          navigate('SignIn');
         })
       } catch (e) {
         console.error(e)
@@ -91,7 +91,7 @@ loginScreenContainer: {
 logoText: {
   fontSize: 40,
   fontWeight: "800",
-  marginTop: 150,
+  marginTop: 30,
   marginBottom: 30,
   textAlign: 'center',
 },

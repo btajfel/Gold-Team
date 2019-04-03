@@ -4,6 +4,9 @@ import React from 'react';
 import {
   Alert,
   StyleSheet,
+  ActivityIndicator,
+  AsyncStorage,
+  StatusBar,
   Text,
   View,
   TouchableOpacity,
@@ -59,6 +62,22 @@ const wbIcons = {
 
 
 export default class CameraScreen extends React.Component {
+
+  static navigationOptions = ({ navigation }) => {
+      const {navigate} = navigation;
+      const params = navigation.state.params || {};
+      return {
+        headerRight: (
+        <TouchableOpacity
+            style={styles.toggleButton}
+            onPress={params.signOutAsync}
+           >
+           <Text style={{color: 'blue', fontSize: 18}}>Logout</Text>
+        </TouchableOpacity>
+        ),
+      };
+    };
+
   state = {
     flash: 'off',
     zoom: 0,
@@ -102,10 +121,17 @@ export default class CameraScreen extends React.Component {
   }
 
   componentDidMount() {
+    this.props.navigation.setParams({ signOutAsync: this._signOutAsync.bind(this) });
     FileSystem.makeDirectoryAsync(FileSystem.documentDirectory + 'photos').catch(e => {
       console.log(e, 'Directory exists');
     });
   }
+
+  _signOutAsync = async () => {
+    console.log("Sign Out!")
+    await AsyncStorage.clear();
+    this.props.navigation.navigate('Auth');
+  };
 
   paramsFunction = async () => {
     this.updateLocation();
