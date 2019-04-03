@@ -104,7 +104,7 @@ export default class GalleryScreen extends React.Component {
     const remaining = this.state.photos;
     photos.map(async (photo) => {
       FileSystem.deleteAsync(photo);
-      var deleted = await remaining.splice( remaining.indexOf(photo), 1 );
+      remaining = remaining.filter(item => item != photo )
     })
     this.setState({
       photos: remaining,

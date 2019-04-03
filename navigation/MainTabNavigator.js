@@ -3,7 +3,7 @@ import { Platform, Button } from 'react-native';
 import { createStackNavigator, createBottomTabNavigator, createMaterialTopTabNavigator } from 'react-navigation';
 
 import TabBarIcon from '../components/TabBarIcon';
-import ContactsScreen from '../screens/ContactScreen';
+import ContactScreen from '../screens/ContactScreen';
 import RecordScreen from '../screens/RecordScreen';
 import LibraryScreen from '../screens/LibraryScreen';
 import Geolocation from '../screens/Geolocation';
@@ -12,7 +12,7 @@ import EditScreen from '../screens/EditScreen';
 
 
 const ContactsStack = createStackNavigator({
-  Contacts: ContactsScreen,
+  Contacts: ContactScreen,
   Geo: Geolocation,
 });
 

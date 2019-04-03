@@ -3,7 +3,7 @@ import { Alert, View, Text, FlatList, ActivityIndicator } from 'react-native';
 import { ListItem, SearchBar } from 'react-native-elements';
 import LibraryRender from './LibraryRender'
 
-export default class library extends Component {
+export default class LibraryScreen extends Component {
     constructor(props) {
         super(props);
     
