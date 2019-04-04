@@ -55,7 +55,6 @@ export default class ContactShare extends Component {
         this.setState({
           users: res.allContacts,
           error: res.error || null,
-          loading: false,
         });
         this.APIuserholder = res.allContacts;
       })
@@ -92,9 +91,10 @@ export default class ContactShare extends Component {
 
 
   this.setState({
-    users: users
+    users: users,
+    loading: false,
   })
-    };
+};
 
 
   
@@ -153,7 +153,7 @@ export default class ContactShare extends Component {
       return itemData.indexOf(textData) > -1;
     });
     this.setState({
-      user: newData,
+      users: newData,
     });
   };
 

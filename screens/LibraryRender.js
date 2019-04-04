@@ -14,7 +14,7 @@ export default class LibraryRender extends Component {
       }
 
 
-    handlePress = (name) => {
+    handlePressLibrary = (name) => {
       const {navigate} = this.props.navigation;
       const title = name;
       Alert.alert(
@@ -25,6 +25,20 @@ export default class LibraryRender extends Component {
           {text: "Cancel", style: 'cancel'},
           {text: "View", onPress: () => console.log('View Video')},
           {text: 'Edit', onPress: () => navigate('Edit')}
+        ]
+      )
+    };
+
+    handlePressShared = (name) => {
+      const {navigate} = this.props.navigation;
+      const title = name;
+      Alert.alert(
+        `${title}`,
+          "",
+      
+        [
+          {text: "Cancel", style: 'cancel'},
+          {text: "View", onPress: () => console.log('View Video')}
         ]
       )
     };
@@ -74,11 +88,16 @@ export default class LibraryRender extends Component {
     render() {
         const rowData = this.props.item
         if (rowData.created){
+          const dateString = rowData.created;
+          const year = dateString.substring(0,4);
+          const month = dateString.substring(5,7);
+          const day = dateString.substring(8,10);
+          const date = day + "/" + month + "/" + year;
         return (
-            <ListItem onPress={() => this.handlePress(rowData.name)}>
+            <ListItem onPress={() => this.handlePressLibrary(rowData.name)}>
                 <Body style={{ borderBottomWidth: 0 }}>
                     <Text style={{fontWeight: "bold"}}>{rowData.name} </Text>
-                    <Text Note>{rowData.created}</Text>
+                    <Text Note>{date}</Text>
                 </Body>
                 <Right style={{ borderBottomWidth: 0 }}>
                     <View style={styles.exportButton}>
@@ -98,7 +117,7 @@ export default class LibraryRender extends Component {
     }
     else{
       return (
-            <ListItem onPress={() => this.handlePress(rowData.name)}>
+            <ListItem onPress={() => this.handlePressShared(rowData.name)}>
                 <Body style={{ borderBottomWidth: 0 }}>
                     <Text style={{fontWeight: "bold"}}>{rowData.name} </Text>
                     <Text Note>{rowData.owner}</Text>
