@@ -45,6 +45,6 @@ def share():
         cur.execute('\
             INSERT INTO shared_projects(projectid, name, owner, sharedWith, created) \
             VALUES (?, ?, ?, ?, datetime("now", "localtime")) \
-            ', (projectid, name, owner, user))
+            ', (pid, name, owner, user))
 
     return flask.jsonify(**context), 201
