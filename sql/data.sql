@@ -16,13 +16,13 @@ VALUES ('azarrabi', 'Ali Zarrabi', 'azarrabi@umich.edu',  '9739857896', 'passwor
 
 INSERT INTO projects(projectid, name, owner, created)
 VALUES (1, 'Vacation', 'azarrabi', datetime('now', 'localtime')),
-	   (2, 'First Day of College', 'armruval', datetime('now', 'localtime')),
+	   (2, 'EECS Project', 'armruval', datetime('now', 'localtime')),
 	   (3, 'New Project', 'btajfel', datetime('now', 'localtime')),
-	   (4, 'Vacation', 'makaela', datetime('now', 'localtime')),
-	   (5, 'First Day of College', 'mattjw', datetime('now', 'localtime')),
-	   (6, 'New Project', 'tobymac', datetime('now', 'localtime')),
-	   (7, 'Vacation', 'tjsande', datetime('now', 'localtime')),
-	   (8, 'New Project', 'azarrabi', datetime('now', 'localtime')),
+	   (4, 'Nature', 'makaela', datetime('now', 'localtime')),
+	   (5, 'Waterfall', 'mattjw', datetime('now', 'localtime')),
+	   (6, 'Room Design', 'tobymac', datetime('now', 'localtime')),
+	   (7, 'Concert', 'tjsande', datetime('now', 'localtime')),
+	   (8, 'Park', 'azarrabi', datetime('now', 'localtime')),
 	   (9, 'First Day of College', 'btajfel', datetime('now', 'localtime'));
 
 INSERT INTO creators(creatorid, username, projectid, filename, created)
