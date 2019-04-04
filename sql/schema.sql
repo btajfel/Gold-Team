@@ -24,18 +24,19 @@ CREATE TABLE projects(
 );
 
 CREATE TABLE shared_projects(
-  projectid INTEGER PRIMARY KEY,
+  projectid INTEGER NOT NULL,
   name VARCHAR(64) NOT NULL,
   owner VARCHAR(20) NOT NULL,
   sharedWith VARCHAR(20) NOT NULL,
   created TIMESTAMP NOT NULL,
+  PRIMARY KEY(projectid, sharedWith),
   FOREIGN KEY(owner) REFERENCES users(username) 
     ON DELETE CASCADE
     ON UPDATE CASCADE,
   FOREIGN KEY(sharedWith) REFERENCES users(username) 
     ON DELETE CASCADE
     ON UPDATE CASCADE,
-  FOREIGN KEY(projectid) REFERENCES collaborators(projectid)
+  FOREIGN KEY(projectid) REFERENCES projects(projectid)
     ON DELETE CASCADE
     ON UPDATE CASCADE
 );
