@@ -48,10 +48,11 @@ export default class LibraryRender extends Component {
       const title = vidName;
       Alert.alert(
         `${title}`,
-          "Would you like to save to camra roll or share with friends?",
+          "Would you like to save to Camera Roll or Share With Friends?",
       
         [
-          {text: "Save", onPress: () => console.log('Video exported to Camera Roll')},
+          {text: "Cancel", style: 'cancel'},
+          {text: "Save", onPress: () => alert('Video exported to Camera Roll')},
           {text: "Share", onPress: () => navigate('Share', {pid: projectid})}
         ]
       )
@@ -77,10 +78,11 @@ export default class LibraryRender extends Component {
       const title = vidName;
       Alert.alert(
         `${title}`,
-          "Video Exported to Camera Roll",
+          "Would you like to save to Camera Roll?",
       
         [
-          {text: "OK", style: 'cancel'}
+          {text: "Cancel", style: 'cancel'},
+          {text: "Save", onPress: () => alert('Video exported to Camera Roll')}
         ]
       )
     };
@@ -97,7 +99,7 @@ export default class LibraryRender extends Component {
             <ListItem onPress={() => this.handlePressLibrary(rowData.name)}>
                 <Body style={{ borderBottomWidth: 0 }}>
                     <Text style={{fontWeight: "bold"}}>{rowData.name} </Text>
-                    <Text Note>{date}</Text>
+                    <Text Note>Created: {date}</Text>
                 </Body>
                 <Right style={{ borderBottomWidth: 0 }}>
                     <View style={styles.exportButton}>
@@ -120,7 +122,7 @@ export default class LibraryRender extends Component {
             <ListItem onPress={() => this.handlePressShared(rowData.name)}>
                 <Body style={{ borderBottomWidth: 0 }}>
                     <Text style={{fontWeight: "bold"}}>{rowData.name} </Text>
-                    <Text Note>{rowData.owner}</Text>
+                    <Text Note>Owner: {rowData.owner}</Text>
                 </Body>
                 <Right style={{ borderBottomWidth: 0 }}>
                     <View style={styles.exportButton}>
