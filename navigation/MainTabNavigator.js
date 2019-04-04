@@ -9,6 +9,7 @@ import LibraryScreen from '../screens/LibraryScreen';
 import Geolocation from '../screens/Geolocation';
 import SharedProjects from '../screens/SharedProjects';
 import EditScreen from '../screens/EditScreen';
+import ContactShare from '../screens/ContactShare';
 
 
 const ContactsStack = createStackNavigator({
@@ -85,6 +86,7 @@ const SharedLibraryStack = createMaterialTopTabNavigator(
 const LibraryStack = createStackNavigator({
   Library: SharedLibraryStack,
   Edit: EditScreen,
+  Share: ContactShare,
 });
 
 

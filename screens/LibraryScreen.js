@@ -1,5 +1,5 @@
 import React, {Component} from "react";
-import { Alert, View, Text, FlatList, ActivityIndicator } from 'react-native';
+import { Alert, View, Text, FlatList, ActivityIndicator, AsyncStorage } from 'react-native';
 import { ListItem, SearchBar } from 'react-native-elements';
 import LibraryRender from './LibraryRender'
 
@@ -36,8 +36,9 @@ export default class LibraryScreen extends Component {
       this.makeRemoteRequest();
     }
   
-    makeRemoteRequest = () => {
-      const url = `http://crewcam.eecs.umich.edu/api/v1/projects/`;
+    makeRemoteRequest = async () => {
+      const username = await AsyncStorage.getItem("userToken")
+      const url = `http://crewcam.eecs.umich.edu/api/v1/${username}/projects/`;
       this.setState({ loading: true });
   
       fetch(url)
@@ -49,7 +50,7 @@ export default class LibraryScreen extends Component {
             error: res.error || null,
             loading: false,
           });
-          this.arrayholder = res.results;
+          this.arrayholder = res.projects;
         })
         .catch(error => {
           this.setState({ error, loading: false });
