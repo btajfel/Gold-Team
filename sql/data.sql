@@ -26,6 +26,6 @@ VALUES (1, 'Vacation', 'azarrabi', datetime('now', 'localtime')),
 	   (9, 'First Day of College', 'btajfel', datetime('now', 'localtime'));
 
 INSERT INTO creators(creatorid, username, projectid, filename, created)
-VALUES (1, 'azarrabi', 3, 'test.mov', datetime('now', 'localtime')),
-	   (2, 'armruval', 3, 'test.mov', datetime('now', 'localtime')),
-	   (3, 'btajfel', 3, 'test.mov', datetime('now', 'localtime'));
+VALUES (1, 'azarrabi', 1, 'test.mov', datetime('now', 'localtime')),
+	   (2, 'armruval', 1, 'test.mov', datetime('now', 'localtime')),
+	   (3, 'btajfel', 1, 'test.mov', datetime('now', 'localtime'));

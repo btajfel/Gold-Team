@@ -5690,6 +5690,11 @@ react-native-contacts@^3.1.4:
   resolved "https://registry.yarnpkg.com/react-native-contacts/-/react-native-contacts-3.1.4.tgz#9db6e39c319f4960182e273ce48e8f8db7e5f799"
   integrity sha512-6R2hexlmmQWLa7EiSco4e//GcY2lYRMRACRC1okKwB2ApbPoDnPAo61bNjp+zIKcMF8eBsjCh0rSqPlD6wI6yg==
 
+react-native-dialog-input@^1.0.7:
+  version "1.0.7"
+  resolved "https://registry.yarnpkg.com/react-native-dialog-input/-/react-native-dialog-input-1.0.7.tgz#b2fefb4193d1784b3ae78c4a18d8fd6759466009"
+  integrity sha512-boi++dT2tzV8eCZud5Qe3LY/cdTGfgf93Vy4MFxq3O/4rBehllwCfBn5fhWMuf3JcVlzrk0fBsv/Ny766BiyVA==
+
 react-native-drawer@2.5.1:
   version "2.5.1"
   resolved "https://registry.yarnpkg.com/react-native-drawer/-/react-native-drawer-2.5.1.tgz#08b9314184f48c724f1b467f8859797369798654"
@@ -5754,10 +5759,9 @@ react-native-maps@expo/react-native-maps#v0.22.1-exp.0:
   version "0.22.1"
   resolved "https://codeload.github.com/expo/react-native-maps/tar.gz/e6f98ff7272e5d0a7fe974a41f28593af2d77bb2"
 
-react-native-orientation@^3.1.3:
+"react-native-orientation@git+https://github.com/yamill/react-native-orientation.git":
   version "3.1.3"
-  resolved "https://registry.yarnpkg.com/react-native-orientation/-/react-native-orientation-3.1.3.tgz#d45803841fe94b6cce9acbe904fd5ca191a3711e"
-  integrity sha512-A0h0E+2f95X4avmhaBG1ZT8WDxBACA/q//JN2eF1E7kq8AJVxt5XDiavv+aSBkBlqFsfF3bIS+T/DB5mXmnxuA==
+  resolved "git+https://github.com/yamill/react-native-orientation.git#b45830cce0837fa668838554e023979497673c82"
 
 react-native-permissions@^2.0.0-alpha.1:
   version "2.0.0-alpha.1"

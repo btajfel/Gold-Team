@@ -1,7 +1,8 @@
 import React from 'react';
-import { Image, StyleSheet, View, TouchableOpacity, Text, ScrollView } from 'react-native';
+import { Image, StyleSheet, View, TouchableOpacity, Text, ScrollView, AlertIOS } from 'react-native';
 import { FileSystem, FaceDetector, MediaLibrary, Permissions } from 'expo';
 import { MaterialIcons } from '@expo/vector-icons';
+import DialogInput from 'react-native-dialog-input';
 import Photo from './Photo';
 import PropTypes from 'prop-types';
 
@@ -13,6 +14,7 @@ export default class GalleryScreen extends React.Component {
     images: {},
     photos: [],
     selected: [],
+    isDialogVisible: false,
   };
 
   componentDidMount = async () => {
@@ -30,24 +32,54 @@ export default class GalleryScreen extends React.Component {
     this.setState({ selected });
   };
 
+  getVideoName = () => {
+    console.log("getVideoName")
+    return new Promise((resolve, reject) => {
+      AlertIOS.prompt('Name your video', null, (text) =>
+         [
+          {
+            text: 'Cancel',
+            onPress: () => reject(new Error('cancel')),
+          },
+          {
+            text: 'OK',
+            onPress: (text) => resolve(text),
+          },
+        ],
+      );
+    });
+
+  };
+
 // CHANGE THIS FUNCTION
   saveToGallery = async () => {
-    const video = this.state.selected[0];
-    // const type = 'video/mov';
-    // photos.map(photo => {
-    const form = new FormData();
-    // form.append("name", "\"video-upload\"");
-    // form.append("type", type);
+    let videoName = '';
+    try {
+      this.state.isDialogVisible = true;
+      <DialogInput isDialogVisible={this.state.isDialogVisible}
+            title={"Name your video"}
+            message={""}
+            hintInput ={""}
+            submitInput={ (inputText) => {videoName = inputText} }
+            closeDialog={ () => {this.showDialog(false)}}>
+      </DialogInput>
 
-    // const myheaders = new Headers();
-    // myheaders.append('content-type', 'undefined')
-    // myheaders.append('cache-control', 'no-cache');
+      console.log("Got video name");
+    } catch(err) {
+      console.log(err);
+    }
+    
+    console.log("Got video name")
+    const video = this.state.selected[0];
+
+    const form = new FormData();
 
     form.append('file', {
       uri: video,
       type: 'video/mov', // or photo.type
-      name: 'test'
+      name: video
     });
+    form.append('name', videoName)
     console.log(video)
     // FIXME (projectid)
     const url = 'http://crewcam.eecs.umich.edu/api/v1/3/save/';
@@ -62,46 +94,13 @@ export default class GalleryScreen extends React.Component {
     } catch (e) {
       console.error(e)
     }
-
-    /*   OLD CODE ////
-    form.append('file', photos);
-    console.log(photos)
-    // FIXME (projectid)
-    const url = 'http://crewcam.eecs.umich.edu/api/v1/3/save/';
-    try {
-      const response = await fetch(url, {
-        method: 'POST',
-        body: form
-      });
-      alert('Videos Saved to Project');
-      console.log(response)
-    } catch (e) {
-      console.error(e)
-    }
-    */ ///////// OLD CODE
-        // });
-    //   const { status } = await Permissions.askAsync(Permissions.CAMERA_ROLL);
-
-    //   if (status !== 'granted') {
-    //     throw new Error('Denied CAMERA_ROLL permissions!');
-    //   }
-
-    //   const promises = photos.map(photoUri => {
-    //     return MediaLibrary.createAssetAsync(photoUri);
-    //   });
-
-    //   await Promise.all(promises);
-    //   alert('Successfully saved photos to user\'s gallery!');
-    // } else {
-    //   alert('No photos to save!');
-    // }
   };
 
 
 
   DeleteVideo = async () => {
     const photos = this.state.selected;
-    const remaining = this.state.photos;
+    let remaining = this.state.photos;
     photos.map(async (photo) => {
       FileSystem.deleteAsync(photo);
       remaining = remaining.filter(item => item != photo )

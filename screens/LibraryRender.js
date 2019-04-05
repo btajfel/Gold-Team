@@ -14,9 +14,9 @@ export default class LibraryRender extends Component {
       }
 
 
-    handlePressLibrary = (name) => {
+    handlePressLibrary = (projectData) => {
       const {navigate} = this.props.navigation;
-      const title = name;
+      const title = projectData.name;
       Alert.alert(
         `${title}`,
           "",
@@ -24,7 +24,7 @@ export default class LibraryRender extends Component {
         [
           {text: "Cancel", style: 'cancel'},
           {text: "View", onPress: () => console.log('View Video')},
-          {text: 'Edit', onPress: () => navigate('Edit')}
+          {text: 'Edit', onPress: () => navigate('Edit', {projectid: projectData.projectid})}
         ]
       )
     };
@@ -96,7 +96,7 @@ export default class LibraryRender extends Component {
           const day = dateString.substring(8,10);
           const date = day + "/" + month + "/" + year;
         return (
-            <ListItem onPress={() => this.handlePressLibrary(rowData.name)}>
+            <ListItem onPress={() => this.handlePressLibrary(rowData)}>
                 <Body style={{ borderBottomWidth: 0 }}>
                     <Text style={{fontWeight: "bold"}}>{rowData.name} </Text>
                     <Text Note>Created: {date}</Text>

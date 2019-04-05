@@ -28,83 +28,12 @@ export default class Photo extends React.Component {
     );
   }
 
-  detectFace = () =>
-    FaceDetector.detectFacesAsync(this.props.uri, {
-      detectLandmarks: FaceDetector.Constants.Landmarks.none,
-      runClassifications: FaceDetector.Constants.Classifications.all,
-    })
-      .then(this.facesDetected)
-      .catch(this.handleFaceDetectionError);
-
-  facesDetected = ({ image, faces }) => {
-    this.setState({
-      faces,
-      image,
-    });
-  }
-
-  getImageDimensions = ({ width, height }) => {
-    if (width > height) {
-      const scaledHeight = pictureSize * height / width;
-      return {
-        width: pictureSize,
-        height: scaledHeight,
-
-        scaleX: pictureSize / width,
-        scaleY: scaledHeight / height,
-
-        offsetX: 0,
-        offsetY: (pictureSize - scaledHeight) / 2,
-      };
-    } else {
-      const scaledWidth = pictureSize * width / height;
-      return {
-        width: scaledWidth,
-        height: pictureSize,
-
-        scaleX: scaledWidth / width,
-        scaleY: pictureSize / height,
-
-        offsetX: (pictureSize - scaledWidth) / 2,
-        offsetY: 0,
-      };
-    }
-  };
-
-  handleFaceDetectionError = error => console.warn(error);
-
-  renderFaces = () => this.state.image && this.state.faces && this.state.faces.map(this.renderFace);
-
-  renderFace = (face, index) => {
-    const { image } = this.state;
-    const { scaleX, scaleY, offsetX, offsetY } = this.getImageDimensions(image);
-    const layout = {
-      top: offsetY + face.bounds.origin.y * scaleY,
-      left: offsetX + face.bounds.origin.x * scaleX,
-      width: face.bounds.size.width * scaleX,
-      height: face.bounds.size.height * scaleY,
-    };
-
-    return (
-      <View
-        key={index}
-        style={[styles.face, layout]}
-        transform={[
-          { perspective: 600 },
-          { rotateZ: `${(face.rollAngle || 0).toFixed(0)}deg` },
-          { rotateY: `${(face.yawAngle || 0).toFixed(0)}deg` },
-        ]}>
-        <Text style={styles.faceText}>😁 {(face.smilingProbability * 100).toFixed(0)}%</Text>
-      </View>
-    );
-  };
 
   render() {
     const { uri } = this.props;
     return (
         <TouchableOpacity
           style={styles.pictureWrapper}
-          onLongPress={this.detectFace}
           onPress={this.toggleSelection}
           activeOpacity={1}
         >

@@ -364,8 +364,6 @@ comboState = async () => {
 }
 
 
-
-
 const styles = StyleSheet.create({
 
   toggleButton: {
@@ -381,7 +379,4 @@ const styles = StyleSheet.create({
 
 
 });
-
-
-
 
