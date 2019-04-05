@@ -1,10 +1,9 @@
 import React, {Component} from "react";
 import { ExpoConfigView } from '@expo/samples';
-import { ScreenOrientation } from 'expo';
+import { Video, ScreenOrientation } from 'expo';
 import { StyleSheet, AppRegistry, View, FlatList, Text } from 'react-native';
 import { Row } from 'native-base';
 import EditRender from './EditRender'
-import Photo from './Photo'
 
 export default class EditScreen extends React.Component {
 
@@ -17,7 +16,9 @@ export default class EditScreen extends React.Component {
         error: null,
         loading: false,
         index: 0,
-        video: '',
+        videoUri: {
+          uri: ''
+        },
     };
     this.arrayholder = [];
   }
@@ -31,14 +32,11 @@ export default class EditScreen extends React.Component {
     ScreenOrientation.allowAsync(ScreenOrientation.Orientation.PORTRAIT);
   }
 
-  toggleSelection = (username, isSelected) => {
-    // let inviteList = this.state.invited;
-    // if (isSelected) {
-    //   inviteList.push(username);
-    // } else {
-    //   inviteList = inviteList.filter(item => item !== username);
-    // }
-    // this.setState({ invited: inviteList });
+  toggleSelection = (uri) => {
+    console.log("toggle", uri)
+    this.setState({
+      videoUri: {uri},
+    });
   };
 
   onFetch = async(page = 1, startFetch, abortFetch) => {
@@ -80,6 +78,16 @@ makeRemoteRequest = () => {
   render() {
     /* Go ahead and delete ExpoConfigView and replace it with your
      * content, we just wanted to give you a quick view of your config */
+    const params = {
+      naturalSize: {
+        orientation: 'landscape',
+      }
+    };
+
+    const {uri} = this.state.videoUri
+
+    console.log(this.state.videoUri)
+
     return (
       <View style={{flex: 1, flexDirection: 'row'}}>
         <View style={{flex: 1, flexDirection: 'column'}}>
@@ -99,7 +107,13 @@ makeRemoteRequest = () => {
         </View>
         <View style={{flex: 1, flexDirection: 'column'}}> 
           <View style={{flex: 1, backgroundColor: 'black'}}>
-
+            <View style={styles.pictureWrapper}>
+              <Video
+                style={styles.picture}
+                source={ this.state.videoUri }
+                useNativeControls
+              />
+            </View>
           </View>
           <View style={{flex: 1, backgroundColor: 'steelblue'}} />
         </View>
@@ -122,5 +136,17 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
   },
-
+  picture: {
+    bottom: 0,
+    right: 0,
+    left: 0,
+    top: 0,
+  },
+  pictureWrapper: {
+    width: 150,
+    height: 150,
+    alignItems: 'center',
+    justifyContent: 'center',
+    margin: 5,
+  },
 });

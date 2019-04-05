@@ -1,4 +1,4 @@
-import { Constants, Camera, FileSystem, Location, Permissions, BarCodeScanner } from 'expo';
+import { Constants, Camera, FileSystem, Location, Permissions, BarCodeScanner, ScreenOrientation } from 'expo';
 
 import React from 'react';
 import {
@@ -125,6 +125,7 @@ export default class CameraScreen extends React.Component {
     FileSystem.makeDirectoryAsync(FileSystem.documentDirectory + 'photos').catch(e => {
       console.log('Directory exists');
     });
+    ScreenOrientation.allowAsync(ScreenOrientation.Orientation.PORTRAIT);
   }
 
   _signOutAsync = async () => {

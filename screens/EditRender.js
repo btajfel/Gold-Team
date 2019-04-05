@@ -9,7 +9,7 @@ const button = {
     on: 'ios-checkmark'
   };
 
-const PHOTOS_DIR = FileSystem.documentDirectory + 'videos/';
+const VIDEOS_DIR = FileSystem.documentDirectory + 'videos/';
 
 export default class EditRender extends React.Component {
 
@@ -31,10 +31,12 @@ export default class EditRender extends React.Component {
 
         FileSystem.downloadAsync(
           `http://crewcam.eecs.umich.edu/api/v1/${filename}/video/`,
-          PHOTOS_DIR + filename
+          VIDEOS_DIR + filename
         )
         .then(({ uri }) => {
-        console.log('Finished downloading to ', uri);
+            this.setState({ 
+                videoFilename: uri
+            });
         })
         .catch(error => {
         console.error(error);
@@ -46,7 +48,7 @@ export default class EditRender extends React.Component {
             selected: !this.state.selected,
             inviteIcon: this.state.inviteIcon === 'off' ? 'on' : 'off',
            },
-          () => this.props.onSelectionToggle(item.username, this.state.selected)
+          () => this.props.onSelectionToggle(this.state.videoFilename)
         );
     }
 
