@@ -2,7 +2,6 @@ import React from 'react';
 import { Image, StyleSheet, View, TouchableOpacity, Text, ScrollView, AlertIOS } from 'react-native';
 import { FileSystem, FaceDetector, MediaLibrary, Permissions } from 'expo';
 import { MaterialIcons } from '@expo/vector-icons';
-import DialogInput from 'react-native-dialog-input';
 import Photo from './Photo';
 import PropTypes from 'prop-types';
 
@@ -14,7 +13,6 @@ export default class GalleryScreen extends React.Component {
     images: {},
     photos: [],
     selected: [],
-    isDialogVisible: false,
   };
 
   componentDidMount = async () => {
@@ -48,22 +46,12 @@ export default class GalleryScreen extends React.Component {
         ],
       );
     });
-
   };
 
 // CHANGE THIS FUNCTION
   saveToGallery = async () => {
-    let videoName = '';
     try {
-      this.state.isDialogVisible = true;
-      <DialogInput isDialogVisible={this.state.isDialogVisible}
-            title={"Name your video"}
-            message={""}
-            hintInput ={""}
-            submitInput={ (inputText) => {videoName = inputText} }
-            closeDialog={ () => {this.showDialog(false)}}>
-      </DialogInput>
-
+      const videoName = await this.getVideoName();
       console.log("Got video name");
     } catch(err) {
       console.log(err);
@@ -100,7 +88,7 @@ export default class GalleryScreen extends React.Component {
 
   DeleteVideo = async () => {
     const photos = this.state.selected;
-    let remaining = this.state.photos;
+    const remaining = this.state.photos;
     photos.map(async (photo) => {
       FileSystem.deleteAsync(photo);
       remaining = remaining.filter(item => item != photo )
