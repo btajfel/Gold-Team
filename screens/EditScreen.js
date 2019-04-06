@@ -4,6 +4,7 @@ import { ScreenOrientation, FileSystem } from 'expo';
 import { StyleSheet, AppRegistry, View, FlatList, Text } from 'react-native';
 import { Row } from 'native-base';
 import {NavigationEvents} from 'react-navigation';
+import MultiSlider from '@ptomasroos/react-native-multi-slider';
 import EditRender from './EditRender'
 import Vid from './Vid';
 
@@ -19,6 +20,8 @@ export default class EditScreen extends React.Component {
         loading: false,
         index: 0,
         videoUri: '',
+        startTime: 5,
+        endTime: 25,
     };
     this.arrayholder = [];
   }
@@ -83,6 +86,14 @@ export default class EditScreen extends React.Component {
       });
   };
 
+  multiSliderValuesChange = (values) => {
+    console.log(values)
+    this.setState({
+      startTime: values[0],
+      endTime: values[1],
+    })
+  };
+
 
   render() {
     /* Go ahead and delete ExpoConfigView and replace it with your
@@ -125,11 +136,28 @@ export default class EditScreen extends React.Component {
               />
             </View>
           </View>
-          <View style={{flex: 1, backgroundColor: 'lightblue'}} />
+          <View style={{flex: 1, backgroundColor: 'lightblue', alignItems: 'center'}}>
+            <Text style={{ paddingTop: 20, fontWeight: 'bold' }}>Splice Videos</Text>
+            <Text style={{ paddingTop: 10 }}>Start: {this.state.startTime}      End: {this.state.endTime}</Text>
+            <View style={{ paddingTop: 20 }}>
+              <MultiSlider
+                values={[this.state.startTime, this.state.endTime]}
+                onValuesChangeFinish={this.multiSliderValuesChange}
+                selectedStyle={{backgroundColor: '#454d55'}}
+                sliderLength={200}
+                // customMarker={CustomMarker}
+                min={0}
+                max={30}
+                step={1}
+                snapped
+                enabledOne
+                enabledTwo
+              />
+            </View>
+          </View>
         </View>
       </View>
     );
-
 
   }
 }
