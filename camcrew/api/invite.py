@@ -43,11 +43,12 @@ def post_invite():
 
         data = json.loads(flask.request.data)
         invited = data["inviteList"]
+        username = data["username"]
         for user in invited:
             cur.execute('\
                 INSERT INTO pending_invites(projectid, username1, username2, created) \
                 VALUES (?, ?, ?, datetime("now", "localtime")) \
-                ', (projectid, "btajfel", user))
+                ', (projectid, username, user))
 
 
     context['projectid'] = projectid

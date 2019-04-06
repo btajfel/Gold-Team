@@ -208,6 +208,7 @@ export default class SearchScreen extends Component {
   _sendInvites = async () => {
     const {navigate} = this.props.navigation;
     const invited = this.state.invited;
+    const username = await AsyncStorage.getItem("userToken");
     
     const url = 'http://crewcam.eecs.umich.edu/api/v1/invite/';
       try {
@@ -215,7 +216,8 @@ export default class SearchScreen extends Component {
           credentials: 'same-origin',
           method: 'POST',
           body: JSON.stringify( {
-             'inviteList': invited
+             'inviteList': invited,
+             'username': username,
           }) 
         })
         .then((response) =>{
