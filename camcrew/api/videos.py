@@ -13,7 +13,7 @@ def get_videos(projectid):
     context = {}
     cur = camcrew.model.get_db().cursor()
 
-    cur.execute("""SELECT creatorid, filename FROM creators WHERE projectid=?""", (projectid,))
+    cur.execute("""SELECT videoid, filename FROM videos WHERE projectid=?""", (projectid,))
     context["videos"] = cur.fetchall()
 
     return flask.jsonify(**context), 201

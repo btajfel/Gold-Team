@@ -25,6 +25,7 @@ case $1 in
     mkdir -p var/uploads
     sqlite3 var/camcrew.sqlite3 < sql/schema.sql
     sqlite3 var/camcrew.sqlite3 < sql/data.sql
+    cp sql/uploads/* var/uploads/
     echo "+ mkdir -p var/uploads
 + sqlite3 var/camcrew.sqlite3 < sql/schema.sql
 + sqlite3 var/camcrew.sqlite3 < sql/data.sql
@@ -53,8 +54,8 @@ case $1 in
     sqlite3 -batch -line var/camcrew.sqlite3 'SELECT * FROM pending_invites'
     echo "+ sqlite3 -batch -line var/camcrew.sqlite3 'SELECT * FROM collaborators'"
     sqlite3 -batch -line var/camcrew.sqlite3 'SELECT * FROM collaborators'
-    echo "+ sqlite3 -batch -line var/camcrew.sqlite3 'SELECT * FROM creators'"
-    sqlite3 -batch -line var/camcrew.sqlite3 'SELECT * FROM creators'
+    echo "+ sqlite3 -batch -line var/camcrew.sqlite3 'SELECT * FROM videos'"
+    sqlite3 -batch -line var/camcrew.sqlite3 'SELECT * FROM videos'
     echo "+ sqlite3 -batch -line var/camcrew.sqlite3 'SELECT * FROM projects'"
     sqlite3 -batch -line var/camcrew.sqlite3 'SELECT * FROM projects'
     echo "+ sqlite3 -batch -line var/camcrew.sqlite3 'SELECT * FROM shared_projects'"

@@ -1,5 +1,3 @@
-
-    
 import React, { PureComponent } from 'react'
 import { StyleSheet, View, Alert} from 'react-native'
 import { Button, ListItem, Left, Right, Body, Text, Icon } from 'native-base'
@@ -38,8 +36,8 @@ export default class ContactRender extends PureComponent {
         <Body style={{ borderBottomWidth: 0 }}>
           <Text>{rowData.fullname}</Text>
           <Text Note>{rowData.phonenumber}</Text>
-          {rowData.distance && <Text>{rowData.distance} miles </Text>}
         </Body>
+        {rowData.distance && <Text style={{ textAlign: 'right', paddingRight: 10 }}>{rowData.distance} miles </Text>}
         <Right style={{ borderBottomWidth: 0 }}>
           <View style={styles.rightBtn}>
             <Button
@@ -59,6 +57,6 @@ export default class ContactRender extends PureComponent {
 const styles = StyleSheet.create({
     rightBtn: {
     margin: 0,
-    padding: 5
+    paddingRight: 5
   }
 });

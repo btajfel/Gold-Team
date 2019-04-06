@@ -31,6 +31,7 @@ export default class Photo extends React.Component {
 
   render() {
     const { uri } = this.props;
+    console.log("Photo", {uri})
     return (
         <TouchableOpacity
           style={styles.pictureWrapper}

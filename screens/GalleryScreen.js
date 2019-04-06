@@ -1,5 +1,5 @@
 import React from 'react';
-import { Image, StyleSheet, View, TouchableOpacity, Text, ScrollView, AlertIOS } from 'react-native';
+import { Image, StyleSheet, View, TouchableOpacity, Text, TextInput, ScrollView, AsyncStorage } from 'react-native';
 import { FileSystem, FaceDetector, MediaLibrary, Permissions } from 'expo';
 import { MaterialIcons } from '@expo/vector-icons';
 import Photo from './Photo';
@@ -13,11 +13,13 @@ export default class GalleryScreen extends React.Component {
     images: {},
     photos: [],
     selected: [],
+    text: '',
   };
 
   componentDidMount = async () => {
     const photos = await FileSystem.readDirectoryAsync(PHOTOS_DIR);
     this.setState({ photos });
+    console.log("Gallery photos", photos)
   };
 
   toggleSelection = (uri, isSelected) => {
@@ -30,75 +32,82 @@ export default class GalleryScreen extends React.Component {
     this.setState({ selected });
   };
 
-  getVideoName = () => {
-    console.log("getVideoName")
-    return new Promise((resolve, reject) => {
-      AlertIOS.prompt('Name your video', null, (text) =>
-         [
-          {
-            text: 'Cancel',
-            onPress: () => reject(new Error('cancel')),
-          },
-          {
-            text: 'OK',
-            onPress: (text) => resolve(text),
-          },
-        ],
-      );
-    });
-  };
+  // getVideoName = () => {
+  //   console.log("getVideoName")
+  //   return new Promise((resolve, reject) => {
+  //     AlertIOS.prompt('Name your video', null, (text) =>
+  //        [
+  //         {
+  //           text: 'Cancel',
+  //           onPress: () => reject(new Error('cancel')),
+  //         },
+  //         {
+  //           text: 'OK',
+  //           onPress: (text) => resolve(text),
+  //         },
+  //       ],
+  //     );
+  //   });
+  // };
 
 // CHANGE THIS FUNCTION
   saveToGallery = async () => {
-    try {
-      const videoName = await this.getVideoName();
-      console.log("Got video name");
-    } catch(err) {
-      console.log(err);
-    }
-    
-    console.log("Got video name")
     const video = this.state.selected[0];
+    const videoName = this.state.text;
+    const username = await AsyncStorage.getItem("userToken");
+
+    const split = video.split("/");
+    const videoTimes = split[split.length - 1]
+
+    const startTime = videoTimes.split("-")[0]
+    const endTime = videoTimes.split("-")[1].split(".")[0]
 
     const form = new FormData();
 
     form.append('file', {
       uri: video,
       type: 'video/mov', // or photo.type
-      name: video
+      name: 'file.mov'
     });
-    form.append('name', videoName)
+    form.append('name', videoName);
+    form.append('startTime', startTime);
+    form.append('endTime', endTime);
+    form.append('username', username);
     console.log(video)
     // FIXME (projectid)
     const url = 'http://crewcam.eecs.umich.edu/api/v1/3/save/';
-    try {
-      const response = await fetch(url, {
-        method: 'POST',
-        // headers: myheaders,
-        body: form,
+    fetch(url, {
+      method: 'POST',
+      body: form,
+    })
+      .then((res) => {
+        if (!res.ok) throw Error(res.statusText);
+        alert('Video Saved to Project');
+        console.log(res)
+      })
+      .catch(error => {
+        alert('Video Could Not be Saved');
+        console.log(error)
       });
-      alert('Videos Saved to Project');
-      console.log(response)
-    } catch (e) {
-      console.error(e)
-    }
   };
-
 
 
   DeleteVideo = async () => {
     const photos = this.state.selected;
-    const remaining = this.state.photos;
+    let selected = this.state.selected;
+    let remaining = this.state.photos;
     photos.map(async (photo) => {
-      FileSystem.deleteAsync(photo);
-      remaining = remaining.filter(item => item != photo )
+      await FileSystem.deleteAsync(photo);
+      let split = photo.split("/");
+      remaining = remaining.filter(item => item != split[split.length - 1] )
+      selected = selected.filter(item => item != photo )
     })
     this.setState({
       photos: remaining,
+      selected: selected,
     })
-
     console.log("Videos Deleted");
-};
+  };
 
 
 
@@ -110,6 +119,7 @@ export default class GalleryScreen extends React.Component {
     />;
 
   render() {
+    // console.log("selected", this.state.selected)
     return (
       <View style={styles.container}>
         <View style={styles.navbar}>
@@ -122,6 +132,13 @@ export default class GalleryScreen extends React.Component {
           <TouchableOpacity style={styles.button} onPress={this.saveToGallery}>
             <Text style={styles.whiteText}>Upload To Project</Text>
           </TouchableOpacity>
+        </View>
+        <View style={{ paddingLeft: 20 }}>
+          <TextInput
+            style={{height: 40}}
+            placeholder="Name your track"
+            onChangeText={(text) => this.setState({text})}
+          />
         </View>
         <ScrollView contentComponentStyle={{ flex: 1 }}>
           <View style={styles.pictures}>

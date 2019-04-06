@@ -135,6 +135,7 @@ export default class CameraScreen extends React.Component {
   };
 
   paramsFunction = async () => {
+    ScreenOrientation.allowAsync(ScreenOrientation.Orientation.PORTRAIT);
     this.updateLocation();
     this.fetchPending();
     let array = [];
@@ -189,19 +190,20 @@ export default class CameraScreen extends React.Component {
     const longitude = myLoc.coords.longitude;
 
     const url = `http://crewcam.eecs.umich.edu/api/v1/location/`;
-      try {
-        await fetch(url, {
-          credentials: 'same-origin',
-          method: 'POST',
-          body: JSON.stringify( {
-             username: await AsyncStorage.getItem("userToken"),
-             latitude: latitude,
-             longitude: longitude,
-          }) 
-        })
-      } catch (e) {
-        console.error(e)
-      }
+    const username = await AsyncStorage.getItem("userToken");
+    try {
+      await fetch(url, {
+        credentials: 'same-origin',
+        method: 'POST',
+        body: JSON.stringify( {
+           username: username,
+           latitude: latitude,
+           longitude: longitude,
+        }) 
+      })
+    } catch (e) {
+      console.error(e)
+    }
   };
 
   fetchPending = async () => {
@@ -289,8 +291,6 @@ export default class CameraScreen extends React.Component {
   };
 
 
-
-
   getRatios = async () => {
     const ratios = await this.camera.getSupportedRatios();
     return ratios;
@@ -338,11 +338,11 @@ export default class CameraScreen extends React.Component {
           recordingIcon: 'ios-radio-button-on',
           recordingColor: 'red',
         });
+        const startTime = Date.now();
         const video = await this.camera.recordAsync();
-        console.log(video);
         await FileSystem.moveAsync({
           from: video.uri,
-          to: `${FileSystem.documentDirectory}photos/${Date.now()}.mov`,
+          to: `${FileSystem.documentDirectory}photos/${startTime}-${Date.now()}.mov`,
         });
         this.setState({ newPhotos: true });
       }

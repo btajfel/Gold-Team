@@ -4,6 +4,7 @@ import flask
 import tempfile
 import os
 import shutil
+import arrow
 import camcrew
 from camcrew.api.error_handler import InvalidUsage
 
@@ -22,20 +23,32 @@ def post_save(projectid):
     file = flask.request.files["file"]
     file.save(temp_filename)
 
+    # Get timestamp for filename
+    local = arrow.utcnow().to('US/Eastern')
+
     # Compute filename
     new_filename = os.path.join(
         camcrew.app.config["UPLOAD_FOLDER"],
-        file.filename
+        str(local.timestamp) + ".mov"
     )
+
+    username = flask.request.form['username']
+    name = flask.request.form['name']
+    startTime = flask.request.form['startTime']
+    endTime = flask.request.form['endTime']
+    print(name, startTime, endTime)
 
     # Move temp file to permanent location
     shutil.move(temp_filename, new_filename)
 
     context["file"] = file.filename
 
+    # Get next videoid
+    videoid = cur.execute('SELECT MAX(videoid) from videos;').fetchone()['MAX(videoid)'] + 1
+
     # projects(projectid, name, owner, created)
-    if flask.request.method == 'POST':
-        cur.execute('INSERT INTO creators(creatorid, username, \
-            projectid, filename, created) VALUES (?,?,?,?,datetime("now"));',
-            (4, "tjsande", projectid,file.filename))
+    cur.execute('INSERT INTO videos(videoid, username, \
+        projectid, filename, starttime, endtime, created) VALUES (?,?,?,?,?,?,datetime("now"));',
+        (videoid, username, projectid, name, startTime, endTime))
+
     return flask.jsonify(**context), 201

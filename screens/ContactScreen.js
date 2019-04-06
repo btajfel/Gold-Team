@@ -4,10 +4,10 @@ import { ListItem, SearchBar } from 'react-native-elements';
 import ContactRender from './ContactRender';
 import {openSettings} from 'react-native-permissions';
 import Contacts from 'react-native-contacts';
-import {createStackNavigator, createAppContainer} from 'react-navigation';
+import {createStackNavigator, createAppContainer, NavigationEvents} from 'react-navigation';
 import RecordScreen from './RecordScreen';
 import Geolocation from './Geolocation';
-import { Constants, Location, Permissions } from 'expo';
+import { Constants, Location, Permissions, ScreenOrientation } from 'expo';
 
 
 
@@ -132,7 +132,7 @@ export default class SearchScreen extends Component {
     this._getUserLoactions();
   };
 
-    _getUserLoactions = async () => {    
+  _getUserLoactions = async () => {    
     const url = 'http://crewcam.eecs.umich.edu/api/v1/location/';
     this.setState({ loading: true });
       await fetch(url)
@@ -153,53 +153,55 @@ export default class SearchScreen extends Component {
       .catch(errorMessage => {
         this.setState({ errorMessage, loading: false });
       });
-    };
+  };
 
+  paramsFunction = async () => {
+    ScreenOrientation.allowAsync(ScreenOrientation.Orientation.PORTRAIT);
+  };  
 
+  calcDistances = () => {
+    const myLoc = this.state.myLocation;
+    const users = this.state.userDistances;
+    const myLat = myLoc.coords.latitude;
+    const myLong = myLoc.coords.longitude;
+    let nearby = [];
 
-      calcDistances = () => {
-        const myLoc = this.state.myLocation;
-        const users = this.state.userDistances;
-        const myLat = myLoc.coords.latitude;
-        const myLong = myLoc.coords.longitude;
-        let nearby = [];
+    users.forEach(function(user) {
+    const lat = user.latitude;
+    const long = user.longitude;
+    let diff = (function() {
+      if ((myLat === lat) && (myLong === long)) {
+         return 0;
+      }
+      else{
+      var radlat1 = Math.PI * myLat/180;
+      var radlat2 = Math.PI * lat/180;
+      var theta = long-myLong;
+      var radtheta = Math.PI * theta/180;
+      var dist = Math.sin(radlat1) * Math.sin(radlat2) + Math.cos(radlat1) * Math.cos(radlat2) * Math.cos(radtheta);
+      dist = Math.acos(dist);
+      dist = dist * 180/Math.PI;
+      dist = dist * 60 * 1.1515;
+      dist = Math.round(dist*100)/100
+      return dist;
+   }
+      })(); 
 
-        users.forEach(function(user) {
-        const lat = user.latitude;
-        const long = user.longitude;
-        let diff = (function() {
-          if ((myLat === lat) && (myLong === long)) {
-             return 0;
-          }
-          else{
-          var radlat1 = Math.PI * myLat/180;
-          var radlat2 = Math.PI * lat/180;
-          var theta = long-myLong;
-          var radtheta = Math.PI * theta/180;
-          var dist = Math.sin(radlat1) * Math.sin(radlat2) + Math.cos(radlat1) * Math.cos(radlat2) * Math.cos(radtheta);
-          dist = Math.acos(dist);
-          dist = dist * 180/Math.PI;
-          dist = dist * 60 * 1.1515;
-          dist = Math.round(dist*100)/100
-          return dist;
-       }
-          })(); 
+      if (diff === 0){
+        diff = 0.1
+      }
 
-          if (diff === 0){
-            diff = 0.1
-          }
-
-        if (diff <= 1.0){
-          nearby.push({fullname: user.fullname, username: user.username, phonenumber: user.phonenumber, distance: diff});
-        }
-        });
-        this.nearbyHolder = nearby.sort(function(a, b) {
-                          return parseFloat(a.distance) - parseFloat(b.distance);
-                          });
-        this.setState({
-          nearby: nearby
-        })
-      };
+    if (diff <= 1.0){
+      nearby.push({fullname: user.fullname, username: user.username, phonenumber: user.phonenumber, distance: diff});
+    }
+    });
+    this.nearbyHolder = nearby.sort(function(a, b) {
+                      return parseFloat(a.distance) - parseFloat(b.distance);
+                      });
+    this.setState({
+      nearby: nearby
+    })
+  };
 
 
   
@@ -345,6 +347,9 @@ comboState = async () => {
     }
     return (
       <View style={{ flex: 1 }}>
+      <NavigationEvents
+        onDidFocus={() => this.paramsFunction()}
+      /> 
         <FlatList
           data={combo}
           renderItem={({ item }) => (

@@ -41,11 +41,13 @@ CREATE TABLE shared_projects(
     ON UPDATE CASCADE
 );
 
-CREATE TABLE creators(
-  creatorid INTEGER NOT NULL,
+CREATE TABLE videos(
+  videoid INTEGER NOT NULL,
   username VARCHAR(20) NOT NULL,
   projectid INTEGER NOT NULL,
   filename VARCHAR(64) NOT NULL,
+  starttime INTEGER NOT NULL,
+  endtime INTEGER NOT NULL,
   created TIMESTAMP NOT NULL,
   PRIMARY KEY(username, projectid),
   FOREIGN KEY(username) REFERENCES users(username)

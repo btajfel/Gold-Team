@@ -9,7 +9,7 @@ const button = {
     on: 'ios-checkmark'
   };
 
-const VIDEOS_DIR = FileSystem.documentDirectory + 'videos/';
+const VIDEOS_DIR = FileSystem.documentDirectory + 'videos';
 
 export default class EditRender extends React.Component {
 
@@ -31,7 +31,7 @@ export default class EditRender extends React.Component {
 
         FileSystem.downloadAsync(
           `http://crewcam.eecs.umich.edu/api/v1/${filename}/video/`,
-          VIDEOS_DIR + filename
+          `${VIDEOS_DIR}/${filename}`
         )
         .then(({ uri }) => {
             this.setState({ 
