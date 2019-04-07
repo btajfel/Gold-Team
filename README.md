@@ -95,96 +95,96 @@ chmod +x bin/camcrew_run
 tree --matchdirs -I 'node_modules|ios|android|camcrew.egg-info|env|node_modules|yarn.lock'
 ```
 
-GoldTeam
-├── App.js
-├── README.md
-├── __tests__
-│   ├── App-test.js
-│   └── App.js
-├── app.json
-├── assets
-│   ├── fonts
-│   │   └── SpaceMono-Regular.ttf
-│   └── images
-│       ├── camcrew_logo.png
-│       ├── icon.png
-│       ├── robot-dev.png
-│       ├── robot-prod.png
-│       └── splash.png
-├── babel.config.js
-├── bin
-│   ├── camcrew_db
-│   └── camcrew_run
-├── camcrew
-│   ├── __init__.py
-│   ├── __pycache__
-│   │   ├── __init__.cpython-37.pyc
-│   │   └── config.cpython-37.pyc
-│   ├── api
-│   │   ├── __init__.py
-│   │   ├── __pycache__
-│   │   │   ├── __init__.cpython-37.pyc
-│   │   │   ├── error_handler.cpython-37.pyc
-│   │   │   └── projects.cpython-37.pyc
-│   │   ├── contacts.py
-│   │   ├── create.py
-│   │   ├── error_handler.py
-│   │   ├── invite.py
-│   │   ├── location.py
-│   │   ├── login.py
-│   │   ├── pending_invite.py
-│   │   ├── projects.py
-│   │   ├── render.py
-│   │   ├── save.py
-│   │   ├── shared_with.py
-│   │   └── videos.py
-│   ├── config.py
-│   ├── model.py
-│   └── views
-│       └── __init__.py
-├── components
-│   ├── StyledText.js
-│   ├── TabBarIcon.js
-│   └── __tests__
-│       └── StyledText-test.js
-├── constants
-│   ├── Colors.js
-│   └── Layout.js
-├── index.js
-├── navigation
-│   ├── AppNavigator.js
-│   └── MainTabNavigator.js
-├── package-lock.json
-├── package.json
-├── render.py
-├── screens
-│   ├── AuthLoadingScreen.js
-│   ├── ContactRender.js
-│   ├── ContactScreen.js
-│   ├── ContactShare.js
-│   ├── EditRender.js
-│   ├── EditScreen.js
-│   ├── GalleryScreen.js
-│   ├── Geolocation.js
-│   ├── LibraryRender.js
-│   ├── LibraryScreen.js
-│   ├── Photo.js
-│   ├── ProjectSettings.js
-│   ├── RecordScreen.js
-│   ├── SharedProjects.js
-│   ├── SignInScreen.js
-│   ├── SignUpScreen.js
-│   └── Vid.js
-├── setup.py
-├── sftp-config.json
-├── sql
-│   ├── data.sql
-│   ├── schema.sql
-│   └── uploads
-│       └── test.MOV
-└── var
-    ├── camcrew.sqlite3
-    └── uploads
+    GoldTeam
+    ├── App.js
+    ├── README.md
+    ├── __tests__
+    │   ├── App-test.js
+    │   └── App.js
+    ├── app.json
+    ├── assets
+    │   ├── fonts
+    │   │   └── SpaceMono-Regular.ttf
+    │   └── images
+    │       ├── camcrew_logo.png
+    │       ├── icon.png
+    │       ├── robot-dev.png
+    │       ├── robot-prod.png
+    │       └── splash.png
+    ├── babel.config.js
+    ├── bin
+    │   ├── camcrew_db
+    │   └── camcrew_run
+    ├── camcrew
+    │   ├── __init__.py
+    │   ├── __pycache__
+    │   │   ├── __init__.cpython-37.pyc
+    │   │   └── config.cpython-37.pyc
+    │   ├── api
+    │   │   ├── __init__.py
+    │   │   ├── __pycache__
+    │   │   │   ├── __init__.cpython-37.pyc
+    │   │   │   ├── error_handler.cpython-37.pyc
+    │   │   │   └── projects.cpython-37.pyc
+    │   │   ├── contacts.py
+    │   │   ├── create.py
+    │   │   ├── error_handler.py
+    │   │   ├── invite.py
+    │   │   ├── location.py
+    │   │   ├── login.py
+    │   │   ├── pending_invite.py
+    │   │   ├── projects.py
+    │   │   ├── render.py
+    │   │   ├── save.py
+    │   │   ├── shared_with.py
+    │   │   └── videos.py
+    │   ├── config.py
+    │   ├── model.py
+    │   └── views
+    │       └── __init__.py
+    ├── components
+    │   ├── StyledText.js
+    │   ├── TabBarIcon.js
+    │   └── __tests__
+    │       └── StyledText-test.js
+    ├── constants
+    │   ├── Colors.js
+    │   └── Layout.js
+    ├── index.js
+    ├── navigation
+    │   ├── AppNavigator.js
+    │   └── MainTabNavigator.js
+    ├── package-lock.json
+    ├── package.json
+    ├── render.py
+    ├── screens
+    │   ├── AuthLoadingScreen.js
+    │   ├── ContactRender.js
+    │   ├── ContactScreen.js
+    │   ├── ContactShare.js
+    │   ├── EditRender.js
+    │   ├── EditScreen.js
+    │   ├── GalleryScreen.js
+    │   ├── Geolocation.js
+    │   ├── LibraryRender.js
+    │   ├── LibraryScreen.js
+    │   ├── Photo.js
+    │   ├── ProjectSettings.js
+    │   ├── RecordScreen.js
+    │   ├── SharedProjects.js
+    │   ├── SignInScreen.js
+    │   ├── SignUpScreen.js
+    │   └── Vid.js
+    ├── setup.py
+    ├── sftp-config.json
+    ├── sql
+    │   ├── data.sql
+    │   ├── schema.sql
+    │   └── uploads
+    │       └── test.MOV
+    └── var
+        ├── camcrew.sqlite3
+        └── uploads
 
 
 
