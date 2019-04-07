@@ -73,6 +73,10 @@ export default class GalleryScreen extends React.Component {
           const video = this.state.selected[0];
           const videoName = this.state.text;
 
+          if (videoName === '') {
+            videoName = `${username}'s Track`;
+          }
+
           const split = video.split("/");
           const videoTimes = split[split.length - 1]
 
@@ -115,6 +119,10 @@ export default class GalleryScreen extends React.Component {
     else {
       const video = this.state.selected[0];
       const videoName = this.state.text;
+
+      if (videoName === '') {
+        videoName = `${username}'s Track`;
+      }
 
       const split = video.split("/");
       const videoTimes = split[split.length - 1]

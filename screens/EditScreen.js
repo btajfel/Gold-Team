@@ -22,6 +22,9 @@ export default class EditScreen extends React.Component {
         videoUri: '',
         startTime: 5,
         endTime: 25,
+        min: 0,
+        max: 0,
+        cutTimes: [],
     };
     this.arrayholder = [];
   }
@@ -74,7 +77,7 @@ export default class EditScreen extends React.Component {
     fetch(url)
       .then(res => res.json())
       .then(res => {
-        // console.log(res)
+        console.log(res)
         this.setState({
           data: res.videos,
           error: res.error || null,

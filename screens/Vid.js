@@ -19,7 +19,7 @@ export default class Vid extends React.Component {
 
   render() {
     const { uri } = this.props;
-    console.log("Photo", {uri})
+    // console.log("Photo", {uri})
     return (
       <Video
         style={styles.picture}
