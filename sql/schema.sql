@@ -17,9 +17,6 @@ CREATE TABLE projects(
   created TIMESTAMP NOT NULL,
   FOREIGN KEY(owner) REFERENCES users(username) 
     ON DELETE CASCADE
-    ON UPDATE CASCADE,
-  FOREIGN KEY(projectid) REFERENCES collaborators(projectid)
-    ON DELETE CASCADE
     ON UPDATE CASCADE
 );
 
@@ -46,10 +43,11 @@ CREATE TABLE videos(
   username VARCHAR(20) NOT NULL,
   projectid INTEGER NOT NULL,
   filename VARCHAR(64) NOT NULL,
+  trackname VARCHAR(64),
   starttime INTEGER NOT NULL,
   endtime INTEGER NOT NULL,
   created TIMESTAMP NOT NULL,
-  PRIMARY KEY(username, projectid),
+  PRIMARY KEY(videoid),
   FOREIGN KEY(username) REFERENCES users(username)
     ON DELETE CASCADE
     ON UPDATE CASCADE,
@@ -68,6 +66,9 @@ CREATE TABLE collaborators(
     ON DELETE CASCADE
     ON UPDATE CASCADE,
   FOREIGN KEY(username2) REFERENCES users(username)
+    ON DELETE CASCADE
+    ON UPDATE CASCADE,
+  FOREIGN KEY(projectid) REFERENCES projects(projectid)
     ON DELETE CASCADE
     ON UPDATE CASCADE
 );

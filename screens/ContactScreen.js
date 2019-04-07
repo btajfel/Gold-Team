@@ -209,6 +209,7 @@ export default class SearchScreen extends Component {
     const {navigate} = this.props.navigation;
     const invited = this.state.invited;
     const username = await AsyncStorage.getItem("userToken");
+    let projectid = 0
     
     const url = 'http://crewcam.eecs.umich.edu/api/v1/invite/';
       try {
@@ -224,11 +225,25 @@ export default class SearchScreen extends Component {
           return response.json();
         })
         .then((data) =>{
+          projectid = data.projectid;
           navigate('Record', {data: data.projectid}); 
         })
       } catch (e) {
         console.error(e)
       }
+
+      fetch(`http://crewcam.eecs.umich.edu/api/v1/${username}/projects/`, {
+          method: 'POST',
+          body: JSON.stringify({
+             projectId: projectid,
+          })
+        })
+      .then(res => {
+        if (!res.ok) throw Error(res.statusText);
+      })
+      .catch(error => {
+        console.log(error)
+      });
   };
 
 

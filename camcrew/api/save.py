@@ -14,7 +14,6 @@ from camcrew.api.error_handler import InvalidUsage
 def post_save(projectid):
     # logname = flask.session["logname"]
     context = {}
-    projectid = projectid
     cur = camcrew.model.get_db().cursor()
 
     # Create new filename hash.
@@ -26,17 +25,20 @@ def post_save(projectid):
     # Get timestamp for filename
     local = arrow.utcnow().to('US/Eastern')
 
+    # timestamp filename
+    time_file = str(local.timestamp) + ".mov"
+
     # Compute filename
     new_filename = os.path.join(
         camcrew.app.config["UPLOAD_FOLDER"],
-        str(local.timestamp) + ".mov"
+        time_file
     )
 
     username = flask.request.form['username']
     name = flask.request.form['name']
     startTime = flask.request.form['startTime']
     endTime = flask.request.form['endTime']
-    print(name, startTime, endTime)
+    # print(username, projectid)
 
     # Move temp file to permanent location
     shutil.move(temp_filename, new_filename)
@@ -48,7 +50,7 @@ def post_save(projectid):
 
     # projects(projectid, name, owner, created)
     cur.execute('INSERT INTO videos(videoid, username, \
-        projectid, filename, starttime, endtime, created) VALUES (?,?,?,?,?,?,datetime("now"));',
-        (videoid, username, projectid, name, startTime, endTime))
+        projectid, filename, trackname, starttime, endtime, created) VALUES (?,?,?,?,?,?,?,datetime("now"));',
+        (videoid, username, projectid, time_file, name, startTime, endTime))
 
     return flask.jsonify(**context), 201

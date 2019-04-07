@@ -58,7 +58,7 @@ export default class EditRender extends React.Component {
         return (
           <ListItem onPress={() => this.toggleSelection(rowData)}>
             <Body style={{ borderBottomWidth: 0 }}>
-              <Text>{rowData.filename}</Text>
+              <Text>{rowData.trackname}</Text>
             </Body>
             <Right style={{ borderBottomWidth: 0 }}>
               <View style={styles.rightBtn}>

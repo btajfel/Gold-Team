@@ -86,15 +86,13 @@ export default class CameraScreen extends React.Component {
     whiteBalance: 'auto',
     ratio: '16:9',
     ratios: [],
-    barcodeScanning: false,
-    faceDetecting: false,
     faces: [],
     newPhotos: false,
     permissionsGranted: false,
     pictureSize: undefined,
     pictureSizes: [],
     pictureSizeId: 0,
-    projectID: 0,
+    projectId: 0,
     allCollabs: [],
     friends: undefined,
     friendsSizes: [],
@@ -106,7 +104,6 @@ export default class CameraScreen extends React.Component {
     showQualityOptions: false,
     showFriendsOptions: false,
     wasInvited: false,
-    statePid: 0,
     inviter: "",
   };
 
@@ -138,33 +135,19 @@ export default class CameraScreen extends React.Component {
     ScreenOrientation.allowAsync(ScreenOrientation.Orientation.PORTRAIT);
     this.updateLocation();
     this.fetchPending();
+    const username = await AsyncStorage.getItem("userToken");
     let array = [];
     const pid = this.props.navigation.getParam('data', 0);
-    const invitedPid = this.state.statePid;
-    if (pid !== 0){
-     const url = `http://crewcam.eecs.umich.edu/api/v1/${pid}/invite/`;
-     fetch(url)
+    const invitedPid = this.state.projectId;
+    if (pid !== 0 || invitedPid !== 0){
+      const projectId = pid === 0 ? invitedPid : pid;
+      const url = `http://crewcam.eecs.umich.edu/api/v1/${projectId}/invite/`;
+      fetch(url)
       .then(res => res.json())
       .then(res => {
         this.setState({
-          allCollabs: res.collaborators,
-        });
-      })
-      .then(() => {
-        this.collectFriends();
-
-      })
-      .catch(error => {
-       console.log(error);
-      });
-    }
-    if (invitedPid !== 0){
-     const url = `http://crewcam.eecs.umich.edu/api/v1/${invitedPid}/invite/`;
-     fetch(url)
-      .then(res => res.json())
-      .then(res => {
-        this.setState({
-          allCollabs: res.collaborators,
+          allCollabs: res.collaborators.filter(item => item != username),
+          projectId: projectId,
         });
       })
       .then(() => {
@@ -218,7 +201,7 @@ export default class CameraScreen extends React.Component {
         if (res.status === "true"){
         this.setState({
           wasInvited: res.status,
-          statePid: res.pid,
+          projectId: res.pid,
           inviter: res.inviter,
         });
         wasInvited = true;
@@ -318,10 +301,6 @@ export default class CameraScreen extends React.Component {
 
   setFocusDepth = depth => this.setState({ depth });
 
-  toggleBarcodeScanning = () => this.setState({ barcodeScanning: !this.state.barcodeScanning });
-
-  toggleFaceDetection = () => this.setState({ faceDetecting: !this.state.faceDetecting });
-
   takeVideo = async () => {
     if (this.camera) {
       if (this.state.recording) {
@@ -350,13 +329,6 @@ export default class CameraScreen extends React.Component {
   };
 
   handleMountError = ({ message }) => console.error(message);
-
-  onBarCodeScanned = code => {
-    this.setState(
-      { barcodeScanning: !this.state.barcodeScanning },
-      Alert.alert(`Barcode found: ${code.data}`)
-    );
-  };
 
   onFacesDetected = ({ faces }) => this.setState({ faces });
   onFaceDetectionError = state => console.warn('Faces detection error:', state);
@@ -421,72 +393,8 @@ export default class CameraScreen extends React.Component {
   };
 
   renderGallery() {
-    return <GalleryScreen onPress={this.toggleView.bind(this)} />;
+    return <GalleryScreen onPress={this.toggleView.bind(this)} projectId={this.state.projectId} />;
   }
-
-  renderFace({ bounds, faceID, rollAngle, yawAngle }) {
-    return (
-      <View
-        key={faceID}
-        transform={[
-          { perspective: 600 },
-          { rotateZ: `${rollAngle.toFixed(0)}deg` },
-          { rotateY: `${yawAngle.toFixed(0)}deg` },
-        ]}
-        style={[
-          styles.face,
-          {
-            ...bounds.size,
-            left: bounds.origin.x,
-            top: bounds.origin.y,
-          },
-        ]}>
-        <Text style={styles.faceText}>ID: {faceID}</Text>
-        <Text style={styles.faceText}>rollAngle: {rollAngle.toFixed(0)}</Text>
-        <Text style={styles.faceText}>yawAngle: {yawAngle.toFixed(0)}</Text>
-      </View>
-    );
-  }
-
-  renderLandmarksOfFace(face) {
-    const renderLandmark = position =>
-      position && (
-        <View
-          style={[
-            styles.landmark,
-            {
-              left: position.x - landmarkSize / 2,
-              top: position.y - landmarkSize / 2,
-            },
-          ]}
-        />
-      );
-    return (
-      <View key={`landmarks-${face.faceID}`}>
-        {renderLandmark(face.leftEyePosition)}
-        {renderLandmark(face.rightEyePosition)}
-        {renderLandmark(face.leftEarPosition)}
-        {renderLandmark(face.rightEarPosition)}
-        {renderLandmark(face.leftCheekPosition)}
-        {renderLandmark(face.rightCheekPosition)}
-        {renderLandmark(face.leftMouthPosition)}
-        {renderLandmark(face.mouthPosition)}
-        {renderLandmark(face.rightMouthPosition)}
-        {renderLandmark(face.noseBasePosition)}
-        {renderLandmark(face.bottomMouthPosition)}
-      </View>
-    );
-  }
-
-  renderFaces = () => 
-    <View style={styles.facesContainer} pointerEvents="none">
-      {this.state.faces.map(this.renderFace)}
-    </View>
-
-  renderLandmarks = () => 
-    <View style={styles.facesContainer} pointerEvents="none">
-      {this.state.faces.map(this.renderLandmarksOfFace)}
-    </View>
 
   renderNoPermissions = () => 
     <View style={styles.noPermissions}>
@@ -590,21 +498,10 @@ export default class CameraScreen extends React.Component {
           ratio={this.state.ratio}
           pictureSize={this.state.pictureSize}
           onMountError={this.handleMountError}
-          onFacesDetected={this.state.faceDetecting ? this.onFacesDetected : undefined}
-          onFaceDetectionError={this.onFaceDetectionError}
-          barCodeScannerSettings={{
-            barCodeTypes: [
-              BarCodeScanner.Constants.BarCodeType.qr,
-              BarCodeScanner.Constants.BarCodeType.pdf417,
-            ],
-          }}
-          onBarCodeScanned={this.state.barcodeScanning ? this.onBarCodeScanned : undefined}
           >
           {this.renderTopBar()}
           {this.renderBottomBar()}
         </Camera>
-        {this.state.faceDetecting && this.renderFaces()}
-        {this.state.faceDetecting && this.renderLandmarks()}
         {this.state.showQualityOptions && this.renderQualityOptions()}
         {this.state.showFriendsOptions && this.renderFriendsOptions()}
       </View>

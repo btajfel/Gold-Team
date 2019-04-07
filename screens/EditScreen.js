@@ -64,8 +64,8 @@ export default class EditScreen extends React.Component {
   };
 
   makeRemoteRequest = async () => {
-    const info = await FileSystem.getInfoAsync("file:///var/mobile/Containers/Data/Application/BD57BBCB-EBF8-46E8-B6B5-7883370F69CE/Documents/ExponentExperienceData/%2540anonymous%252FGoldTeam-0a0f30ac-074f-43c9-9b8d-9d751fdd0afa/videos/test.mov")
-    console.log("Info", info)
+    // const info = await FileSystem.getInfoAsync("file:///var/mobile/Containers/Data/Application/BD57BBCB-EBF8-46E8-B6B5-7883370F69CE/Documents/ExponentExperienceData/%2540anonymous%252FGoldTeam-0a0f30ac-074f-43c9-9b8d-9d751fdd0afa/videos/test.mov")
+    // console.log("Info", info)
     const projectid = this.props.navigation.getParam('projectid', 0);
     console.log("projectid", projectid)
     const url = `http://crewcam.eecs.umich.edu/api/v1/${projectid}/videos/`;

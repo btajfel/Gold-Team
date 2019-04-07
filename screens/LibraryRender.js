@@ -92,8 +92,8 @@ export default class LibraryRender extends Component {
         if (rowData.created){
           const dateString = rowData.created;
           const year = dateString.substring(0,4);
-          const month = dateString.substring(5,7);
-          const day = dateString.substring(8,10);
+          const day = dateString.substring(5,7);
+          const month = dateString.substring(8,10);
           const date = day + "/" + month + "/" + year;
         return (
             <ListItem onPress={() => this.handlePressLibrary(rowData)}>

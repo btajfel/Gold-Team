@@ -1,6 +1,4 @@
 """REST API for location."""
-import os
-import shutil
 import json
 import flask
 import camcrew
