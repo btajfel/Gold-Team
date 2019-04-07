@@ -24,7 +24,8 @@ export default class LibraryRender extends Component {
         [
           {text: "Cancel", style: 'cancel'},
           {text: "View", onPress: () => console.log('View Video')},
-          {text: 'Edit', onPress: () => navigate('Edit', {projectid: projectData.projectid})}
+          {text: 'Edit', onPress: () => navigate('Edit', {projectid: projectData.projectid})},
+          {text: 'Settings', onPress: () => navigate('Settings', {projectid: projectData.projectid})},
         ]
       )
     };

@@ -211,28 +211,7 @@ export default class SearchScreen extends Component {
     const username = await AsyncStorage.getItem("userToken");
     let projectid = 0
     
-    const url = 'http://crewcam.eecs.umich.edu/api/v1/invite/';
-      try {
-        await fetch(url, {
-          credentials: 'same-origin',
-          method: 'POST',
-          body: JSON.stringify( {
-             'inviteList': invited,
-             'username': username,
-          }) 
-        })
-        .then((response) =>{
-          return response.json();
-        })
-        .then((data) =>{
-          projectid = data.projectid;
-          navigate('Record', {data: data.projectid}); 
-        })
-      } catch (e) {
-        console.error(e)
-      }
-
-      fetch(`http://crewcam.eecs.umich.edu/api/v1/${username}/projects/`, {
+    fetch(`http://crewcam.eecs.umich.edu/api/v1/${username}/projects/`, {
           method: 'POST',
           body: JSON.stringify({
              projectId: projectid,
@@ -240,6 +219,30 @@ export default class SearchScreen extends Component {
         })
       .then(res => {
         if (!res.ok) throw Error(res.statusText);
+        return res.json();
+      })
+      .then(data => {
+        console.log(data.projectid)
+        const projectid = data.projectid
+        const url = 'http://crewcam.eecs.umich.edu/api/v1/invite/';
+        fetch(url, {
+          method: 'POST',
+          body: JSON.stringify( {
+            projectid: projectid,
+            inviteList: invited,
+            username: username,
+          }) 
+        })
+        .then((res) =>{
+          if (!res.ok) throw Error(res.statusText);
+          return res.json();
+        })
+        .then((data) =>{
+          navigate('Record', {data: data.projectid}); 
+        })
+        .catch((e) => {
+          console.error(e)
+        })
       })
       .catch(error => {
         console.log(error)

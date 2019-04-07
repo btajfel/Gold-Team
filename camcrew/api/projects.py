@@ -41,3 +41,32 @@ def create_project(username):
     # print(context["projectid"])
 
     return flask.jsonify(**context), 201
+
+
+@camcrew.app.route('/api/v1/<string:username>/projects/<int:projectid>/',
+                    methods=["POST"])
+def update_project(username, projectid):
+    context = {}
+    cur = camcrew.model.get_db().cursor()
+
+    # Get new name
+    data = json.loads(flask.request.data)
+    rename = data["rename"]
+
+    cur.execute('UPDATE projects SET name=? WHERE projectid=? AND owner=?;',
+                (rename, projectid, username))
+
+    return flask.jsonify(**context), 201
+
+
+@camcrew.app.route('/api/v1/<string:username>/projects/<int:projectid>/',
+                    methods=["DELETE"])
+def delete_project(username, projectid):
+    context = {}
+    cur = camcrew.model.get_db().cursor()
+
+    cur.execute('DELETE FROM projects WHERE projectid=? AND owner=?;',
+                (projectid, username))
+
+    return flask.jsonify(**context), 204
+

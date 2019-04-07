@@ -2,6 +2,8 @@
 
 from camcrew.api.projects import get_projects
 from camcrew.api.projects import create_project
+from camcrew.api.projects import delete_project
+from camcrew.api.projects import update_project
 from camcrew.api.contacts import get_users
 from camcrew.api.save import post_save
 from camcrew.api.videos import get_videos

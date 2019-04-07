@@ -78,7 +78,7 @@ CREATE TABLE pending_invites(
   username1 VARCHAR(20) NOT NULL,
   username2 VARCHAR(20) NOT NULL,
   created TIMESTAMP NOT NULL,
-  PRIMARY KEY(projectid, username1, username2)
+  PRIMARY KEY(username1, username2)
   FOREIGN KEY(username1) REFERENCES users(username)
     ON DELETE CASCADE
     ON UPDATE CASCADE,

@@ -26,22 +26,11 @@ def post_invite():
     context = {}
     cur = camcrew.model.get_db().cursor()
 
-    projectid = 1
+    projectid = 0
     if flask.request.method == "POST":
-        collabResult = cur.execute('SELECT MAX(projectid) FROM collaborators ').fetchone()
-        pendingResult =  cur.execute('SELECT MAX(projectid) FROM pending_invites ').fetchone()
-        if (collabResult["MAX(projectid)"] and pendingResult["MAX(projectid)"]):
-            if (pendingResult["MAX(projectid)"] > collabResult["MAX(projectid)"]):
-                projectid =  pendingResult["MAX(projectid)"] + 1
-            else:
-                projectid = collabResult["MAX(projectid)"] + 1
-        elif (pendingResult["MAX(projectid)"]):
-            projectid =  pendingResult["MAX(projectid)"] + 1
-        elif (collabResult["MAX(projectid)"]):
-            projectid = collabResult["MAX(projectid)"] + 1
-       
-
         data = json.loads(flask.request.data)
+        print(data)
+        projectid = data["projectid"]
         invited = data["inviteList"]
         username = data["username"]
         for user in invited:

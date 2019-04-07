@@ -1,6 +1,8 @@
 import React, {Component} from "react";
 import { Alert, View, Text, FlatList, ActivityIndicator, AsyncStorage } from 'react-native';
 import { ListItem, SearchBar } from 'react-native-elements';
+import {NavigationEvents} from 'react-navigation';
+import { ScreenOrientation } from 'expo';
 import LibraryRender from './LibraryRender'
 
 export default class LibraryScreen extends Component {
@@ -33,6 +35,7 @@ export default class LibraryScreen extends Component {
     };
 
     componentDidMount() {
+      ScreenOrientation.allowAsync(ScreenOrientation.Orientation.PORTRAIT);
       this.makeRemoteRequest();
     }
   
@@ -91,6 +94,39 @@ export default class LibraryScreen extends Component {
         );
       };
 
+      paramsFunction = async () => {
+        ScreenOrientation.allowAsync(ScreenOrientation.Orientation.PORTRAIT);
+        const projectid = this.props.navigation.getParam('projectid', 0);
+        const status = this.props.navigation.getParam('projectid', '');
+        if (projectid !== 0) {
+          let remaining = this.state.data;
+          console.log("resetting projects")
+          if (status !== 'delete') {
+            remaining = remaining.filter(item => item.projectid != projectid)
+            this.setState({
+              data: remaining,
+            });
+          }
+          else if (status !== 'rename') {
+            const rename = this.props.navigation.getParam('rename', '');
+            console.log(remaining)
+            let remain = remaining.map(item => {
+              if (item.projectid === projectid) {
+                remaining = remaining.filter(item => item.projectid != projectid);
+                console.log(item)
+                item.name = rename;
+                console.log(item)
+                remaining.push(item);
+                this.setState({
+                  data: remaining,
+                });
+              }
+            })
+          }
+          
+        }
+      }; 
+
     render() {
       if (this.state.loading) {
         return (
@@ -100,29 +136,34 @@ export default class LibraryScreen extends Component {
         );
       }
         return (
-          <FlatList
-            ref={(ref) => this.listView = ref}
-            data = {this.state.data}
-            renderItem={({ item }) => (
-              <LibraryRender item={item} navigation={this.props.navigation}/>
-            )}
-            onFetch={this.onFetch}
-            keyExtractor={item => item.name}
-            // keyExtractor={(item, index) => `${this.state.layout} - ${item}`}  //this is required when you are using FlatList
-            refreshableMode="advanced" //basic or advanced
-            // item={this.renderItem}  //this takes two params (item, index)
-            numColumn={1} //to use grid layout, simply set gridColumn > 
-            
-             //----Extra Config----
-             header={this.renderHeaderView}
-             ItemSeparatorComponent={this.renderSeparator}
-            //  paginationFetchingView={this.renderPaginationFetchingView}           
-            //  paginationFetchingView={this.renderPaginationFetchingView}
-            //  paginationAllLoadedView={this.renderPaginationAllLoadedView}
-            //  paginationWaitingView={this.renderPaginationWaitingView}
-            //  emptyView={this.renderEmptyView}
-            //  separator={this.renderSeparatorView}
-           />
+          <View>
+            <NavigationEvents
+              onDidFocus={() => this.paramsFunction()}
+            /> 
+            <FlatList
+              ref={(ref) => this.listView = ref}
+              data = {this.state.data}
+              renderItem={({ item }) => (
+                <LibraryRender item={item} navigation={this.props.navigation}/>
+              )}
+              onFetch={this.onFetch}
+              keyExtractor={item => item.name}
+              // keyExtractor={(item, index) => `${this.state.layout} - ${item}`}  //this is required when you are using FlatList
+              refreshableMode="advanced" //basic or advanced
+              // item={this.renderItem}  //this takes two params (item, index)
+              numColumn={1} //to use grid layout, simply set gridColumn > 
+              
+               //----Extra Config----
+               header={this.renderHeaderView}
+               ItemSeparatorComponent={this.renderSeparator}
+              //  paginationFetchingView={this.renderPaginationFetchingView}           
+              //  paginationFetchingView={this.renderPaginationFetchingView}
+              //  paginationAllLoadedView={this.renderPaginationAllLoadedView}
+              //  paginationWaitingView={this.renderPaginationWaitingView}
+              //  emptyView={this.renderEmptyView}
+              //  separator={this.renderSeparatorView}
+             />
+          </View>
         );
     }
 }
