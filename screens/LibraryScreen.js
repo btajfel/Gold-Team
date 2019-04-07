@@ -96,35 +96,7 @@ export default class LibraryScreen extends Component {
 
       paramsFunction = async () => {
         ScreenOrientation.allowAsync(ScreenOrientation.Orientation.PORTRAIT);
-        const projectid = this.props.navigation.getParam('projectid', 0);
-        const status = this.props.navigation.getParam('projectid', '');
-        if (projectid !== 0) {
-          let remaining = this.state.data;
-          console.log("resetting projects")
-          if (status !== 'delete') {
-            remaining = remaining.filter(item => item.projectid != projectid)
-            this.setState({
-              data: remaining,
-            });
-          }
-          else if (status !== 'rename') {
-            const rename = this.props.navigation.getParam('rename', '');
-            console.log(remaining)
-            let remain = remaining.map(item => {
-              if (item.projectid === projectid) {
-                remaining = remaining.filter(item => item.projectid != projectid);
-                console.log(item)
-                item.name = rename;
-                console.log(item)
-                remaining.push(item);
-                this.setState({
-                  data: remaining,
-                });
-              }
-            })
-          }
-          
-        }
+        this.makeRemoteRequest();
       }; 
 
     render() {

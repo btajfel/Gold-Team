@@ -24,9 +24,9 @@ export default class ProjectSettings extends Component {
      const rename = this.state.rename;
      const {navigate} = this.props.navigation;
      const username = await AsyncStorage.getItem("userToken");
-     const projectid = this.props.navigation.getParam('projectid', 0);
+     const pid = this.props.navigation.getParam('projectid', 0);
 
-    const url = `http://crewcam.eecs.umich.edu/api/v1/${username}/projects/${projectid}/`;
+    const url = `http://crewcam.eecs.umich.edu/api/v1/${username}/projects/${pid}/`;
         fetch(url, {
           method: 'POST',
           body: JSON.stringify( {
@@ -34,8 +34,8 @@ export default class ProjectSettings extends Component {
           })
         })
         .then((res) => {
-		    	if (!res.ok) throw Error(res.statusText);
-		     	navigate('Library', {projectid: projectid, rename: rename, status: 'rename'});
+		    	if (!res.ok) throw Error(res.statusText); 
+          navigate('Library');       
 		    })
 	      .catch((e) => {
 	        console.error(e)
@@ -46,15 +46,15 @@ export default class ProjectSettings extends Component {
   onDeletePress = async () => {
      const {navigate} = this.props.navigation;
      const username = await AsyncStorage.getItem("userToken");
-     const projectid = this.props.navigation.getParam('projectid', 0);
+     const pid = this.props.navigation.getParam('projectid', 0);
 
-    const url = `http://crewcam.eecs.umich.edu/api/v1/${username}/projects/${projectid}/`;
+    const url = `http://crewcam.eecs.umich.edu/api/v1/${username}/projects/${pid}/delete/`;
         fetch(url, {
-          method: 'DELETE',
+          method: 'POST',
         })
-		    .then((res) => {
+		    .then((res) => { 
 		    	if (!res.ok) throw Error(res.statusText);
-		     	navigate('Library', {projectid: projectid, status: 'delete'});
+		     	navigate('Library');
 		    })
 	      .catch((e) => {
 	        console.error(e)
