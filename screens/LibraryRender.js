@@ -1,8 +1,11 @@
 import React, {Component} from "react";
 import { StyleSheet, View, Alert, TouchableOpacity, Image, TouchableHighlight } from 'react-native';
-import { Permissions } from "expo";
+import { Permissions, FileSystem } from "expo";
 import { Button, ListItem, Left, Right, Body, Thumbnail, Text, Icon } from 'native-base';
 import {createStackNavigator, createAppContainer} from 'react-navigation';
+import Vid from './Vid';
+
+const VIDEOS_DIR = FileSystem.documentDirectory + 'videos';
 
 export default class LibraryRender extends Component {
 
@@ -13,6 +16,24 @@ export default class LibraryRender extends Component {
         };
       }
 
+
+    handlePressView = (projectid) => {
+      const {navigate} = this.props.navigation;
+
+      fetch(`http://crewcam.eecs.umich.edu/api/v1/${projectid}/render/name/`)
+      .then(res => {
+        if (!res.ok) throw Error(res.statusText);
+        return res.json();
+      })
+      .then(data => {
+        const filename = data.filename;
+
+        navigate('View', {uri: filename});
+      })
+      .catch(e => {
+        console.log(e);
+      })
+    };
 
     handlePressLibrary = (projectData) => {
       const {navigate} = this.props.navigation;

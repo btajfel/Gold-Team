@@ -13,7 +13,7 @@ def get_videos(projectid):
     context = {}
     cur = camcrew.model.get_db().cursor()
 
-    cur.execute("""SELECT videoid, filename, trackname, starttime, endtime FROM videos WHERE projectid=?""", 
+    cur.execute("""SELECT videoid, filename, trackname, starttime, endtime, duration FROM videos WHERE projectid=?""", 
                 (projectid,))
     context["videos"] = cur.fetchall()
 

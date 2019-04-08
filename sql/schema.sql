@@ -47,6 +47,7 @@ CREATE TABLE videos(
   trackname VARCHAR(64),
   starttime INTEGER NOT NULL,
   endtime INTEGER NOT NULL,
+  duration INTEGER NOT NULL,
   created TIMESTAMP NOT NULL,
   PRIMARY KEY(videoid),
   FOREIGN KEY(username) REFERENCES users(username)

@@ -53,7 +53,6 @@ export default class EditScreen extends React.Component {
       console.log('Directory exists');
     });
     this.makeRemoteRequest();
-    this.setVideoStartEnd();
   }
 
   componentWillUnmount() {
@@ -81,6 +80,20 @@ export default class EditScreen extends React.Component {
       })
       .then(data => {
         console.log("Edits sent");
+        const filename = data.filename
+
+        FileSystem.downloadAsync(
+          `http://crewcam.eecs.umich.edu/api/v1/${projectid}/render/`,
+          `${VIDEOS_DIR}/${filename}`
+        )
+        .then(({ uri }) => {
+          this.setState({ 
+              videoFilename: uri
+          });
+        })
+        .catch(error => {
+          console.error(error);
+        });
         navigate('Library');
       })
       .catch(error => {
@@ -156,23 +169,25 @@ export default class EditScreen extends React.Component {
       .then(data => {
           let cutTimes = [];
           this.state.data.map(video => {
-            let start = video.starttime;
-            let end = video.endtime;
+            // let start = video.starttime;
+            // let end = video.endtime;
 
-            const startDate = new Date(start);
-            const endDate = new Date(end);
+            // let endTime = end - start;
+            // console.log(endTime);
+            // const endDate = new Date(endTime);
 
-            const startSeconds = startDate.getSeconds();
-            const endSeconds = endDate.getSeconds();
+            // const endSeconds = endDate.getSeconds();
+            // console.log(endSeconds);
 
-            const endTime = endSeconds - startSeconds;
+            let duration = video.duration
+
             cutTimes.push({
               videoid: video.videoid, 
               filename: video.filename, 
               startTime: 0, 
-              endTime: parseInt(endTime),
+              endTime: parseInt(duration),
               min: 0,
-              max: parseInt(endTime),
+              max: parseInt(duration),
             })
           });
 
@@ -183,11 +198,6 @@ export default class EditScreen extends React.Component {
       .catch(error => {
         this.setState({ error, loading: false });
       });
-  };
-
-  setVideoStartEnd = async () => {
-
-
   };
 
   multiSliderValuesChange = (values) => {

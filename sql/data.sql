@@ -25,7 +25,7 @@ VALUES (1, 'Vacation', 'azarrabi', datetime('now', 'localtime')),
 	   (8, 'Park', 'azarrabi', datetime('now', 'localtime')),
 	   (9, 'First Day of College', 'btajfel', datetime('now', 'localtime'));
 
-INSERT INTO videos(videoid, username, projectid, filename, trackname, starttime, endtime, created)
-VALUES (1, 'azarrabi', 1, 'test.mov', 'test1', 1554572537, 1554572540, datetime('now', 'localtime')),
-	   (2, 'armruval', 2, 'test.mov', 'test2',1554572537, 1554572540, datetime('now', 'localtime')),
-	   (3, 'btajfel', 3, 'test.mov', 'test3', 1554572537, 1554572540, datetime('now', 'localtime'));
+INSERT INTO videos(videoid, username, projectid, filename, trackname, starttime, endtime, duration, created)
+VALUES (1, 'azarrabi', 1, 'test.mov', 'test1', 1554572537, 1554572540, 4, datetime('now', 'localtime')),
+	   (2, 'armruval', 2, 'test.mov', 'test2',1554572537, 1554572540, 4, datetime('now', 'localtime')),
+	   (3, 'btajfel', 3, 'test.mov', 'test3', 1554572537, 1554572540, 4, datetime('now', 'localtime'));

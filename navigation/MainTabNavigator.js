@@ -11,6 +11,7 @@ import SharedProjects from '../screens/SharedProjects';
 import EditScreen from '../screens/EditScreen';
 import ContactShare from '../screens/ContactShare';
 import ProjectSettings from '../screens/ProjectSettings';
+import ViewScreen from '../screens/ViewScreen';
 
 
 const ContactsStack = createStackNavigator({
@@ -89,6 +90,7 @@ const LibraryStack = createStackNavigator({
   Edit: EditScreen,
   Share: ContactShare,
   Settings: ProjectSettings,
+  View: ViewScreen,
 });
 
 

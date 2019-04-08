@@ -5,6 +5,8 @@ import tempfile
 import os
 import shutil
 import arrow
+from math import floor
+from moviepy.editor import VideoFileClip
 import camcrew
 from camcrew.api.error_handler import InvalidUsage
 
@@ -43,6 +45,9 @@ def post_save(projectid):
     # Move temp file to permanent location
     shutil.move(temp_filename, new_filename)
 
+    duration = floor(VideoFileClip(new_filename).duration)
+    print(duration)
+
     context["file"] = file.filename
 
     # Get next videoid
@@ -50,7 +55,7 @@ def post_save(projectid):
 
     # projects(projectid, name, owner, created)
     cur.execute('INSERT INTO videos(videoid, username, \
-        projectid, filename, trackname, starttime, endtime, created) VALUES (?,?,?,?,?,?,?,datetime("now"));',
-        (videoid, username, projectid, time_file, name, startTime, endTime))
+        projectid, filename, trackname, starttime, endtime, duration, created) VALUES (?,?,?,?,?,?,?,?,datetime("now"));',
+        (videoid, username, projectid, time_file, name, startTime, endTime, duration))
 
     return flask.jsonify(**context), 201
