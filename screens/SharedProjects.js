@@ -1,5 +1,5 @@
 import React, {Component} from "react";
-import { Alert, View, Text, FlatList, ActivityIndicator, AsyncStorage } from 'react-native';
+import { Alert, View, Text, FlatList, ActivityIndicator, AsyncStorage, NavigationEvents } from 'react-native';
 import { ListItem, SearchBar } from 'react-native-elements';
 import LibraryRender from './LibraryRender'
 
@@ -115,6 +115,10 @@ export default class LibraryScreen extends Component {
         );
       }
         return (
+          <View>
+          <NavigationEvents
+              onDidFocus={() => this.makeRemoteRequest()}
+            /> 
           <FlatList
             ref={(ref) => this.listView = ref}
             data = {this.state.data}
@@ -138,6 +142,7 @@ export default class LibraryScreen extends Component {
             //  emptyView={this.renderEmptyView}
             //  separator={this.renderSeparatorView}
            />
+           </View>
         );
     }
 }
