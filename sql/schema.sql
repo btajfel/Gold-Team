@@ -14,6 +14,7 @@ CREATE TABLE projects(
   projectid INTEGER PRIMARY KEY,
   name VARCHAR(64) NOT NULL,
   owner VARCHAR(20) NOT NULL,
+  video VARCHAR(64),
   created TIMESTAMP NOT NULL,
   FOREIGN KEY(owner) REFERENCES users(username) 
     ON DELETE CASCADE
