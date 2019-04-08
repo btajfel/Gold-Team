@@ -147,7 +147,7 @@ export default class LibraryScreen extends Component {
                 <LibraryRender item={item} navigation={this.props.navigation}/>
               )}
               onFetch={this.onFetch}
-              keyExtractor={item => item.name}
+              keyExtractor={item => item.projectid.toString()}
               // keyExtractor={(item, index) => `${this.state.layout} - ${item}`}  //this is required when you are using FlatList
               refreshableMode="advanced" //basic or advanced
               // item={this.renderItem}  //this takes two params (item, index)

@@ -1,7 +1,7 @@
 import React, {Component} from "react";
 import { ExpoConfigView } from '@expo/samples';
 import { ScreenOrientation, FileSystem } from 'expo';
-import { StyleSheet, AppRegistry, View, FlatList, Text } from 'react-native';
+import { StyleSheet, AppRegistry, View, FlatList, Text, TouchableOpacity, AsyncStorage } from 'react-native';
 import { Row } from 'native-base';
 import {NavigationEvents} from 'react-navigation';
 import MultiSlider from '@ptomasroos/react-native-multi-slider';
@@ -11,6 +11,22 @@ import Vid from './Vid';
 const VIDEOS_DIR = FileSystem.documentDirectory + 'videos';
 
 export default class EditScreen extends React.Component {
+
+  static navigationOptions = ({ navigation }) => {
+      const {navigate} = navigation;
+      const params = navigation.state.params || {};
+      return {
+        headerRight: (
+        <TouchableOpacity
+            style={styles.toggleButton}
+            onPress={params.sendEdits}
+           >
+           <Text style={{color: 'blue', fontSize: 18}}>Done</Text>
+        </TouchableOpacity>
+        ),
+      };
+    };
+
   constructor(props) {
     super(props);
 
@@ -19,9 +35,10 @@ export default class EditScreen extends React.Component {
         error: null,
         loading: false,
         index: 0,
+        videoId: 0,
         videoUri: '',
-        startTime: 5,
-        endTime: 25,
+        startTime: 0,
+        endTime: 0,
         min: 0,
         max: 0,
         cutTimes: [],
@@ -31,20 +48,71 @@ export default class EditScreen extends React.Component {
 
   async componentDidMount() {
     ScreenOrientation.allowAsync(ScreenOrientation.Orientation.LANDSCAPE);
+    this.props.navigation.setParams({ sendEdits: this._sendEdits.bind(this)});
     FileSystem.makeDirectoryAsync(FileSystem.documentDirectory + 'videos').catch(e => {
       console.log('Directory exists');
     });
     this.makeRemoteRequest();
+    this.setVideoStartEnd();
   }
 
   componentWillUnmount() {
     ScreenOrientation.allowAsync(ScreenOrientation.Orientation.PORTRAIT);
   }
 
-  toggleSelection = (uri) => {
-    console.log("toggle", uri)
+  _sendEdits = async () => {
+    const {navigate} = this.props.navigation;
+    const cutTimes = this.state.cutTimes;
+    const username = await AsyncStorage.getItem("userToken");
+    const projectid = this.props.navigation.getParam('projectid', 0);
+    const projectName = this.props.navigation.getParam('name', 0);
+    console.log("sendEdits: ", cutTimes);
+
+    fetch(`http://crewcam.eecs.umich.edu/api/v1/${projectid}/render/`, {
+          method: 'POST',
+          body: JSON.stringify({
+             projectName: projectName,
+             cutTimes: cutTimes,
+          })
+        })
+      .then(res => {
+        if (!res.ok) throw Error(res.statusText);
+        return res.json();
+      })
+      .then(data => {
+        console.log("Edits sent");
+        navigate('Library');
+      })
+      .catch(error => {
+        console.log(error);
+      });
+
+  };
+
+  toggleSelection = (uri, id) => {
+    // console.log("toggle", uri)
+    let startTime = 0;
+    let endTime = 0;
+    let min = 0;
+    let max = 0;
+
+    console.log(this.state.cutTimes)
+    this.state.cutTimes.map(video => {
+      if (video.videoid === id) {
+        startTime = video.startTime;
+        endTime = video.endTime;
+        min = video.min;
+        max = video.max;
+      }
+    });
+
     this.setState({
+      videoId: id,
       videoUri: uri,
+      startTime: startTime,
+      endTime: endTime,
+      min: min,
+      max: max,
     });
   };
 
@@ -83,18 +151,66 @@ export default class EditScreen extends React.Component {
           error: res.error || null,
           loading: false,
         });
+        return res.videos;
+      })
+      .then(data => {
+          let cutTimes = [];
+          this.state.data.map(video => {
+            let start = video.starttime;
+            let end = video.endtime;
+
+            const startDate = new Date(start);
+            const endDate = new Date(end);
+
+            const startSeconds = startDate.getSeconds();
+            const endSeconds = endDate.getSeconds();
+
+            const endTime = endSeconds - startSeconds;
+            cutTimes.push({
+              videoid: video.videoid, 
+              filename: video.filename, 
+              startTime: 0, 
+              endTime: parseInt(endTime),
+              min: 0,
+              max: parseInt(endTime),
+            })
+          });
+
+          this.setState({
+            cutTimes: cutTimes,
+          });
       })
       .catch(error => {
         this.setState({ error, loading: false });
       });
   };
 
+  setVideoStartEnd = async () => {
+
+
+  };
+
   multiSliderValuesChange = (values) => {
     console.log(values)
+
+    let startTime = values[0];
+    let endTime = values[1];
+
+    const videoid = this.state.videoId;
+    let newCuts = this.state.cutTimes;
+    let i;
+    for (i = 0; i < newCuts.length; i++) {
+      if (newCuts[i].videoid === videoid) {
+        newCuts[i].startTime = startTime;
+        newCuts[i].endTime = endTime;
+      }
+    }
+
     this.setState({
-      startTime: values[0],
-      endTime: values[1],
-    })
+      startTime: startTime,
+      endTime: endTime,
+      cutTimes: newCuts,
+    });
   };
 
 
@@ -144,13 +260,13 @@ export default class EditScreen extends React.Component {
             <Text style={{ paddingTop: 10 }}>Start: {this.state.startTime}      End: {this.state.endTime}</Text>
             <View style={{ paddingTop: 20 }}>
               <MultiSlider
-                values={[this.state.startTime, this.state.endTime]}
+                values={[parseInt(this.state.startTime), parseInt(this.state.endTime)]}
                 onValuesChangeFinish={this.multiSliderValuesChange}
                 selectedStyle={{backgroundColor: '#454d55'}}
                 sliderLength={200}
                 // customMarker={CustomMarker}
-                min={0}
-                max={30}
+                min={this.state.min}
+                max={this.state.max}
                 step={1}
                 snapped
                 enabledOne

@@ -17,3 +17,4 @@ from camcrew.api.pending_invite import get_pending
 from camcrew.api.pending_invite import post_pending
 from camcrew.api.shared_with import shared_with
 from camcrew.api.shared_with import share
+from camcrew.api.render import render

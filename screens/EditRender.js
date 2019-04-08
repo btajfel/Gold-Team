@@ -16,8 +16,8 @@ export default class EditRender extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-          inviteIcon: 'off',
-          selected: false,
+          // inviteIcon: 'off',
+          // selected: false,
           videoFilename: '',
         };
     }
@@ -44,12 +44,12 @@ export default class EditRender extends React.Component {
     }
 
     toggleSelection = (item) => {
-        this.setState({ 
-            selected: !this.state.selected,
-            inviteIcon: this.state.inviteIcon === 'off' ? 'on' : 'off',
-           },
-          () => this.props.onSelectionToggle(this.state.videoFilename)
-        );
+        // this.setState({ 
+        //     selected: !this.state.selected,
+        //     inviteIcon: this.state.inviteIcon === 'off' ? 'on' : 'off',
+        //    },
+        // );
+        this.props.onSelectionToggle(this.state.videoFilename, item.videoid);
     }
 
     render() {

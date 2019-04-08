@@ -14,19 +14,19 @@ import { Constants, Location, Permissions, ScreenOrientation } from 'expo';
 export default class SearchScreen extends Component {
 
     static navigationOptions = ({ navigation }) => {
-    const {navigate} = navigation;
-    const params = navigation.state.params || {};
-    return {
-      headerRight: (
-      <TouchableOpacity
-          style={styles.toggleButton}
-          onPress={params.sendInvites}
-         >
-         <Text style={{color: 'blue', fontSize: 18}}>Invite</Text>
-      </TouchableOpacity>
-      ),
+      const {navigate} = navigation;
+      const params = navigation.state.params || {};
+      return {
+        headerRight: (
+        <TouchableOpacity
+            style={styles.toggleButton}
+            onPress={params.sendInvites}
+           >
+           <Text style={{color: 'blue', fontSize: 18}}>Invite</Text>
+        </TouchableOpacity>
+        ),
+      };
     };
-  };
 
   constructor(props) {
     super(props);

@@ -71,7 +71,7 @@ export default class GalleryScreen extends React.Component {
         })
         .then(() => {
           const video = this.state.selected[0];
-          const videoName = this.state.text;
+          let videoName = this.state.text;
 
           if (videoName === '') {
             videoName = `${username}'s Track`;
@@ -118,7 +118,7 @@ export default class GalleryScreen extends React.Component {
     }
     else {
       const video = this.state.selected[0];
-      const videoName = this.state.text;
+      let videoName = this.state.text;
 
       if (videoName === '') {
         videoName = `${username}'s Track`;
