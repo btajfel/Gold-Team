@@ -13,9 +13,10 @@ def get_render_name(projectid):
     context = {}
     cur = camcrew.model.get_db().cursor()
 
-    cur.execute('SELECT name FROM projects WHERE projectid=?;', (projectid,))
+    cur.execute('SELECT video FROM projects WHERE projectid=?;', (projectid,))
 
-    context["filename"] = cur.fetchone()
+    context["filename"] = cur.fetchone()["video"]
+
 
     return flask.jsonify(**context), 201
 
@@ -28,7 +29,8 @@ def get_render(projectid):
 
     cur.execute('SELECT video FROM projects WHERE projectid=?;', (projectid,))
 
-    filename = cur.fetchone()
+    filename = cur.fetchone()["video"]
+    print(filename)
     file_path = os.path.join(
         camcrew.app.config["UPLOAD_FOLDER"],
         filename

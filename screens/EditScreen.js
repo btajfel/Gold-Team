@@ -78,22 +78,7 @@ export default class EditScreen extends React.Component {
         if (!res.ok) throw Error(res.statusText);
         return res.json();
       })
-      .then(data => {
-        console.log("Edits sent");
-        const filename = data.filename
-
-        FileSystem.downloadAsync(
-          `http://crewcam.eecs.umich.edu/api/v1/${projectid}/render/`,
-          `${VIDEOS_DIR}/${filename}`
-        )
-        .then(({ uri }) => {
-          this.setState({ 
-              videoFilename: uri
-          });
-        })
-        .catch(error => {
-          console.error(error);
-        });
+      .then((data) => {
         navigate('Library');
       })
       .catch(error => {

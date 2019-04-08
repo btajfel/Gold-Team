@@ -5,6 +5,7 @@ import { StyleSheet, AppRegistry, View, FlatList, Text, TouchableOpacity, AsyncS
 import {NavigationEvents} from 'react-navigation';
 import Vid from './Vid';
 
+const VIDEOS_DIR = FileSystem.documentDirectory + 'videos';
 
 export default class ViewScreen extends React.Component {
 
@@ -37,23 +38,40 @@ export default class ViewScreen extends React.Component {
 
   async componentDidMount() {
     ScreenOrientation.allowAsync(ScreenOrientation.Orientation.LANDSCAPE);
-    this.props.navigation.setParams({ sendEdits: this._sendEdits.bind(this)});
-    FileSystem.makeDirectoryAsync(FileSystem.documentDirectory + 'videos').catch(e => {
-      console.log('Directory exists');
-    });
-    this.makeRemoteRequest();
+
+    this.onMount();
   }
 
   componentWillUnmount() {
     ScreenOrientation.allowAsync(ScreenOrientation.Orientation.PORTRAIT);
   }
 
-  onMount = () => {
+  onMount = async () => {
+  	const projectid = this.props.navigation.getParam('projectid', 0);
   	const uri = this.props.navigation.getParam('uri', 0);
+  	console.log(uri)
 
- 	this.setState({
- 		videoUri: uri,
- 	})
+  	// const info = await FileSystem.getInfoAsync(`file:///var/mobile/Containers/Data/Application/BD57BBCB-EBF8-46E8-B6B5-7883370F69CE/Documents/ExponentExperienceData/%2540anonymous%252FGoldTeam-0a0f30ac-074f-43c9-9b8d-9d751fdd0afa/videos/${uri}`)
+   //  console.log("Info", info)
+
+
+    FileSystem.downloadAsync(
+      `http://crewcam.eecs.umich.edu/api/v1/${projectid}/render/`,
+      `${VIDEOS_DIR}/${uri}`
+    )
+    .then(({ uri }) => {
+      console.log("null")
+      this.setState({ 
+          videoUri: uri
+      });
+    })
+    .catch(error => {
+      console.error(error);
+    });
+
+ 	// this.setState({
+ 	// 	videoUri: uri,
+ 	// })
   };
 
   paramsFunction = async () => {

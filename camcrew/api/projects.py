@@ -31,7 +31,7 @@ def create_project(username):
         projectid = cur.execute('SELECT MAX(projectid) FROM projects;').fetchone()["MAX(projectid)"] + 1
 
     cur.execute('INSERT INTO projects(projectid, name, owner, created) VALUES (?,?,?,datetime("now"));',
-                (projectid, 'New Project', username))
+                (projectid, 'New_Project', username))
 
     if data["projectId"] == 0:
         cur.execute('INSERT INTO collaborators(projectid, username1, username2, created) VALUES (?,?,?,datetime("now"));',

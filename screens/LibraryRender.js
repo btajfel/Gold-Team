@@ -19,6 +19,7 @@ export default class LibraryRender extends Component {
 
     handlePressView = (projectid) => {
       const {navigate} = this.props.navigation;
+      console.log("View")
 
       fetch(`http://crewcam.eecs.umich.edu/api/v1/${projectid}/render/name/`)
       .then(res => {
@@ -28,7 +29,7 @@ export default class LibraryRender extends Component {
       .then(data => {
         const filename = data.filename;
 
-        navigate('View', {uri: filename});
+        navigate('View', {uri: filename, projectid: projectid});
       })
       .catch(e => {
         console.log(e);
@@ -44,7 +45,7 @@ export default class LibraryRender extends Component {
       
         [
           {text: "Cancel", style: 'cancel'},
-          {text: "View", onPress: () => console.log('View Video')},
+          {text: "View", onPress: () => this.handlePressView(projectData.projectid)},
           {text: 'Edit', onPress: () => navigate('Edit', {projectid: projectData.projectid, name: projectData.name})},
           {text: 'Settings', onPress: () => navigate('Settings', {projectid: projectData.projectid})},
         ]
