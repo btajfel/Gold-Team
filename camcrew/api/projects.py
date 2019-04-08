@@ -59,8 +59,8 @@ def update_project(username, projectid):
     return flask.jsonify(**context), 201
 
 
-@camcrew.app.route('/api/v1/<string:username>/projects/<int:projectid>/',
-                    methods=["DELETE"])
+@camcrew.app.route('/api/v1/<string:username>/projects/<int:projectid>/delete/',
+                    methods=["POST"])
 def delete_project(username, projectid):
     context = {}
     cur = camcrew.model.get_db().cursor()
