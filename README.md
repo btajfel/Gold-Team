@@ -106,7 +106,6 @@ tree --matchdirs -I 'node_modules|ios|android|camcrew.egg-info|env|node_modules|
     │   ├── fonts
     │   │   └── SpaceMono-Regular.ttf
     │   └── images
-    │       ├── camcrew_logo.png
     │       ├── icon.png
     │       ├── robot-dev.png
     │       ├── robot-prod.png
@@ -119,29 +118,33 @@ tree --matchdirs -I 'node_modules|ios|android|camcrew.egg-info|env|node_modules|
     │   ├── __init__.py
     │   ├── __pycache__
     │   │   ├── __init__.cpython-37.pyc
-    │   │   └── config.cpython-37.pyc
+    │   │   ├── config.cpython-37.pyc
+    │   │   └── model.cpython-37.pyc
     │   ├── api
     │   │   ├── __init__.py
     │   │   ├── __pycache__
     │   │   │   ├── __init__.cpython-37.pyc
+    │   │   │   ├── contacts.cpython-37.pyc
+    │   │   │   ├── creators.cpython-37.pyc
     │   │   │   ├── error_handler.cpython-37.pyc
-    │   │   │   └── projects.cpython-37.pyc
+    │   │   │   ├── invite.cpython-37.pyc
+    │   │   │   ├── projects.cpython-37.pyc
+    │   │   │   ├── save.cpython-37.pyc
+    │   │   │   └── videos.cpython-37.pyc
     │   │   ├── contacts.py
-    │   │   ├── create.py
+    │   │   ├── creators.py
     │   │   ├── error_handler.py
+    │   │   ├── friends.py
     │   │   ├── invite.py
-    │   │   ├── location.py
-    │   │   ├── login.py
-    │   │   ├── pending_invite.py
     │   │   ├── projects.py
-    │   │   ├── render.py
     │   │   ├── save.py
-    │   │   ├── shared_with.py
     │   │   └── videos.py
     │   ├── config.py
     │   ├── model.py
     │   └── views
-    │       └── __init__.py
+    │       ├── __init__.py
+    │       └── __pycache__
+    │           └── __init__.cpython-37.pyc
     ├── components
     │   ├── StyledText.js
     │   ├── TabBarIcon.js
@@ -156,27 +159,19 @@ tree --matchdirs -I 'node_modules|ios|android|camcrew.egg-info|env|node_modules|
     │   └── MainTabNavigator.js
     ├── package-lock.json
     ├── package.json
-    ├── render.py
     ├── screens
-    │   ├── AuthLoadingScreen.js
     │   ├── ContactRender.js
-    │   ├── ContactScreen.js
-    │   ├── ContactShare.js
-    │   ├── EditRender.js
-    │   ├── EditScreen.js
+    │   ├── ContactsScreen.js
     │   ├── GalleryScreen.js
-    │   ├── Geolocation.js
-    │   ├── LibraryRender.js
+    │   ├── LibraryProject.js
     │   ├── LibraryScreen.js
     │   ├── Photo.js
-    │   ├── ProjectSettings.js
     │   ├── RecordScreen.js
-    │   ├── SharedProjects.js
-    │   ├── SignInScreen.js
-    │   ├── SignUpScreen.js
-    │   └── Vid.js
+    │   ├── friends.js
+    │   ├── home.js
+    │   ├── library.js
+    │   └── record.js
     ├── setup.py
-    ├── sftp-config.json
     ├── sql
     │   ├── data.sql
     │   ├── schema.sql
@@ -185,6 +180,5 @@ tree --matchdirs -I 'node_modules|ios|android|camcrew.egg-info|env|node_modules|
     └── var
         ├── camcrew.sqlite3
         └── uploads
-
-
+            └── test.MOV
 

@@ -1,0 +1,110 @@
+[2019-03-21 15:46:33 -0400] [4733] [INFO] Starting gunicorn 19.9.0
+[2019-03-21 15:46:33 -0400] [4733] [INFO] Listening at: http://127.0.0.1:8000 (4733)
+[2019-03-21 15:46:33 -0400] [4733] [INFO] Using worker: sync
+[2019-03-21 15:46:33 -0400] [4736] [INFO] Booting worker with pid: 4736
+[2019-03-21 15:47:04 -0400] [4733] [INFO] Handling signal: int
+[2019-03-21 15:47:04 -0400] [4736] [INFO] Worker exiting (pid: 4736)
+[2019-03-21 15:47:04 -0400] [4733] [INFO] Shutting down: Master
+[2019-03-21 15:47:33 -0400] [4739] [DEBUG] Current configuration:
+  config: None
+  bind: ['localhost:8000']
+  backlog: 2048
+  workers: 1
+  worker_class: sync
+  threads: 1
+  worker_connections: 1000
+  max_requests: 0
+  max_requests_jitter: 0
+  timeout: 30
+  graceful_timeout: 30
+  keepalive: 2
+  limit_request_line: 4094
+  limit_request_fields: 100
+  limit_request_field_size: 8190
+  reload: False
+  reload_engine: auto
+  reload_extra_files: []
+  spew: False
+  check_config: False
+  preload_app: False
+  sendfile: None
+  reuse_port: False
+  chdir: /home/crewcam/Gold-Team
+  daemon: False
+  raw_env: []
+  pidfile: None
+  worker_tmp_dir: None
+  user: 1001
+  group: 1001
+  umask: 0
+  initgroups: False
+  tmp_upload_dir: None
+  secure_scheme_headers: {'X-FORWARDED-PROTOCOL': 'ssl', 'X-FORWARDED-PROTO': 'https', 'X-FORWARDED-SSL': 'on'}
+  forwarded_allow_ips: ['127.0.0.1']
+  accesslog: access.log
+  disable_redirect_access_to_syslog: False
+  access_log_format: %(h)s %(l)s %(u)s %(t)s "%(r)s" %(s)s %(b)s "%(f)s" "%(a)s"
+  errorlog: error.log
+  loglevel: debug
+  capture_output: True
+  logger_class: gunicorn.glogging.Logger
+  logconfig: None
+  logconfig_dict: {}
+  syslog_addr: udp://localhost:514
+  syslog: False
+  syslog_prefix: None
+  syslog_facility: user
+  enable_stdio_inheritance: False
+  statsd_host: None
+  statsd_prefix: 
+  proc_name: None
+  default_proc_name: camcrew:app
+  pythonpath: None
+  paste: None
+  on_starting: <function OnStarting.on_starting at 0x7fc74229aea0>
+  on_reload: <function OnReload.on_reload at 0x7fc7422b2048>
+  when_ready: <function WhenReady.when_ready at 0x7fc7422b2158>
+  pre_fork: <function Prefork.pre_fork at 0x7fc7422b2268>
+  post_fork: <function Postfork.post_fork at 0x7fc7422b2378>
+  post_worker_init: <function PostWorkerInit.post_worker_init at 0x7fc7422b2488>
+  worker_int: <function WorkerInt.worker_int at 0x7fc7422b2598>
+  worker_abort: <function WorkerAbort.worker_abort at 0x7fc7422b26a8>
+  pre_exec: <function PreExec.pre_exec at 0x7fc7422b27b8>
+  pre_request: <function PreRequest.pre_request at 0x7fc7422b28c8>
+  post_request: <function PostRequest.post_request at 0x7fc7422b2950>
+  child_exit: <function ChildExit.child_exit at 0x7fc7422b2a60>
+  worker_exit: <function WorkerExit.worker_exit at 0x7fc7422b2b70>
+  nworkers_changed: <function NumWorkersChanged.nworkers_changed at 0x7fc7422b2c80>
+  on_exit: <function OnExit.on_exit at 0x7fc7422b2d90>
+  proxy_protocol: False
+  proxy_allow_ips: ['127.0.0.1']
+  keyfile: None
+  certfile: None
+  ssl_version: 2
+  cert_reqs: 0
+  ca_certs: None
+  suppress_ragged_eofs: True
+  do_handshake_on_connect: False
+  ciphers: TLSv1
+  raw_paste_global_conf: []
+[2019-03-21 15:47:33 -0400] [4739] [INFO] Starting gunicorn 19.9.0
+[2019-03-21 15:47:33 -0400] [4739] [DEBUG] Arbiter booted
+[2019-03-21 15:47:33 -0400] [4739] [INFO] Listening at: http://127.0.0.1:8000 (4739)
+[2019-03-21 15:47:33 -0400] [4739] [INFO] Using worker: sync
+[2019-03-21 15:47:33 -0400] [4742] [INFO] Booting worker with pid: 4742
+[2019-03-21 15:47:33 -0400] [4739] [DEBUG] 1 workers
+[2019-03-21 15:47:52 -0400] [4739] [INFO] Handling signal: int
+[2019-03-21 15:47:52 -0400] [4742] [INFO] Worker exiting (pid: 4742)
+[2019-03-21 15:47:53 -0400] [4739] [INFO] Shutting down: Master
+[2019-03-28 15:04:31 -0400] [14786] [INFO] Starting gunicorn 19.9.0
+[2019-03-28 15:04:31 -0400] [14786] [ERROR] Connection in use: ('localhost', 8000)
+[2019-03-28 15:04:31 -0400] [14786] [ERROR] Retrying in 1 second.
+[2019-03-28 15:04:32 -0400] [14786] [ERROR] Connection in use: ('localhost', 8000)
+[2019-03-28 15:04:32 -0400] [14786] [ERROR] Retrying in 1 second.
+[2019-03-28 15:04:33 -0400] [14786] [ERROR] Connection in use: ('localhost', 8000)
+[2019-03-28 15:04:33 -0400] [14786] [ERROR] Retrying in 1 second.
+[2019-03-28 15:04:34 -0400] [14786] [ERROR] Connection in use: ('localhost', 8000)
+[2019-03-28 15:04:34 -0400] [14786] [ERROR] Retrying in 1 second.
+[2019-03-28 15:04:35 -0400] [14786] [ERROR] Connection in use: ('localhost', 8000)
+[2019-03-28 15:04:35 -0400] [14786] [ERROR] Retrying in 1 second.
+[2019-03-28 15:04:36 -0400] [14786] [ERROR] Can't connect to ('localhost', 8000)
