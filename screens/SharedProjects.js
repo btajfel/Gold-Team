@@ -100,9 +100,6 @@ export default class LibraryScreen extends Component {
       };
 
     render() {
-      // <NavigationEvents
-          //     onDidFocus={() => this.makeRemoteRequest()}
-          //   /> 
       if (this.state.loading) {
         return (
           <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
