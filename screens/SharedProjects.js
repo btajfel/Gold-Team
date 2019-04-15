@@ -45,15 +45,15 @@ export default class LibraryScreen extends Component {
       fetch(url)
         .then((res) => res.json())
         .then(res => {
-        	if(res.status === "true"){
+          if(res.status === "true"){
           this.setState({
-          	shared: true,
+            shared: true,
             data: res.shared,
             error: res.error || null,
             loading: false,
           });
           this.arrayholder = res.shared;
-      	}
+        }
         else{
           this.setState({
             loading: false,
@@ -111,7 +111,7 @@ export default class LibraryScreen extends Component {
         );
       }
       if(!this.state.shared){
-      	return (
+        return (
           <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
             <Text> No Videos Shared With You </Text>
           </View>
