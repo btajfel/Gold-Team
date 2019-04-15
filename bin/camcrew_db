@@ -38,12 +38,12 @@ case $1 in
     ;;
 
   "reset")
-    rm -rf var/camcrew.sqlite3 var/uploads
+    rm -rf var/camcrew.sqlite3
     mkdir -p var/uploads
     sqlite3 var/camcrew.sqlite3 < sql/schema.sql
     sqlite3 var/camcrew.sqlite3 < sql/data.sql
     cp sql/uploads/* var/uploads/
-    echo "+ rm -rf var/camcrew.sqlite3 var/uploads
+    echo "+ rm -rf var/camcrew.sqlite3
 + mkdir -p var/uploads
 + sqlite3 var/camcrew.sqlite3 < sql/schema.sql
 + sqlite3 var/camcrew.sqlite3 < sql/data.sql
