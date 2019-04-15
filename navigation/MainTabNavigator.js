@@ -6,7 +6,6 @@ import TabBarIcon from '../components/TabBarIcon';
 import ContactScreen from '../screens/ContactScreen';
 import RecordScreen from '../screens/RecordScreen';
 import LibraryScreen from '../screens/LibraryScreen';
-import Geolocation from '../screens/Geolocation';
 import SharedProjects from '../screens/SharedProjects';
 import EditScreen from '../screens/EditScreen';
 import ContactShare from '../screens/ContactShare';
@@ -16,7 +15,6 @@ import ViewScreen from '../screens/ViewScreen';
 
 const ContactsStack = createStackNavigator({
   Contacts: ContactScreen,
-  Geo: Geolocation,
 });
 
 ContactsStack.navigationOptions = {
