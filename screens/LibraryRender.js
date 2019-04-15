@@ -140,7 +140,7 @@ export default class LibraryRender extends Component {
       
         [
           {text: "Cancel", style: 'cancel'},
-          {text: "Save", onPress: () => alert('Video exported to Camera Roll')}
+          {text: "Save", onPress: () => this.handlePressSave(projectid)}
         ]
       )
     };
