@@ -9,3 +9,4 @@ __pycache__/
 .expo/
 .DS_Store
 Setup.pem
+sftp-config.json
