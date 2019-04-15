@@ -6,7 +6,6 @@ import {openSettings} from 'react-native-permissions';
 import Contacts from 'react-native-contacts';
 import {createStackNavigator, createAppContainer, NavigationEvents} from 'react-navigation';
 import RecordScreen from './RecordScreen';
-import Geolocation from './Geolocation';
 import { Constants, Location, Permissions, ScreenOrientation } from 'expo';
 
 
@@ -125,11 +124,12 @@ export default class SearchScreen extends Component {
         errorMessage: 'Permission to access location was denied',
       });
     }
-
+    else{
     let myLoc = await Location.getCurrentPositionAsync({});
     this.setState({myLocation: myLoc });
 
     this._getUserLoactions();
+  }
   };
 
   _getUserLoactions = async () => {    

@@ -119,7 +119,9 @@ export default class LibraryScreen extends Component {
       }
         return (
           <View>
-          
+          <NavigationEvents
+              onDidFocus={() => this.makeRemoteRequest()}
+            /> 
           <FlatList
             ref={(ref) => this.listView = ref}
             data = {this.state.data}
