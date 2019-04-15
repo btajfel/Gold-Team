@@ -124,12 +124,10 @@ export default class SearchScreen extends Component {
         errorMessage: 'Permission to access location was denied',
       });
     }
-    else{
     let myLoc = await Location.getCurrentPositionAsync({});
     this.setState({myLocation: myLoc });
 
     this._getUserLoactions();
-  }
   };
 
   _getUserLoactions = async () => {    
