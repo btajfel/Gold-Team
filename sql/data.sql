@@ -12,7 +12,8 @@ VALUES ('azarrabi', 'Ali Zarrabi', 'azarrabi@umich.edu',  '9739857896', 'passwor
 	   ('bkandel', 'Brendan Kandel', 'bkandel@umich.edu', '2016698618', 'password', '42.1998', '-83.7924', datetime('now', 'localtime')),
 	   ('czam', 'Cameron Zamanian', 'czam@umich.edu', '2012892100', 'password', '42.2616', '-83.7346', datetime('now', 'localtime')),
 	   ('rsus', 'Ryan Susterich', 'rsus@umich.edu', '2316709067', 'password', '42.3899', '-83.6987', datetime('now', 'localtime')),
-	   ('criz', 'Connolly Rizley', 'criz@umich.edu', '9187701927', 'password', '42.2590', '-83.7555', datetime('now', 'localtime'));
+	   ('criz', 'Connolly Rizley', 'criz@umich.edu', '9187701927', 'password', '42.2590', '-83.7555', datetime('now', 'localtime')),
+	   ('test', 'Test', 'test@umich.edu', '555555555', 'password', '42.2590', '-83.7555', datetime('now', 'localtime'));
 
 INSERT INTO projects(projectid, name, owner, created)
 VALUES (1, 'Vacation', 'azarrabi', datetime('now', 'localtime')),

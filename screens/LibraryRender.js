@@ -1,6 +1,6 @@
 import React, {Component} from "react";
 import { StyleSheet, View, Alert, TouchableOpacity, Image, TouchableHighlight } from 'react-native';
-import { Permissions, FileSystem } from "expo";
+import { Permissions, FileSystem, MediaLibrary } from "expo";
 import { Button, ListItem, Left, Right, Body, Thumbnail, Text, Icon } from 'native-base';
 import {createStackNavigator, createAppContainer} from 'react-navigation';
 import Vid from './Vid';
@@ -10,11 +10,46 @@ const VIDEOS_DIR = FileSystem.documentDirectory + 'videos';
 export default class LibraryRender extends Component {
 
     constructor(props) {
-        super(props);
-        this.state = {
-            // projectName: "project"
-        };
-      }
+      super(props);
+      this.state = {
+          // projectName: "project"
+      };
+    }
+
+
+    handlePressSave = async (projectid) => {
+      const {navigate} = this.props.navigation;
+      console.log("View")
+
+      fetch(`http://crewcam.eecs.umich.edu/api/v1/${projectid}/render/name/`)
+      .then(res => {
+        if (!res.ok) throw Error(res.statusText);
+        return res.json();
+      })
+      .then(async (data) => {
+        const filename = data.filename;
+
+        if (filename !== undefined) {
+          const { status } = await Permissions.askAsync(Permissions.CAMERA_ROLL);
+
+          if (status !== 'granted') {
+            throw new Error('Denied CAMERA_ROLL permissions!');
+          }
+
+          
+          await MediaLibrary.createAssetAsync(`${VIDEOS_DIR}/${filename}`);
+
+          // await Promise.all(promises);
+          alert('Successfully saved final video to user\'s gallery!');
+        } else {
+          alert('Final Video not created!');
+        }
+      })
+      .catch(e => {
+        console.log(e);
+      })
+
+    };
 
 
     handlePressView = (projectid) => {
@@ -52,16 +87,16 @@ export default class LibraryRender extends Component {
       )
     };
 
-    handlePressShared = (name) => {
+    handlePressShared = (projectData) => {
       const {navigate} = this.props.navigation;
-      const title = name;
+      const title = projectData.name;
       Alert.alert(
         `${title}`,
           "",
       
         [
           {text: "Cancel", style: 'cancel'},
-          {text: "View", onPress: () => console.log('View Video')}
+          {text: "View", onPress: () => this.handlePressView(projectData.projectid)}
         ]
       )
     };
@@ -75,7 +110,7 @@ export default class LibraryRender extends Component {
       
         [
           {text: "Cancel", style: 'cancel'},
-          {text: "Save", onPress: () => alert('Video exported to Camera Roll')},
+          {text: "Save", onPress: () => this.handlePressSave(projectid)},
           {text: "Share", onPress: () => navigate('Share', {pid: projectid})}
         ]
       )
@@ -142,7 +177,7 @@ export default class LibraryRender extends Component {
     }
     else{
       return (
-            <ListItem onPress={() => this.handlePressShared(rowData.name)}>
+            <ListItem onPress={() => this.handlePressShared(rowData)}>
                 <Body style={{ borderBottomWidth: 0 }}>
                     <Text style={{fontWeight: "bold"}}>{rowData.name} </Text>
                     <Text Note>Owner: {rowData.owner}</Text>

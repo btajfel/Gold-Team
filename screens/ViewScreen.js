@@ -9,20 +9,6 @@ const VIDEOS_DIR = FileSystem.documentDirectory + 'videos';
 
 export default class ViewScreen extends React.Component {
 
-  static navigationOptions = ({ navigation }) => {
-      const {navigate} = navigation;
-      const params = navigation.state.params || {};
-      return {
-        headerRight: (
-        <TouchableOpacity
-            style={styles.toggleButton}
-            onPress={params.sendEdits}
-           >
-           <Text style={{color: 'blue', fontSize: 18}}>Done</Text>
-        </TouchableOpacity>
-        ),
-      };
-    };
 
   constructor(props) {
     super(props);
