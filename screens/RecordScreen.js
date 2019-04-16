@@ -98,7 +98,7 @@ export default class CameraScreen extends React.Component {
     friendsSizes: [],
     friendsId: 0,
     recording: false,
-    recordingIcon: 'ios-radio-button-on",
+    recordingIcon: 'ios-radio-button-on',
     recordingColor: 'white',
     showGallery: false,
     showQualityOptions: false,
