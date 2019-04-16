@@ -98,7 +98,7 @@ export default class CameraScreen extends React.Component {
     friendsSizes: [],
     friendsId: 0,
     recording: false,
-    recordingIcon: 'ios-radio-button-off',
+    recordingIcon: 'ios-radio-button-on",
     recordingColor: 'white',
     showGallery: false,
     showQualityOptions: false,
@@ -306,7 +306,7 @@ export default class CameraScreen extends React.Component {
       if (this.state.recording) {
         this.setState({ 
           recording: !this.state.recording,
-          recordingIcon: 'ios-radio-button-off',
+          recordingIcon: 'ios-radio-button-on',
           recordingColor: 'white',
         });
         this.camera.stopRecording();
@@ -314,7 +314,7 @@ export default class CameraScreen extends React.Component {
       else {
         this.setState({ 
           recording: !this.state.recording,
-          recordingIcon: 'ios-radio-button-on',
+          recordingIcon: 'ios-square',
           recordingColor: 'red',
         });
         const startTime = Date.now();
