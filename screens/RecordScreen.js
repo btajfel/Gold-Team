@@ -101,7 +101,7 @@ export default class CameraScreen extends React.Component {
     friendsSizes: [],
     friendsId: 0,
     recording: false,
-    recordingIcon: 'circle-o',
+    recordingIcon: 'radiobox-marked',
     recordingColor: 'white',
     showGallery: false,
     showQualityOptions: false,
@@ -323,7 +323,7 @@ export default class CameraScreen extends React.Component {
       if (this.state.recording) {
         this.setState({ 
           recording: !this.state.recording,
-          recordingIcon: 'circle-o',
+          recordingIcon: 'radiobox-marked',
           recordingColor: 'white',
           isDialogVisible: true,
         });
@@ -332,7 +332,7 @@ export default class CameraScreen extends React.Component {
       else {
         this.setState({ 
           recording: !this.state.recording,
-          recordingIcon: 'stop-circle-o',
+          recordingIcon: 'stop-circle-outline',
           recordingColor: 'red',
         });
         const startTime = Date.now();
@@ -448,7 +448,7 @@ export default class CameraScreen extends React.Component {
           onPress={this.takeVideo}
           style={{ alignSelf: 'center' }}
         >
-          <FontAwesome name={ this.state.recordingIcon } size={70} color={ this.state.recordingColor } />
+          <MaterialCommunityIcons name={ this.state.recordingIcon } size={70} color={ this.state.recordingColor } />
         </TouchableOpacity>
       </View> 
       <TouchableOpacity style={styles.bottomButton} onPress={this.toggleView}>
