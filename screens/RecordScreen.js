@@ -22,8 +22,11 @@ import {
   MaterialIcons,
   Foundation,
   MaterialCommunityIcons,
-  Octicons
+  Octicons,
+  FontAwesome
 } from '@expo/vector-icons';
+
+import DialogInput from 'react-native-dialog-input';
 
 const landmarkSize = 2;
 
@@ -98,13 +101,15 @@ export default class CameraScreen extends React.Component {
     friendsSizes: [],
     friendsId: 0,
     recording: false,
-    recordingIcon: 'ios-radio-button-on',
+    recordingIcon: 'circle-o',
     recordingColor: 'white',
     showGallery: false,
     showQualityOptions: false,
     showFriendsOptions: false,
     wasInvited: false,
     inviter: "",
+    isDialogVisible: false,
+    username: "",
   };
 
 
@@ -115,15 +120,15 @@ export default class CameraScreen extends React.Component {
       const { status } = await Permissions.askAsync(Permissions.AUDIO_RECORDING);
       this.setState({ permissionsGranted: status === 'granted' });
     }
-  }
+  };
 
-  componentDidMount() {
+  async componentDidMount() {
     this.props.navigation.setParams({ signOutAsync: this._signOutAsync.bind(this) });
     FileSystem.makeDirectoryAsync(FileSystem.documentDirectory + 'photos').catch(e => {
       console.log('Directory exists');
     });
     ScreenOrientation.allowAsync(ScreenOrientation.Orientation.PORTRAIT);
-  }
+  };
 
   _signOutAsync = async () => {
     console.log("Sign Out!")
@@ -136,6 +141,7 @@ export default class CameraScreen extends React.Component {
     this.updateLocation();
     this.fetchPending();
     const username = await AsyncStorage.getItem("userToken");
+    this.setState({ username: username });
     let array = [];
     const pid = this.props.navigation.getParam('data', 0);
     const invitedPid = this.state.projectId;
@@ -273,6 +279,17 @@ export default class CameraScreen extends React.Component {
       }
   };
 
+  showDialog = async (isShow) => {
+    this.setState({isDialogVisible: isShow});
+  };
+  sendInput = async (inputText) => {
+    if (inputText === ""){
+      inputText = `${this.state.username}'s track`;
+    }
+    console.log("sendInput (DialogInput#1): "+inputText);
+    this.showDialog(false);
+  };
+
 
   getRatios = async () => {
     const ratios = await this.camera.getSupportedRatios();
@@ -306,15 +323,16 @@ export default class CameraScreen extends React.Component {
       if (this.state.recording) {
         this.setState({ 
           recording: !this.state.recording,
-          recordingIcon: 'ios-radio-button-on',
+          recordingIcon: 'circle-o',
           recordingColor: 'white',
+          isDialogVisible: true,
         });
         this.camera.stopRecording();
       }
       else {
         this.setState({ 
           recording: !this.state.recording,
-          recordingIcon: 'ios-square',
+          recordingIcon: 'stop-circle-o',
           recordingColor: 'red',
         });
         const startTime = Date.now();
@@ -430,7 +448,7 @@ export default class CameraScreen extends React.Component {
           onPress={this.takeVideo}
           style={{ alignSelf: 'center' }}
         >
-          <Ionicons name={ this.state.recordingIcon } size={70} color={ this.state.recordingColor } />
+          <FontAwesome name={ this.state.recordingIcon } size={70} color={ this.state.recordingColor } />
         </TouchableOpacity>
       </View> 
       <TouchableOpacity style={styles.bottomButton} onPress={this.toggleView}>
@@ -484,6 +502,13 @@ export default class CameraScreen extends React.Component {
   renderCamera = () =>
     (
       <View style={{ flex: 1 }}>
+        <DialogInput isDialogVisible={this.state.isDialogVisible}
+                    title={"Video Finished Recording"}
+                    message={"Would you like to upload your clip the project or record a new one?"}
+                    hintInput ={`${this.state.username}'s track`}
+                    submitInput={ (inputText) => {this.sendInput(inputText)} }
+                    closeDialog={ () => {this.showDialog(false)}}>
+        </DialogInput>
         <Camera
           ref={ref => {
             this.camera = ref;
