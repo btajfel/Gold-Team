@@ -289,7 +289,6 @@ export default class CameraScreen extends React.Component {
     if (inputText === ""){
       inputText = `${this.state.username}'s track`;
     }
-    console.log("sendInput (DialogInput#1): "+inputText);
     this.saveToProject(inputText);
     this.showDialog(false);
   };
@@ -347,12 +346,10 @@ export default class CameraScreen extends React.Component {
           to: `${FileSystem.documentDirectory}photos/${filename}`,
         });
         const photos = await FileSystem.readDirectoryAsync(PHOTOS_DIR);
-        console.log(photos);
         const v = photos.indexOf(filename);
         const vid = photos[v];
         const vidPath = `${PHOTOS_DIR}/${vid}`;
          await this.setState({ videoPath: vidPath});
-        console.log("HERE1 " + vidPath);
        
         this.setState({ newPhotos: true });
       }
@@ -364,7 +361,6 @@ export default class CameraScreen extends React.Component {
     let projectid = this.state.projectId;
     const video = this.state.videoPath;
     const videoName = vidName;
-    console.log("PID: " + projectid);
 
       if (projectid === 0) {
       fetch(`http://crewcam.eecs.umich.edu/api/v1/${username}/projects/`, {
@@ -414,7 +410,6 @@ export default class CameraScreen extends React.Component {
         })
     }
     else {
-      console.log("HEREEE");
 
       const split = video.split("/");
       const videoTimes = split[split.length - 1]
@@ -433,9 +428,6 @@ export default class CameraScreen extends React.Component {
       form.append('startTime', startTime);
       form.append('endTime', endTime);
       form.append('username', username);
-      // console.log(video)
-      // FIXME (projectid)
-      console.log("pid 2", projectid)
       const url = `http://crewcam.eecs.umich.edu/api/v1/${projectid}/save/`;
       fetch(url, {
         method: 'POST',
@@ -621,7 +613,8 @@ export default class CameraScreen extends React.Component {
                     message={"Would you like to upload your clip the project or record a new one?"}
                     hintInput ={`${this.state.username}'s track`}
                     submitInput={ (inputText) => {this.sendInput(inputText)} }
-                    closeDialog={ () => {this.showDialog(false)}}>
+                    closeDialog={ () => {this.showDialog(false)}}
+                    dialogStyle= {{marginBottom: 85}}>
         </DialogInput>
         <Camera
           ref={ref => {
