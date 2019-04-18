@@ -15,7 +15,13 @@ def get_videos(projectid):
 
     cur.execute("""SELECT videoid, filename, trackname, starttime, endtime, duration FROM videos WHERE projectid=?""", 
                 (projectid,))
-    context["videos"] = cur.fetchall()
+
+    videos = cur.fetchall()
+
+    # Sort videos by start time
+    videos.sort(key=lambda k: k['starttime']) 
+
+    context["videos"] = videos
 
     return flask.jsonify(**context), 201
 
