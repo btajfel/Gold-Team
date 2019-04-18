@@ -3,7 +3,8 @@ import { ExpoConfigView } from '@expo/samples';
 import { ScreenOrientation, FileSystem } from 'expo';
 import { StyleSheet, AppRegistry, View, FlatList, Text, TouchableOpacity, AsyncStorage } from 'react-native';
 import { Row } from 'native-base';
-import {NavigationEvents} from 'react-navigation';
+import { NavigationEvents } from 'react-navigation';
+import { CheckBox } from 'react-native-elements';
 import MultiSlider from '@ptomasroos/react-native-multi-slider';
 import EditRender from './EditRender'
 import Vid from './Vid';
@@ -34,7 +35,6 @@ export default class EditScreen extends React.Component {
         data: [],
         error: null,
         loading: false,
-        index: 0,
         videoId: 0,
         videoUri: '',
         startTime: 0,
@@ -42,8 +42,8 @@ export default class EditScreen extends React.Component {
         min: 0,
         max: 0,
         cutTimes: [],
+        checked: false,
     };
-    this.arrayholder = [];
   }
 
   async componentDidMount() {
@@ -93,6 +93,7 @@ export default class EditScreen extends React.Component {
     let endTime = 0;
     let min = 0;
     let max = 0;
+    let checked = false;
 
     console.log(this.state.cutTimes)
     this.state.cutTimes.map(video => {
@@ -101,6 +102,7 @@ export default class EditScreen extends React.Component {
         endTime = video.endTime;
         min = video.min;
         max = video.max;
+        checked = video.transition;
       }
     });
 
@@ -111,6 +113,7 @@ export default class EditScreen extends React.Component {
       endTime: endTime,
       min: min,
       max: max,
+      checked: checked,
     });
   };
 
@@ -173,6 +176,7 @@ export default class EditScreen extends React.Component {
               endTime: parseInt(duration),
               min: 0,
               max: parseInt(duration),
+              transition: false,
             })
           });
 
@@ -208,6 +212,21 @@ export default class EditScreen extends React.Component {
     });
   };
 
+  checkBoxPress = () => {
+    const videoid = this.state.videoId;
+    let newCuts = this.state.cutTimes;
+    let i;
+    for (i = 0; i < newCuts.length; i++) {
+      if (newCuts[i].videoid === videoid) {
+        newCuts[i].transition = !this.state.checked;
+      }
+    }
+
+    this.setState({
+      checked: !this.state.checked,
+      cutTimes: newCuts,
+    });
+  };
 
   render() {
     /* Go ahead and delete ExpoConfigView and replace it with your
@@ -218,9 +237,7 @@ export default class EditScreen extends React.Component {
       }
     };
 
-    const {uri} = this.state.videoUri
-
-    console.log(this.state.videoUri)
+    console.log("VideoId", this.state.videoId)
 
     return (
       <View style={{flex: 1, flexDirection: 'row'}}>
@@ -251,9 +268,9 @@ export default class EditScreen extends React.Component {
             </View>
           </View>
           <View style={{flex: 1, backgroundColor: 'lightblue', alignItems: 'center'}}>
-            <Text style={{ paddingTop: 20, fontWeight: 'bold' }}>Splice Videos</Text>
-            <Text style={{ paddingTop: 10 }}>Start: {this.state.startTime}      End: {this.state.endTime}</Text>
-            <View style={{ paddingTop: 20 }}>
+            <Text style={{ paddingTop: 15, fontWeight: 'bold' }}>Splice Videos</Text>
+            <Text style={{ paddingTop: 5 }}>Start: {this.state.startTime}      End: {this.state.endTime}</Text>
+            <View style={{ paddingTop: 5 }}>
               <MultiSlider
                 values={[parseInt(this.state.startTime), parseInt(this.state.endTime)]}
                 onValuesChangeFinish={this.multiSliderValuesChange}
@@ -268,6 +285,14 @@ export default class EditScreen extends React.Component {
                 enabledTwo
               />
             </View>
+            {this.state.videoId !== 0 && (<CheckBox
+              center
+              title='Add Transition'
+              iconRight
+              containerStyle={styles.checkBox}
+              checked={this.state.checked}
+              onPress={this.checkBoxPress}
+            />)}
           </View>
         </View>
       </View>
@@ -277,7 +302,12 @@ export default class EditScreen extends React.Component {
 }
 
 const styles = StyleSheet.create({
-
+  checkBox: {
+    backgroundColor: 'lightblue', 
+    borderColor: 'lightblue',
+    paddingTop: 0,
+    marginTop: 0,
+  },
   toggleButton: {
     flex: 0.25,
     height: 40,
