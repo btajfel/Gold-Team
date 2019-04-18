@@ -30,6 +30,8 @@ import DialogInput from 'react-native-dialog-input';
 
 const landmarkSize = 2;
 
+const PHOTOS_DIR = FileSystem.documentDirectory + 'photos';
+
 const flashModeOrder = {
   off: 'on',
   on: 'auto',
@@ -110,6 +112,7 @@ export default class CameraScreen extends React.Component {
     inviter: "",
     isDialogVisible: false,
     username: "",
+    videoPath: "",
   };
 
 
@@ -287,6 +290,7 @@ export default class CameraScreen extends React.Component {
       inputText = `${this.state.username}'s track`;
     }
     console.log("sendInput (DialogInput#1): "+inputText);
+    this.saveToProject(inputText);
     this.showDialog(false);
   };
 
@@ -337,14 +341,124 @@ export default class CameraScreen extends React.Component {
         });
         const startTime = Date.now();
         const video = await this.camera.recordAsync();
+        const filename = `${startTime}-${Date.now()}.mov`
         await FileSystem.moveAsync({
           from: video.uri,
-          to: `${FileSystem.documentDirectory}photos/${startTime}-${Date.now()}.mov`,
+          to: `${FileSystem.documentDirectory}photos/${filename}`,
         });
+        const photos = await FileSystem.readDirectoryAsync(PHOTOS_DIR);
+        console.log(photos);
+        const v = photos.indexOf(filename);
+        const vid = photos[v];
+        const vidPath = `${PHOTOS_DIR}/${vid}`;
+         await this.setState({ videoPath: vidPath});
+        console.log("HERE1 " + vidPath);
+       
         this.setState({ newPhotos: true });
       }
     }
   };
+
+  saveToProject = async (vidName) => {
+    const username = await AsyncStorage.getItem("userToken");
+    let projectid = this.state.projectId;
+    const video = this.state.videoPath;
+    const videoName = vidName;
+    console.log("PID: " + projectid);
+
+      if (projectid === 0) {
+      fetch(`http://crewcam.eecs.umich.edu/api/v1/${username}/projects/`, {
+            method: 'POST',
+            body: JSON.stringify({
+               projectId: projectid,
+            })
+      })
+        .then(res => {
+          if (!res.ok) throw Error(res.statusText);
+          return res.json()
+        })
+        .then(data => {
+          projectid = data.projectid;
+          const split = video.split("/");
+          const videoTimes = split[split.length - 1]
+
+          const startTime = videoTimes.split("-")[0]
+          const endTime = videoTimes.split("-")[1].split(".")[0]
+
+          const form = new FormData();
+
+          form.append('file', {
+            uri: video,
+            type: 'video/mov', // or photo.type
+            name: 'file.mov'
+          });
+          form.append('name', videoName);
+          form.append('startTime', startTime);
+          form.append('endTime', endTime);
+          form.append('username', username);
+
+          const url = `http://crewcam.eecs.umich.edu/api/v1/${projectid}/save/`;
+          fetch(url, {
+            method: 'POST',
+            body: form,
+          })
+            .then((res) => {
+              if (!res.ok) throw Error(res.statusText);
+              alert('Video Saved to Project');
+              // console.log(res)
+            })
+            .catch(error => {
+              alert('Video Could Not be Saved');
+              console.log(error)
+            });
+        })
+    }
+    else {
+      console.log("HEREEE");
+
+      const split = video.split("/");
+      const videoTimes = split[split.length - 1]
+
+      const startTime = videoTimes.split("-")[0]
+      const endTime = videoTimes.split("-")[1].split(".")[0]
+
+      const form = new FormData();
+
+      form.append('file', {
+        uri: video,
+        type: 'video/mov', // or photo.type
+        name: 'file.mov'
+      });
+      form.append('name', videoName);
+      form.append('startTime', startTime);
+      form.append('endTime', endTime);
+      form.append('username', username);
+      // console.log(video)
+      // FIXME (projectid)
+      console.log("pid 2", projectid)
+      const url = `http://crewcam.eecs.umich.edu/api/v1/${projectid}/save/`;
+      fetch(url, {
+        method: 'POST',
+        body: form,
+      })
+        .then((res) => {
+          if (!res.ok) throw Error(res.statusText);
+          alert('Video Saved to Project');
+          // console.log(res)
+        })
+        .catch(error => {
+          alert('Video Could Not be Saved');
+          console.log(error)
+        });
+    }
+
+  };
+
+
+
+
+
+
 
   handleMountError = ({ message }) => console.error(message);
 

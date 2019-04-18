@@ -71,6 +71,7 @@ export default class GalleryScreen extends React.Component {
         })
         .then(() => {
           const video = this.state.selected[0];
+          console.log("HERE: " + video);
           let videoName = this.state.text;
 
           if (videoName === '') {
