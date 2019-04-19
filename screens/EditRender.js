@@ -55,11 +55,17 @@ export default class EditRender extends React.Component {
     render() {
         const invButton = button[this.state.inviteIcon]
         const rowData = this.props.item
+        const startDate = new Date(rowData.starttime)
+        const endDate = new Date(rowData.endtime);
+
+        const startTime = `${startDate.getHours()}:${startDate.getMinutes()}:${startDate.getSeconds()}`;
+        const endTime = `${endDate.getHours()}:${endDate.getMinutes()}:${endDate.getSeconds()}`;
         return (
           <ListItem onPress={() => this.toggleSelection(rowData)}>
             <Body style={{ borderBottomWidth: 0 }}>
               <Text>{rowData.trackname}</Text>
             </Body>
+            <Text style={{ textAlign: 'right', paddingRight: 5 }}>Start: {startTime}{"\n"}End: {endTime}</Text>
             <Right style={{ borderBottomWidth: 0 }}>
               <View style={styles.rightBtn}>
                 <Button
