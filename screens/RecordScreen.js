@@ -13,7 +13,6 @@ import {
   Slider,
   Platform
 } from 'react-native';
-import GalleryScreen from './GalleryScreen';
 import isIPhoneX from 'react-native-is-iphonex';
 import {NavigationEvents} from 'react-navigation';
 
@@ -92,7 +91,6 @@ export default class CameraScreen extends React.Component {
     ratio: '16:9',
     ratios: [],
     faces: [],
-    newPhotos: false,
     permissionsGranted: false,
     pictureSize: undefined,
     pictureSizes: [],
@@ -105,7 +103,6 @@ export default class CameraScreen extends React.Component {
     recording: false,
     recordingIcon: 'radiobox-marked',
     recordingColor: 'white',
-    showGallery: false,
     showQualityOptions: false,
     showFriendsOptions: false,
     wasInvited: false,
@@ -299,7 +296,6 @@ export default class CameraScreen extends React.Component {
     return ratios;
   };
 
-  toggleView = () => this.setState({ showGallery: !this.state.showGallery, newPhotos: false });
 
   toggleQualityOptions = () => this.setState({ showQualityOptions: !this.state.showQualityOptions });
 
@@ -350,8 +346,6 @@ export default class CameraScreen extends React.Component {
         const vid = photos[v];
         const vidPath = `${PHOTOS_DIR}/${vid}`;
          await this.setState({ videoPath: vidPath});
-       
-        this.setState({ newPhotos: true });
       }
     }
   };
@@ -516,10 +510,6 @@ export default class CameraScreen extends React.Component {
     this.setState({ friends: this.state.friendsSizes[newId], friendsId: newId });
   };
 
-  renderGallery() {
-    return <GalleryScreen onPress={this.toggleView.bind(this)} projectId={this.state.projectId} />;
-  }
-
   renderNoPermissions = () => 
     <View style={styles.noPermissions}>
       <Text style={{ color: 'white' }}>
@@ -544,8 +534,7 @@ export default class CameraScreen extends React.Component {
     </View>
     
   renderBottomBar = () =>
-    <View
-      style={styles.bottomBar}>
+        <View style={styles.bottomBar}>
       <TouchableOpacity style={styles.bottomButton} onPress={this.toggleFriendsOptions}>
         <Ionicons name="ios-contact" size={30} color="white"/>
       </TouchableOpacity>
@@ -557,10 +546,8 @@ export default class CameraScreen extends React.Component {
           <MaterialCommunityIcons name={ this.state.recordingIcon } size={70} color={ this.state.recordingColor } />
         </TouchableOpacity>
       </View> 
-      <TouchableOpacity style={styles.bottomButton} onPress={this.toggleView}>
+      <TouchableOpacity style={styles.bottomButton}>
         <View>
-          <Foundation name="thumbnails" size={30} color="white" />
-          {this.state.newPhotos && <View style={styles.newPhotosDot}/>}
         </View>
       </TouchableOpacity>
     </View>
@@ -643,7 +630,7 @@ export default class CameraScreen extends React.Component {
     const cameraScreenContent = this.state.permissionsGranted
       ? this.renderCamera()
       : this.renderNoPermissions();
-    const content = this.state.showGallery ? this.renderGallery() : cameraScreenContent;
+    const content = cameraScreenContent;
     return <View style={styles.container}>
             <NavigationEvents
               onDidFocus={() => this.paramsFunction()}
