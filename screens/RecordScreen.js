@@ -13,7 +13,6 @@ import {
   Slider,
   Platform
 } from 'react-native';
-import GalleryScreen from './GalleryScreen';
 import isIPhoneX from 'react-native-is-iphonex';
 import {NavigationEvents} from 'react-navigation';
 
@@ -29,6 +28,8 @@ import {
 import DialogInput from 'react-native-dialog-input';
 
 const landmarkSize = 2;
+
+const PHOTOS_DIR = FileSystem.documentDirectory + 'photos';
 
 const flashModeOrder = {
   off: 'on',
@@ -90,7 +91,6 @@ export default class CameraScreen extends React.Component {
     ratio: '16:9',
     ratios: [],
     faces: [],
-    newPhotos: false,
     permissionsGranted: false,
     pictureSize: undefined,
     pictureSizes: [],
@@ -103,13 +103,13 @@ export default class CameraScreen extends React.Component {
     recording: false,
     recordingIcon: 'radiobox-marked',
     recordingColor: 'white',
-    showGallery: false,
     showQualityOptions: false,
     showFriendsOptions: false,
     wasInvited: false,
     inviter: "",
     isDialogVisible: false,
     username: "",
+    videoPath: "",
   };
 
 
@@ -286,7 +286,7 @@ export default class CameraScreen extends React.Component {
     if (inputText === ""){
       inputText = `${this.state.username}'s track`;
     }
-    console.log("sendInput (DialogInput#1): "+inputText);
+    this.saveToProject(inputText);
     this.showDialog(false);
   };
 
@@ -296,7 +296,6 @@ export default class CameraScreen extends React.Component {
     return ratios;
   };
 
-  toggleView = () => this.setState({ showGallery: !this.state.showGallery, newPhotos: false });
 
   toggleQualityOptions = () => this.setState({ showQualityOptions: !this.state.showQualityOptions });
 
@@ -337,14 +336,115 @@ export default class CameraScreen extends React.Component {
         });
         const startTime = Date.now();
         const video = await this.camera.recordAsync();
+        const filename = `${startTime}-${Date.now()}.mov`
         await FileSystem.moveAsync({
           from: video.uri,
-          to: `${FileSystem.documentDirectory}photos/${startTime}-${Date.now()}.mov`,
+          to: `${FileSystem.documentDirectory}photos/${filename}`,
         });
-        this.setState({ newPhotos: true });
+        const photos = await FileSystem.readDirectoryAsync(PHOTOS_DIR);
+        const v = photos.indexOf(filename);
+        const vid = photos[v];
+        const vidPath = `${PHOTOS_DIR}/${vid}`;
+         await this.setState({ videoPath: vidPath});
       }
     }
   };
+
+  saveToProject = async (vidName) => {
+    const username = await AsyncStorage.getItem("userToken");
+    let projectid = this.state.projectId;
+    const video = this.state.videoPath;
+    const videoName = vidName;
+
+      if (projectid === 0) {
+      fetch(`http://crewcam.eecs.umich.edu/api/v1/${username}/projects/`, {
+            method: 'POST',
+            body: JSON.stringify({
+               projectId: projectid,
+            })
+      })
+        .then(res => {
+          if (!res.ok) throw Error(res.statusText);
+          return res.json()
+        })
+        .then(data => {
+          projectid = data.projectid;
+          const split = video.split("/");
+          const videoTimes = split[split.length - 1]
+
+          const startTime = videoTimes.split("-")[0]
+          const endTime = videoTimes.split("-")[1].split(".")[0]
+
+          const form = new FormData();
+
+          form.append('file', {
+            uri: video,
+            type: 'video/mov', // or photo.type
+            name: 'file.mov'
+          });
+          form.append('name', videoName);
+          form.append('startTime', startTime);
+          form.append('endTime', endTime);
+          form.append('username', username);
+
+          const url = `http://crewcam.eecs.umich.edu/api/v1/${projectid}/save/`;
+          fetch(url, {
+            method: 'POST',
+            body: form,
+          })
+            .then((res) => {
+              if (!res.ok) throw Error(res.statusText);
+              alert('Video Saved to Project');
+              // console.log(res)
+            })
+            .catch(error => {
+              alert('Video Could Not be Saved');
+              console.log(error)
+            });
+        })
+    }
+    else {
+
+      const split = video.split("/");
+      const videoTimes = split[split.length - 1]
+
+      const startTime = videoTimes.split("-")[0]
+      const endTime = videoTimes.split("-")[1].split(".")[0]
+
+      const form = new FormData();
+
+      form.append('file', {
+        uri: video,
+        type: 'video/mov', // or photo.type
+        name: 'file.mov'
+      });
+      form.append('name', videoName);
+      form.append('startTime', startTime);
+      form.append('endTime', endTime);
+      form.append('username', username);
+      const url = `http://crewcam.eecs.umich.edu/api/v1/${projectid}/save/`;
+      fetch(url, {
+        method: 'POST',
+        body: form,
+      })
+        .then((res) => {
+          if (!res.ok) throw Error(res.statusText);
+          alert('Video Saved to Project');
+          // console.log(res)
+        })
+        .catch(error => {
+          alert('Video Could Not be Saved');
+          console.log(error)
+        });
+    }
+
+  };
+
+
+
+
+
+
 
   handleMountError = ({ message }) => console.error(message);
 
@@ -410,10 +510,6 @@ export default class CameraScreen extends React.Component {
     this.setState({ friends: this.state.friendsSizes[newId], friendsId: newId });
   };
 
-  renderGallery() {
-    return <GalleryScreen onPress={this.toggleView.bind(this)} projectId={this.state.projectId} />;
-  }
-
   renderNoPermissions = () => 
     <View style={styles.noPermissions}>
       <Text style={{ color: 'white' }}>
@@ -438,8 +534,7 @@ export default class CameraScreen extends React.Component {
     </View>
     
   renderBottomBar = () =>
-    <View
-      style={styles.bottomBar}>
+        <View style={styles.bottomBar}>
       <TouchableOpacity style={styles.bottomButton} onPress={this.toggleFriendsOptions}>
         <Ionicons name="ios-contact" size={30} color="white"/>
       </TouchableOpacity>
@@ -451,10 +546,8 @@ export default class CameraScreen extends React.Component {
           <MaterialCommunityIcons name={ this.state.recordingIcon } size={70} color={ this.state.recordingColor } />
         </TouchableOpacity>
       </View> 
-      <TouchableOpacity style={styles.bottomButton} onPress={this.toggleView}>
+      <TouchableOpacity style={styles.bottomButton}>
         <View>
-          <Foundation name="thumbnails" size={30} color="white" />
-          {this.state.newPhotos && <View style={styles.newPhotosDot}/>}
         </View>
       </TouchableOpacity>
     </View>
@@ -507,7 +600,8 @@ export default class CameraScreen extends React.Component {
                     message={"Would you like to upload your clip the project or record a new one?"}
                     hintInput ={`${this.state.username}'s track`}
                     submitInput={ (inputText) => {this.sendInput(inputText)} }
-                    closeDialog={ () => {this.showDialog(false)}}>
+                    closeDialog={ () => {this.showDialog(false)}}
+                    dialogStyle= {{marginBottom: 85}}>
         </DialogInput>
         <Camera
           ref={ref => {
@@ -536,7 +630,7 @@ export default class CameraScreen extends React.Component {
     const cameraScreenContent = this.state.permissionsGranted
       ? this.renderCamera()
       : this.renderNoPermissions();
-    const content = this.state.showGallery ? this.renderGallery() : cameraScreenContent;
+    const content = cameraScreenContent;
     return <View style={styles.container}>
             <NavigationEvents
               onDidFocus={() => this.paramsFunction()}
