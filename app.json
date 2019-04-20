@@ -1,29 +1,33 @@
 {
   "expo": {
-    "name": "GoldTeam",
+    "name": "CrewCam",
     "slug": "GoldTeam",
     "privacy": "public",
     "sdkVersion": "32.0.0",
     "platforms": [
       "ios",
-      "android"
+      "android",
     ],
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/images/icon.png",
     "splash": {
-      "image": "./assets/images/splash.png",
+      "image": "./assets/images/CC-icon.png",
       "resizeMode": "contain",
-      "backgroundColor": "#ffffff"
+      "backgroundColor": "#3D85C6",
     },
     "updates": {
-      "fallbackToCacheTimeout": 0
+      "fallbackToCacheTimeout": 0,
     },
     "assetBundlePatterns": [
-      "**/*"
+      "**/*",
     ],
     "ios": {
-      "supportsTablet": true
+      "bundleIdentifier": "com.goldteam.crewcam",
+      "supportsTablet": true,
+    },
+	"android": {
+      "package": "com.goldteam.crewcam",
     }
   }
 }
