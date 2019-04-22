@@ -76,9 +76,6 @@ export default class EditScreen extends React.Component {
         })
       .then(res => {
         if (!res.ok) throw Error(res.statusText);
-        return res.json();
-      })
-      .then((data) => {
         navigate('Library');
       })
       .catch(error => {
