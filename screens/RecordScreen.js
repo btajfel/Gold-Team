@@ -125,13 +125,11 @@ export default class CameraScreen extends React.Component {
   async componentDidMount() {
     this.props.navigation.setParams({ signOutAsync: this._signOutAsync.bind(this) });
     FileSystem.makeDirectoryAsync(FileSystem.documentDirectory + 'photos').catch(e => {
-      console.log('Directory exists');
     });
     ScreenOrientation.allowAsync(ScreenOrientation.Orientation.PORTRAIT);
   };
 
   _signOutAsync = async () => {
-    console.log("Sign Out!")
     await AsyncStorage.clear();
     this.props.navigation.navigate('Auth');
   };

@@ -19,7 +19,6 @@ export default class LibraryRender extends Component {
 
     handlePressSave = async (projectid) => {
       const {navigate} = this.props.navigation;
-      console.log("View")
 
       fetch(`http://crewcam.eecs.umich.edu/api/v1/${projectid}/render/name/`)
       .then(res => {
@@ -54,7 +53,6 @@ export default class LibraryRender extends Component {
 
     handlePressView = (projectid) => {
       const {navigate} = this.props.navigation;
-      console.log("View")
 
       fetch(`http://crewcam.eecs.umich.edu/api/v1/${projectid}/render/name/`)
       .then(res => {

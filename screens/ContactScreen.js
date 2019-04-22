@@ -220,7 +220,6 @@ export default class SearchScreen extends Component {
         return res.json();
       })
       .then(data => {
-        console.log(data.projectid)
         const projectid = data.projectid
         const url = 'http://crewcam.eecs.umich.edu/api/v1/invite/';
         fetch(url, {

@@ -35,7 +35,6 @@ export default class ViewScreen extends React.Component {
   onMount = async () => {
   	const projectid = this.props.navigation.getParam('projectid', 0);
   	const uri = this.props.navigation.getParam('uri', 0);
-  	console.log(uri)
 
   	// const info = await FileSystem.getInfoAsync(`file:///var/mobile/Containers/Data/Application/BD57BBCB-EBF8-46E8-B6B5-7883370F69CE/Documents/ExponentExperienceData/%2540anonymous%252FGoldTeam-0a0f30ac-074f-43c9-9b8d-9d751fdd0afa/videos/${uri}`)
    //  console.log("Info", info)
@@ -46,7 +45,6 @@ export default class ViewScreen extends React.Component {
       `${VIDEOS_DIR}/${uri}`
     )
     .then(({ uri }) => {
-      console.log("null")
       this.setState({ 
           videoUri: uri
       });
@@ -75,8 +73,6 @@ export default class ViewScreen extends React.Component {
     };
 
     const {uri} = this.state.videoUri
-
-    console.log(this.state.videoUri)
 
     return (
       <View style={{flex: 1, flexDirection: 'row'}}>
