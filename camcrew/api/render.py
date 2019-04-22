@@ -5,7 +5,8 @@ import arrow
 import flask
 import camcrew
 from moviepy.editor import *
-
+from moviepy.video.tools.drawing import circle
+import moviepy.video.fx.all
 
 @camcrew.app.route('/api/v1/<int:projectid>/render/name/',
                     methods=["GET"])
@@ -48,6 +49,9 @@ def render(projectid):
     video_info = json.loads(flask.request.data)
     project_name = video_info["projectName"]
     cut_times = video_info["cutTimes"]
+    transitions = False
+    transitions = cut_times[0]["transition"]
+
     print(cut_times)
 
     # Final project filename
@@ -63,20 +67,34 @@ def render(projectid):
 
     new_filename = os.path.join(camcrew.app.config["UPLOAD_FOLDER"], clip_name)
     new_clip = VideoFileClip(new_filename).subclip(clip_start, clip_end)
-    final_clip = concatenate_videoclips([new_clip])
+    if(transitions == True):
+        olo = moviepy.video.fx.all.fadeout(new_clip, (clip_end-1), 0.5)
+        final_clip = concatenate_videoclips([olo])
+    else:
+        final_clip = concatenate_videoclips([new_clip])
+
     # First clip end, start loop
 
     cut_times.pop(0)
 
     # Loop this
     for video in cut_times:
+        transitions = video["transition"]
         clip_name = video["filename"]
         clip_start = video["startTime"]
         clip_end = video["endTime"]
 
         new_filename = os.path.join(camcrew.app.config["UPLOAD_FOLDER"], clip_name)
         new_clip = VideoFileClip(new_filename).subclip(clip_start, clip_end)
-        final_clip = concatenate_videoclips([final_clip, new_clip])
+
+        if(transitions == True):
+            olo = moviepy.video.fx.all.fadeout(new_clip, (clip_end-1), 0.5)
+            final_clip = concatenate_videoclips([final_clip, olo])
+        else:
+            final_clip = concatenate_videoclips([final_clip, new_clip])
+
+
+        
 
 
     # Make the text. Many more options are available.
