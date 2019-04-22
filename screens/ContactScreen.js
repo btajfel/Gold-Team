@@ -186,7 +186,7 @@ export default class SearchScreen extends Component {
       })(); 
 
       if (diff === 0){
-        diff = 0.1
+        diff = 0.01
       }
 
     if (diff <= 1.0){
