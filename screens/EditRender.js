@@ -83,7 +83,7 @@ export default class EditRender extends React.Component {
                     title="delete"
                     onPress =  {() => this.deleteVideo(rowData.videoid)}
                 >
-                  <Icon name="trash" color="red" />
+                  <Icon name="trash" color="blue" />
                 </Button>
               </View>
             </Right>
