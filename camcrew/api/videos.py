@@ -36,3 +36,14 @@ def get_video(filename):
 
     return flask.send_file(file_path, attachment_filename=filename)
 
+
+@camcrew.app.route('/api/v1/<int:videoid>/video/',
+                    methods=["DELETE"])
+def delete_video(videoid):
+    context = {}
+    cur = camcrew.model.get_db().cursor()
+
+    cur.execute('DELETE FROM videos WHERE videoid=?;', (videoid,))
+
+    return flask.jsonify(**context)
+

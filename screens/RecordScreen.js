@@ -441,11 +441,6 @@ export default class CameraScreen extends React.Component {
   };
 
 
-
-
-
-
-
   handleMountError = ({ message }) => console.error(message);
 
   onFacesDetected = ({ faces }) => this.setState({ faces });

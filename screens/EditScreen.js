@@ -228,6 +228,10 @@ export default class EditScreen extends React.Component {
     });
   };
 
+  updateVideos = () => {
+    this.makeRemoteRequest();
+  }
+
   render() {
     /* Go ahead and delete ExpoConfigView and replace it with your
      * content, we just wanted to give you a quick view of your config */
@@ -252,6 +256,7 @@ export default class EditScreen extends React.Component {
               <EditRender 
                 item={item}
                 onSelectionToggle= {this.toggleSelection}
+                onDelete={this.updateVideos}
               />
             )}
             onFetch={this.onFetch}

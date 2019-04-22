@@ -79,7 +79,7 @@ export default class ProjectSettings extends Component {
             />
             <View style={{ paddingTop: 100 }}>
 	            <Button
-	              buttonStyle={styles.loginButton}
+	              buttonStyle={styles.deleteButton}
 	              onPress={() => this.onDeletePress()}
 	              title="Delete Project"
 	            />
@@ -148,6 +148,14 @@ otherButtons: {
 },
 loginButton: {
   backgroundColor: '#3897f1',
+  borderRadius: 5,
+  height: 45,
+  marginLeft: 15,
+  marginRight: 15,
+  marginTop: 10,
+},
+deleteButton: {
+  backgroundColor: 'red',
   borderRadius: 5,
   height: 45,
   marginLeft: 15,

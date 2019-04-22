@@ -41,6 +41,15 @@ export default class EditRender extends React.Component {
         .catch(error => {
         console.error(error);
         });
+    };
+
+    deleteVideo = (videoId) => {
+      fetch(`http://crewcam.eecs.umich.edu/api/v1/${videoId}/video/`, 
+        { method: 'DELETE' })
+        .then(() => {
+          this.props.onDelete();
+        })
+        .catch(error => console.log(error));
     }
 
     toggleSelection = (item) => {
@@ -53,13 +62,13 @@ export default class EditRender extends React.Component {
     }
 
     render() {
-        const invButton = button[this.state.inviteIcon]
         const rowData = this.props.item
         const startDate = new Date(rowData.starttime)
         const endDate = new Date(rowData.endtime);
+        const endSeconds = startDate.getSeconds() + rowData.duration;
 
         const startTime = `${startDate.getHours()}:${startDate.getMinutes()}:${startDate.getSeconds()}`;
-        const endTime = `${endDate.getHours()}:${endDate.getMinutes()}:${endDate.getSeconds()}`;
+        const endTime = `${endDate.getHours()}:${endDate.getMinutes()}:${endSeconds}`;
         return (
           <ListItem onPress={() => this.toggleSelection(rowData)}>
             <Body style={{ borderBottomWidth: 0 }}>
@@ -67,13 +76,14 @@ export default class EditRender extends React.Component {
             </Body>
             <Text style={{ textAlign: 'right', paddingRight: 5 }}>Start: {startTime}{"\n"}End: {endTime}</Text>
             <Right style={{ borderBottomWidth: 0 }}>
-              <View style={styles.rightBtn}>
+              <View style={styles.exportButton}>
                 <Button
-                  transparent
-                  title="view"
-                  style={styles.rightBtn}
+                    small
+                    transparent
+                    title="delete"
+                    onPress =  {() => this.deleteVideo(rowData.videoid)}
                 >
-                  {this.state.inviteIcon === "on" && <Icon name={invButton} style={{fontSize: 30, color: 'blue'}}/>}
+                  <Icon name="trash" color="red" />
                 </Button>
               </View>
             </Right>
